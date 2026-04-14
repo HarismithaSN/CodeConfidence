@@ -734,9 +734,21 @@
                 <h1 id="hdr-title">Dashboard Overview</h1>
             </div>
             <div class="header-right">
-                <button onclick="toggleTheme()"
-                    style="background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 12px;">
-                    <i>🌓</i> Theme
+                <button id="theme-toggle-btn" onclick="toggleTheme()" title="Switch to light mode" style="
+                    background: var(--bg3);
+                    border: 1px solid var(--border2);
+                    color: var(--text2);
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s;
+                    flex-shrink: 0;
+                  " onmouseover="this.style.background='var(--bg4)';this.style.color='var(--text)'"
+                    onmouseout="this.style.background='var(--bg3)';this.style.color='var(--text2)'">
                 </button>
                 <div class="inst-badge" id="hdr-inst">🏫 VIT Bangalore</div>
             </div>
@@ -999,6 +1011,61 @@
     </div>
 
     <script>
+        function initTheme() {
+            const saved = localStorage.getItem('cc_theme') || 'dark'
+            applyTheme(saved)
+        }
+
+        function applyTheme(theme) {
+            const root = document.documentElement
+            const btn = document.getElementById('theme-toggle-btn')
+
+            if (theme === 'light') {
+                root.classList.add('light')
+                if (btn) btn.innerHTML = getMoonIcon()
+                if (btn) btn.title = 'Switch to dark mode'
+            } else {
+                root.classList.remove('light')
+                if (btn) btn.innerHTML = getSunIcon()
+                if (btn) btn.title = 'Switch to light mode'
+            }
+
+            localStorage.setItem('cc_theme', theme)
+        }
+
+        function toggleTheme() {
+            const current = localStorage.getItem('cc_theme') || 'dark'
+            const next = current === 'dark' ? 'light' : 'dark'
+            applyTheme(next)
+        }
+
+        function getSunIcon() {
+            return `<svg width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/>
+                <line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>`
+        }
+
+        function getMoonIcon() {
+            return `<svg width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1111.21 3
+                        7 7 0 0021 12.79z"/>
+            </svg>`
+        }
+
+        // Call immediately
+        initTheme();
         // ─── AUTH GUARD ───────────────────────────────────────
         const inst = JSON.parse(localStorage.getItem('cc_institution_session') || 'null');
         if (!inst) { window.location.href = 'login.html'; }
@@ -1066,35 +1133,51 @@
             // KPIs
             const kpis = [
                 { icon: '🎓', val: s.length, label: 'Total Students', delta: '↑ +2 this month', dColor: 'var(--success)' },
-                { icon: '💡', val: avg('confidenceScore') + '%', label: 'Avg Confidence Score', delta: '↑ +5% from last month', dColor: 'var(--success)' },
-                { icon: '🔥', val: avg('streak') + ' days', label: 'Avg Streak', delta: 'Active learners: ' + active.length, dColor: 'var(--blue)' },
+                {
+                    icon: '💡', val: avg('confidenceScore') + '%', label: 'Avg Confidence Score', delta: '↑ +5% from last month',
+                    dColor: 'var(--success)'
+                },
+                {
+                    icon: '🔥', val: avg('streak') + ' days', label: 'Avg Streak', delta: 'Active learners: ' + active.length, dColor:
+                        'var(--blue)'
+                },
                 { icon: '⚠️', val: atRisk.length, label: 'At-Risk Students', delta: 'Needs attention', dColor: 'var(--error)' }
             ];
             document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
     <div class="kpi-card">
-      <div class="kpi-icon">${k.icon}</div>
-      <div class="kpi-val" style="color:var(--blue);">${k.val}</div>
-      <div class="kpi-label">${k.label}</div>
-      <div class="kpi-delta" style="color:${k.dColor};">${k.delta}</div>
+        <div class="kpi-icon">${k.icon}</div>
+        <div class="kpi-val" style="color:var(--blue);">${k.val}</div>
+        <div class="kpi-label">${k.label}</div>
+        <div class="kpi-delta" style="color:${k.dColor};">${k.delta}</div>
     </div>`).join('');
 
             // Top performers
             const top = [...s].sort((a, b) => b.xp - a.xp).slice(0, 3);
             document.getElementById('top-performers').innerHTML = top.map((s, i) => `
-    <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.02);border-radius:10px;margin-bottom:8px;">
-      <div style="width:30px;height:30px;border-radius:8px;background:${['var(--primary)', 'rgba(200,200,200,0.3)', 'rgba(180,140,60,0.4)'][i]};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;">${i + 1}</div>
-      <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${s.name}</div><div style="font-size:11px;color:var(--text-muted);">${s.branch} • Level ${s.level}</div></div>
-      <div style="font-weight:700;color:var(--primary);font-size:13px;">${s.xp} XP</div>
+    <div
+        style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.02);border-radius:10px;margin-bottom:8px;">
+        <div
+            style="width:30px;height:30px;border-radius:8px;background:${['var(--primary)', 'rgba(200,200,200,0.3)', 'rgba(180,140,60,0.4)'][i]};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;">
+            ${i + 1}</div>
+        <div style="flex:1;">
+            <div style="font-weight:700;font-size:13px;">${s.name}</div>
+            <div style="font-size:11px;color:var(--text-muted);">${s.branch} • Level ${s.level}</div>
+        </div>
+        <div style="font-weight:700;color:var(--primary);font-size:13px;">${s.xp} XP</div>
     </div>`).join('');
 
             // At-risk
             document.getElementById('at-risk-list').innerHTML = atRisk.length === 0
                 ? '<div style="color:var(--success);font-size:13px;padding:16px;text-align:center;">✅ No at-risk students!</div>'
                 : atRisk.map(s => `
-      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,107,107,0.05);border:1px solid rgba(255,107,107,0.1);border-radius:10px;margin-bottom:8px;">
-        <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${s.name}</div><div style="font-size:11px;color:var(--text-muted);">${s.rollNo} • Last active: ${s.lastActive}</div></div>
+    <div
+        style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,107,107,0.05);border:1px solid rgba(255,107,107,0.1);border-radius:10px;margin-bottom:8px;">
+        <div style="flex:1;">
+            <div style="font-weight:700;font-size:13px;">${s.name}</div>
+            <div style="font-size:11px;color:var(--text-muted);">${s.rollNo} • Last active: ${s.lastActive}</div>
+        </div>
         <span class="badge badge-risk">At Risk</span>
-      </div>`).join('');
+    </div>`).join('');
 
             // Activity bar chart
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -1102,10 +1185,13 @@
             const mx = Math.max(...vals);
             document.getElementById('activity-bars').innerHTML = vals.map((v, i) => `
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
-      <div style="font-size:10px;color:var(--blue);font-weight:700;">${v}</div>
-      <div style="width:100%;background:rgba(74,143,247,0.15);border-radius:4px;height:${Math.round((v / mx) * 80) + 8}px;border-top:2px solid var(--blue);transition:height 0.6s;"></div>
+        <div style="font-size:10px;color:var(--blue);font-weight:700;">${v}</div>
+        <div
+            style="width:100%;background:rgba(74,143,247,0.15);border-radius:4px;height:${Math.round((v / mx) * 80) + 8}px;border-top:2px solid var(--blue);transition:height 0.6s;">
+        </div>
     </div>`).join('');
-            document.getElementById('activity-labels').innerHTML = days.map(d => `<div style="flex:1;text-align:center;font-size:10px;color:var(--text-muted);">${d}</div>`).join('');
+            document.getElementById('activity-labels').innerHTML = days.map(d => `<div
+        style="flex:1;text-align:center;font-size:10px;color:var(--text-muted);">${d}</div>`).join('');
         }
 
         // ─── STUDENTS ─────────────────────────────────────────
@@ -1127,70 +1213,95 @@
             const statusMap = { active: 'badge-active', inactive: 'badge-inactive', 'at-risk': 'badge-risk' };
             document.getElementById('students-tbody').innerHTML = arr.map(s => `
     <tr onclick="openStudentModal('${s.rollNo}')">
-      <td style="font-family:monospace;font-size:12px;">${s.rollNo}</td>
-      <td style="font-weight:600;">${s.name}</td>
-      <td>${s.branch}</td><td>${s.year}</td>
-      <td style="font-weight:700;color:var(--primary);">${s.xp}</td>
-      <td>Lv ${s.level}</td>
-      <td>${s.streak}🔥</td>
-      <td style="font-size:11px;color:var(--text-muted);">${s.lastActive}</td>
-      <td><span class="badge ${statusMap[s.status] || 'badge-inactive'}">${s.status}</span></td>
-    </tr>`).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:32px;">No students found</td></tr>';
+        <td style="font-family:monospace;font-size:12px;">${s.rollNo}</td>
+        <td style="font-weight:600;">${s.name}</td>
+        <td>${s.branch}</td>
+        <td>${s.year}</td>
+        <td style="font-weight:700;color:var(--primary);">${s.xp}</td>
+        <td>Lv ${s.level}</td>
+        <td>${s.streak}🔥</td>
+        <td style="font-size:11px;color:var(--text-muted);">${s.lastActive}</td>
+        <td><span class="badge ${statusMap[s.status] || 'badge-inactive'}">${s.status}</span></td>
+    </tr>`).join('') || `<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:32px;">No students found</td></tr>`;
         }
         function openStudentModal(rollNo) {
             const s = getStudents().find(x => x.rollNo === rollNo);
             if (!s) return;
             const skills = s.skills || {};
-            const skillColors = { loops: '#4a8ff7', functions: '#0ed97a', arrays: '#f0b429', oop: '#a855f7', recursion: '#f97316', algorithms: '#ff6b6b' };
+            const skillColors = {
+                loops: '#4a8ff7', functions: '#0ed97a', arrays: '#f0b429', oop: '#a855f7', recursion:
+                    '#f97316', algorithms: '#ff6b6b'
+            };
             document.getElementById('student-modal-content').innerHTML = `
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-      <div style="width:60px;height:60px;border-radius:16px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#fff;">${s.name[0]}</div>
-      <div>
-        <div style="font-size:20px;font-weight:800;">${s.name}</div>
-        <div style="font-size:12px;color:var(--text-muted);">${s.rollNo} • ${s.branch} • ${s.year} Year</div>
-        <span class="badge ${s.status === 'active' ? 'badge-active' : s.status === 'at-risk' ? 'badge-risk' : 'badge-inactive'}" style="margin-top:4px;">${s.status}</span>
-      </div>
+        <div
+            style="width:60px;height:60px;border-radius:16px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#fff;">
+            ${s.name[0]}</div>
+        <div>
+            <div style="font-size:20px;font-weight:800;">${s.name}</div>
+            <div style="font-size:12px;color:var(--text-muted);">${s.rollNo} • ${s.branch} • ${s.year} Year</div>
+            <span
+                class="badge ${s.status === 'active' ? 'badge-active' : s.status === 'at-risk' ? 'badge-risk' : 'badge-inactive'}"
+                style="margin-top:4px;">${s.status}</span>
+        </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-      ${[['XP', s.xp, 'var(--primary)'], ['Level', 'Lv ' + s.level, 'var(--blue)'], ['Streak', s.streak + '🔥', 'var(--success)'], ['Score', s.confidenceScore + '%', 'var(--warning)']].map(([l, v, c]) => `
+        ${[['XP', s.xp, 'var(--primary)'], ['Level', 'Lv ' + s.level, 'var(--blue)'], ['Streak', s.streak + '🔥',
+                    'var(--success)'], ['Score', s.confidenceScore + '%', 'var(--warning)']].map(([l, v, c]) => `
         <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px;text-align:center;">
-          <div style="font-size:18px;font-weight:700;color:${c};">${v}</div>
-          <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${l}</div>
+            <div style="font-size:18px;font-weight:700;color:${c};">${v}</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${l}</div>
         </div>`).join('')}
     </div>
-    <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Skill Breakdown</div>
+    <div
+        style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">
+        Skill Breakdown</div>
     ${Object.entries(skills).map(([k, v]) => `
-      <div style="margin-bottom:12px;">
+    <div style="margin-bottom:12px;">
         <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
-          <span style="text-transform:capitalize;color:#fff;">${k}</span>
-          <span style="color:${skillColors[k] || '#888'};font-weight:700;">${v}%</span>
+            <span style="text-transform:capitalize;color:#fff;">${k}</span>
+            <span style="color:${skillColors[k] || '#888'};font-weight:700;">${v}%</span>
         </div>
-        <div class="skill-bar"><div class="skill-fill" style="width:${v}%;background:${skillColors[k] || '#888'};"></div></div>
-      </div>`).join('')}`;
+        <div class="skill-bar">
+            <div class="skill-fill" style="width:${v}%;background:${skillColors[k] || '#888'};"></div>
+        </div>
+    </div>`).join('')}`;
             document.getElementById('student-modal').classList.add('open');
         }
         function closeModal() {
             document.getElementById('student-modal').classList.remove('open');
         }
-        document.getElementById('student-modal').addEventListener('click', e => { if (e.target === document.getElementById('student-modal')) closeModal(); });
+        document.getElementById('student-modal').addEventListener('click', e => {
+            if (e.target ===
+                document.getElementById('student-modal')) closeModal();
+        });
 
         // ─── ANALYTICS ────────────────────────────────────────
         function renderAnalytics() {
             const s = getStudents();
             const skills = ['loops', 'functions', 'arrays', 'oop', 'recursion', 'algorithms'];
-            const colors = { 'loops': '#4a8ff7', 'functions': '#0ed97a', 'arrays': '#f0b429', 'oop': '#a855f7', 'recursion': '#f97316', 'algorithms': '#ff6b6b' };
+            const colors = {
+                'loops': '#4a8ff7', 'functions': '#0ed97a', 'arrays': '#f0b429', 'oop': '#a855f7', 'recursion':
+                    '#f97316', 'algorithms': '#ff6b6b'
+            };
 
             // Heatmap
             const skillLabels = skills.map(s => s[0].toUpperCase() + s.slice(1));
-            let hmHtml = `<div style="display:grid;grid-template-columns:140px ${skills.map(() => '60px').join(' ')};gap:4px;min-width:600px;">`;
-            hmHtml += `<div></div>${skillLabels.map(l => `<div style="text-align:center;font-size:10px;color:var(--text-muted);padding:4px;font-weight:700;">${l}</div>`).join('')}`;
+            let hmHtml = `<div
+        style="display:grid;grid-template-columns:140px ${skills.map(() => '60px').join(' ')};gap:4px;min-width:600px;">
+        `;
+            hmHtml += `<div></div>${skillLabels.map(l => `<div
+            style="text-align:center;font-size:10px;color:var(--text-muted);padding:4px;font-weight:700;">${l}</div>
+        `).join('')}`;
             s.forEach(stu => {
                 const skl = stu.skills || {};
-                hmHtml += `<div style="font-size:12px;padding:4px;display:flex;align-items:center;">${stu.name.split(' ')[0]}</div>`;
+                hmHtml += `<div style="font-size:12px;padding:4px;display:flex;align-items:center;">${stu.name.split(' ')[0]}
+        </div>`;
                 skills.forEach(k => {
                     const v = skl[k] || 0;
-                    const alpha = v < 30 ? 0.15 : v < 60 ? 0.4 : v < 80 ? 0.65 : 0.9;
-                    hmHtml += `<div class="hm-cell" style="background:rgba(74,143,247,${alpha});color:${alpha > 0.5 ? '#fff' : '#aaa'};">${v}<span class="hm-tip">${stu.name.split(' ')[0]}: ${k} = ${v}%</span></div>`;
+                    const alpha = v < 30 ? 0.15 : v < 60 ? 0.4 : v < 80 ? 0.65 : 0.9; hmHtml += `<div class="hm-cell"
+            style="background:rgba(74,143,247,${alpha});color:${alpha > 0.5 ? '#fff' : '#aaa'};">${v}<span
+                class="hm-tip">${stu.name.split(' ')[0]}: ${k} = ${v}%</span></div>`;
                 });
             });
             hmHtml += '</div>';
@@ -1200,11 +1311,13 @@
             const avgs = skills.map(k => ({ k, avg: Math.round(s.reduce((a, b) => a + (b.skills?.[k] || 0), 0) / s.length) }));
             document.getElementById('avg-skill-bars').innerHTML = avgs.map(({ k, avg }) => `
     <div style="margin-bottom:14px;">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
-        <span style="text-transform:capitalize;">${k}</span>
-        <span style="font-weight:700;color:${colors[k]};">${avg}%</span>
-      </div>
-      <div class="skill-bar"><div class="skill-fill" style="width:${avg}%;background:${colors[k]};"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+            <span style="text-transform:capitalize;">${k}</span>
+            <span style="font-weight:700;color:${colors[k]};">${avg}%</span>
+        </div>
+        <div class="skill-bar">
+            <div class="skill-fill" style="width:${avg}%;background:${colors[k]};"></div>
+        </div>
     </div>`).join('');
 
             // Insights
@@ -1214,21 +1327,28 @@
             const atRiskCount = s.filter(x => x.status === 'at-risk').length;
             document.getElementById('skill-insights').innerHTML = `
     <div style="display:flex;flex-direction:column;gap:12px;">
-      <div style="padding:14px;background:rgba(255,107,107,0.06);border:1px solid rgba(255,107,107,0.15);border-radius:12px;">
-        <div style="font-size:11px;font-weight:700;color:var(--error);margin-bottom:4px;">🔴 WEAKEST SKILL</div>
-        <div style="font-size:15px;font-weight:700;text-transform:capitalize;">${weakest.k}</div>
-        <div style="font-size:12px;color:var(--text-muted);">Class average: ${weakest.avg}% — needs focus</div>
-      </div>
-      <div style="padding:14px;background:rgba(14,217,122,0.06);border:1px solid rgba(14,217,122,0.15);border-radius:12px;">
-        <div style="font-size:11px;font-weight:700;color:var(--success);margin-bottom:4px;">🟢 STRONGEST SKILL</div>
-        <div style="font-size:15px;font-weight:700;text-transform:capitalize;">${strongest.k}</div>
-        <div style="font-size:12px;color:var(--text-muted);">Class average: ${strongest.avg}% — great performance</div>
-      </div>
-      <div style="padding:14px;background:rgba(240,180,41,0.06);border:1px solid rgba(240,180,41,0.15);border-radius:12px;">
-        <div style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:4px;">⚠️ INTERVENTION NEEDED</div>
-        <div style="font-size:15px;font-weight:700;">${atRiskCount} student${atRiskCount !== 1 ? 's' : ''} at risk</div>
-        <div style="font-size:12px;color:var(--text-muted);">Consider assigning targeted ${weakest.k} exercises</div>
-      </div>
+        <div
+            style="padding:14px;background:rgba(255,107,107,0.06);border:1px solid rgba(255,107,107,0.15);border-radius:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--error);margin-bottom:4px;">🔴 WEAKEST SKILL</div>
+            <div style="font-size:15px;font-weight:700;text-transform:capitalize;">${weakest.k}</div>
+            <div style="font-size:12px;color:var(--text-muted);">Class average: ${weakest.avg}% — needs focus</div>
+        </div>
+        <div
+            style="padding:14px;background:rgba(14,217,122,0.06);border:1px solid rgba(14,217,122,0.15);border-radius:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--success);margin-bottom:4px;">🟢 STRONGEST SKILL</div>
+            <div style="font-size:15px;font-weight:700;text-transform:capitalize;">${strongest.k}</div>
+            <div style="font-size:12px;color:var(--text-muted);">Class average: ${strongest.avg}% — great performance
+            </div>
+        </div>
+        <div
+            style="padding:14px;background:rgba(240,180,41,0.06);border:1px solid rgba(240,180,41,0.15);border-radius:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:4px;">⚠️ INTERVENTION NEEDED
+            </div>
+            <div style="font-size:15px;font-weight:700;">${atRiskCount} student${atRiskCount !== 1 ? 's' : ''} at risk
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);">Consider assigning targeted ${weakest.k} exercises
+            </div>
+        </div>
     </div>`;
         }
 
@@ -1237,19 +1357,22 @@
             const s = [...getStudents()].sort((a, b) => b.xp - a.xp);
             document.getElementById('lb-tbody').innerHTML = s.map((stu, i) => `
     <tr>
-      <td><span style="font-weight:800;color:${i < 3 ? 'var(--primary)' : 'inherit'};">#${i + 1}</span></td>
-      <td style="font-weight:600;">${stu.name}</td>
-      <td>${stu.branch}</td><td>${stu.year}</td>
-      <td style="font-weight:700;color:var(--primary);">${stu.xp}</td>
-      <td>Lv ${stu.level}</td>
-      <td>${stu.submissions}</td>
-      <td>${stu.streak}🔥</td>
+        <td><span style="font-weight:800;color:${i < 3 ? 'var(--primary)' : 'inherit'};">#${i + 1}</span></td>
+        <td style="font-weight:600;">${stu.name}</td>
+        <td>${stu.branch}</td>
+        <td>${stu.year}</td>
+        <td style="font-weight:700;color:var(--primary);">${stu.xp}</td>
+        <td>Lv ${stu.level}</td>
+        <td>${stu.submissions}</td>
+        <td>${stu.streak}🔥</td>
     </tr>`).join('');
         }
         function exportCSV() {
             const s = getStudents();
-            const headers = ['Roll No', 'Name', 'Branch', 'Year', 'XP', 'Level', 'Streak', 'Submissions', 'Confidence Score', 'Status'];
-            const rows = s.map(x => [x.rollNo, x.name, x.branch, x.year, x.xp, x.level, x.streak, x.submissions, x.confidenceScore, x.status].join(','));
+            const headers = ['Roll No', 'Name', 'Branch', 'Year', 'XP', 'Level', 'Streak', 'Submissions', 'Confidence Score',
+                'Status'];
+            const rows = s.map(x => [x.rollNo, x.name, x.branch, x.year, x.xp, x.level, x.streak, x.submissions,
+            x.confidenceScore, x.status].join(','));
             const csv = [headers.join(','), ...rows].join('\n');
             const a = document.createElement('a');
             a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
@@ -1262,21 +1385,27 @@
         function renderAssignments() {
             const list = getAssignments();
             if (!list.length) {
-                document.getElementById('assignments-list').innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px;text-align:center;background:rgba(255,255,255,0.02);border-radius:12px;">No assignments yet. Create one!</div>';
+                document.getElementById('assignments-list').innerHTML = `<div style="color:var(--text-muted);font-size:13px;padding:20px;text-align:center;background:rgba(255,255,255,0.02);border-radius:12px;">No assignments yet. Create one!</div>`;
                 return;
             }
             document.getElementById('assignments-list').innerHTML = list.map((a, i) => `
     <div class="glass-card" style="padding:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-        <div style="font-weight:700;font-size:14px;">${a.title}</div>
-        <button onclick="deleteAssignment(${i})" style="background:none;border:none;color:var(--error);cursor:pointer;font-size:16px;">🗑️</button>
-      </div>
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">${a.desc}</div>
-      <div style="display:flex;gap:8px;">
-        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(74,143,247,0.1);color:var(--blue);">${a.skill}</span>
-        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text-muted);">Due: ${a.due}</span>
-        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text-muted);">${a.target === 'all' ? 'All Students' : a.target + ' Branch'}</span>
-      </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <div style="font-weight:700;font-size:14px;">${a.title}</div>
+            <button onclick="deleteAssignment(${i})"
+                style="background:none;border:none;color:var(--error);cursor:pointer;font-size:16px;">🗑️</button>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">${a.desc}</div>
+        <div style="display:flex;gap:8px;">
+            <span
+                style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(74,143,247,0.1);color:var(--blue);">${a.skill}</span>
+            <span
+                style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text-muted);">Due:
+                ${a.due}</span>
+            <span
+                style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text-muted);">${a.target
+                    === 'all' ? 'All Students' : a.target + ' Branch'}</span>
+        </div>
     </div>`).join('');
         }
         function createAssignment() {
@@ -1306,10 +1435,12 @@
             const s = getStudents();
             document.getElementById('cred-tbody').innerHTML = s.map(x => `
     <tr>
-      <td style="font-family:monospace;font-size:12px;">${x.rollNo}</td>
-      <td style="font-weight:600;">${x.name}</td>
-      <td>${x.branch}</td><td>${x.year}</td>
-      <td style="font-family:monospace;font-size:12px;color:var(--text-muted);">${x.name.slice(0, 4).toLowerCase()}${x.rollNo.slice(-4)}</td>
+        <td style="font-family:monospace;font-size:12px;">${x.rollNo}</td>
+        <td style="font-weight:600;">${x.name}</td>
+        <td>${x.branch}</td>
+        <td>${x.year}</td>
+        <td style="font-family:monospace;font-size:12px;color:var(--text-muted);">${x.name.slice(0,
+                4).toLowerCase()}${x.rollNo.slice(-4)}</td>
     </tr>`).join('');
         }
         function addStudent() {
@@ -1374,7 +1505,10 @@
 
         // ─── SETTINGS ─────────────────────────────────────────
         function saveSettings() {
-            const updated = { ...inst, name: document.getElementById('set-name').value, adminName: document.getElementById('set-contact').value, email: document.getElementById('set-email').value };
+            const updated = {
+                ...inst, name: document.getElementById('set-name').value, adminName:
+                    document.getElementById('set-contact').value, email: document.getElementById('set-email').value
+            };
             localStorage.setItem('cc_institution', JSON.stringify(updated));
             localStorage.setItem('cc_institution_session', JSON.stringify(updated));
             document.getElementById('hdr-inst').textContent = '🏫 ' + updated.name;
@@ -1387,16 +1521,18 @@
             const cf = document.getElementById('pass-confirm').value;
             const stored = JSON.parse(localStorage.getItem('cc_institution') || '{}');
             if (stored.password !== cur) { showToast('❌ Current password is incorrect.'); return; }
-            if (nw.length < 6) { showToast('❌ Password must be at least 6 characters.'); return; }
-            if (nw !== cf) { showToast('❌ Passwords do not match.'); return; }
-            stored.password = nw;
-            localStorage.setItem('cc_institution', JSON.stringify(stored));
-            ['pass-current', 'pass-new', 'pass-confirm'].forEach(id => document.getElementById(id).value = '');
+            if (nw.length < 6) { showToast('❌ Password must be at least 6 characters.'); return; } if (nw !== cf) {
+                showToast('❌ Passwords do not match.'); return;
+            } stored.password = nw; localStorage.setItem('cc_institution',
+                JSON.stringify(stored));['pass-current', 'pass-new', 'pass-confirm'].forEach(id =>
+                    document.getElementById(id).value = '');
             showToast('✅ Password updated successfully!');
         }
         function resetData() {
             if (!confirm('Reset all demo data? This cannot be undone.')) return;
-            ['cc_institution_seeded', 'cc_institution', 'cc_institution_session', 'cc_institution_students_VIT-BLR-2024', 'cc_assignments_VIT-BLR-2024'].forEach(k => localStorage.removeItem(k));
+            ['cc_institution_seeded', 'cc_institution', 'cc_institution_session',
+                'cc_institution_students_VIT-BLR-2024', 'cc_assignments_VIT-BLR-2024'].forEach(k =>
+                    localStorage.removeItem(k));
             showToast('🔄 Data reset. Redirecting to login...');
             setTimeout(() => window.location.href = 'login.html', 1500);
         }
@@ -1413,7 +1549,8 @@
             t.className = 'toast';
             t.textContent = msg;
             document.body.appendChild(t);
-            setTimeout(() => { t.style.animation = 'slideOut 0.4s ease forwards'; setTimeout(() => t.remove(), 400); }, 2800);
+            setTimeout(() => { t.style.animation = 'slideOut 0.4s ease forwards'; setTimeout(() => t.remove(), 400); },
+                2800);
         }
         // ─── Theme Support ────────────────────────────────────────
         function initTheme() {
