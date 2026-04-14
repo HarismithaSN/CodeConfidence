@@ -1,0 +1,45 @@
+{
+  "harismithasn@gmail.com": {
+    "name": "Harismitha S N",
+    "email": "harismithasn@gmail.com",
+    "password": "Jayuhari@1",
+    "xp": 16,
+    "streak": 1,
+    "submissions": [
+      {
+        "score": 95,
+        "lang": "Python",
+        "time": "Today at 01:27 PM",
+        "code": "# Challenge: Reverse a String\n# Difficulty: Beginner\n\n# Writ..."
+      },
+      {
+        "score": 9,
+        "lang": "Python",
+        "time": "Today at 12:51 PM",
+        "code": "def solution():\n    print(\"Hello World\")\n\n# You MUST call th..."
+      },
+      {
+        "score": 5,
+        "lang": "Python",
+        "time": "Today at 12:15 PM",
+        "code": "print(\"helloe\")..."
+      },
+      {
+        "score": 4,
+        "lang": "Python",
+        "time": "Today at 11:59 AM",
+        "code": "print(\"he\")..."
+      }
+    ],
+    "scores": [
+      4,
+      5,
+      9,
+      95
+    ],
+    "lastLogin": "Sun Apr 05 2026",
+    "createdAt": "2026-03-20T05:05:23.113Z",
+    "college": "Self Taught",
+    "language": "English"
+  }
+}

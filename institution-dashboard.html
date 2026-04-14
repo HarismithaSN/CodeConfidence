@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>CodeConfidence — Institution Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #050510;
+            --surface: #12121e;
+            --surface-light: #1a1a2e;
+            --primary: #d4af37;
+            --blue: #4a8ff7;
+            --success: #0ed97a;
+            --warning: #f0b429;
+            --error: #ff6b6b;
+            --text-muted: #888;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #ffffff;
+        }
+
+        .light-theme {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-light: #f1f5f9;
+            --primary: #b8860b;
+            --blue: #2563eb;
+            --success: #059669;
+            --warning: #d97706;
+            --error: #dc2626;
+            --text-muted: #64748b;
+            --border: rgba(0, 0, 0, 0.08);
+            --text: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar,
+        .header,
+        .glass-card,
+        .kpi-card {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .light-theme .sb-name,
+        .light-theme .header-left h1 {
+            background: linear-gradient(to right, var(--text), var(--blue)) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+        }
+
+        .light-theme .sidebar,
+        .light-theme .header {
+            background: var(--surface) !important;
+            border-color: var(--border) !important;
+        }
+
+        .light-theme .sb-link:hover {
+            background: rgba(0, 0, 0, 0.03) !important;
+            color: var(--text) !important;
+        }
+
+        .light-theme .sb-link.active {
+            background: rgba(37, 99, 235, 0.1) !important;
+        }
+
+        .light-theme .glass-card,
+        .light-theme .kpi-card {
+            background: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        .sb-brand {
+            padding: 24px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sb-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #4a8ff7, #2563eb);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .sb-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .sb-sub {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .sb-nav {
+            flex: 1;
+            padding: 12px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+
+        .sb-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .sb-link:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+        }
+
+        .sb-link.active {
+            background: rgba(74, 143, 247, 0.12);
+            color: var(--blue);
+            font-weight: 700;
+        }
+
+        .sb-link i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sb-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .sb-admin {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sb-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .sb-admin-name {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .sb-admin-role {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .btn-logout {
+            width: 100%;
+            padding: 9px;
+            background: rgba(255, 107, 107, 0.08);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            color: var(--error);
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 107, 107, 0.15);
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 220px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 20px 32px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .header-left .breadcrumb {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .header-left h1 {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .inst-badge {
+            background: rgba(74, 143, 247, 0.1);
+            border: 1px solid rgba(74, 143, 247, 0.25);
+            color: var(--blue);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 32px;
+        }
+
+        /* PAGE */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CARDS */
+        .glass-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        /* GRIDS */
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        /* KPI CARD */
+        .kpi-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .kpi-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .kpi-val {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .kpi-delta {
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        /* BADGE */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .badge-active {
+            background: rgba(14, 217, 122, 0.12);
+            color: var(--success);
+        }
+
+        .badge-inactive {
+            background: rgba(240, 180, 41, 0.12);
+            color: var(--warning);
+        }
+
+        .badge-risk {
+            background: rgba(255, 107, 107, 0.12);
+            color: var(--error);
+        }
+
+        /* TABLE */
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tbl th {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tbl td {
+            padding: 12px 14px;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .tbl tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+        }
+
+        /* SKILL BAR */
+        .skill-bar {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .skill-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #12121e;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px;
+            width: 560px;
+            max-width: 95vw;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* BTN */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg, #4a8ff7, #2563eb);
+            color: #fff;
+        }
+
+        .btn-blue:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(74, 143, 247, 0.35);
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37, #f1c40f);
+            color: #000;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+        }
+
+        /* HEATMAP CELL */
+        .hm-cell {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            position: relative;
+            cursor: default;
+        }
+
+        .hm-cell:hover .hm-tip {
+            display: block;
+        }
+
+        .hm-tip {
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a30;
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        /* FORM */
+        .form-field {
+            margin-bottom: 16px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 13px;
+            outline: none;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .light-theme .form-input {
+            background: #ffffff !important;
+            color: var(--text) !important;
+            border-color: rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .form-input:focus {
+            border-color: var(--blue);
+        }
+
+        select.form-input option {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 9999;
+            padding: 14px 24px;
+            background: var(--surface);
+            border: 1px solid var(--blue);
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--blue);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            to {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+        }
+
+        /* SECTION TITLE */
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sb-brand">
+            <div class="sb-icon">🏫</div>
+            <div>
+                <div class="sb-name">CodeConfidence</div>
+                <div class="sb-sub">Institution Portal</div>
+            </div>
+        </div>
+        <nav class="sb-nav" id="sb-nav">
+            <button class="sb-link active" onclick="showPage('overview')" id="nav-overview"><i>📊</i> Overview</button>
+            <button class="sb-link" onclick="showPage('students')" id="nav-students"><i>🎓</i> Students</button>
+            <button class="sb-link" onclick="showPage('analytics')" id="nav-analytics"><i>📈</i> Analytics</button>
+            <button class="sb-link" onclick="showPage('leaderboard')" id="nav-leaderboard"><i>🏆</i>
+                Leaderboard</button>
+            <button class="sb-link" onclick="showPage('assignments')" id="nav-assignments"><i>📝</i>
+                Assignments</button>
+            <button class="sb-link" onclick="showPage('credentials')" id="nav-credentials"><i>🔑</i>
+                Credentials</button>
+            <button class="sb-link" onclick="showPage('settings')" id="nav-settings"><i>⚙️</i> Settings</button>
+        </nav>
+        <div class="sb-footer">
+            <div class="sb-admin">
+                <div class="sb-avatar" id="sb-avatar">R</div>
+                <div>
+                    <div class="sb-admin-name" id="sb-admin-name">Dr. Ramesh Kumar</div>
+                    <div class="sb-admin-role">Administrator</div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+        <header class="header">
+            <div class="header-left">
+                <div class="breadcrumb">Institution Admin / <span id="hdr-breadcrumb">Overview</span></div>
+                <h1 id="hdr-title">Dashboard Overview</h1>
+            </div>
+            <div class="header-right">
+                <button onclick="toggleTheme()"
+                    style="background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 12px;">
+                    <i>🌓</i> Theme
+                </button>
+                <div class="inst-badge" id="hdr-inst">🏫 VIT Bangalore</div>
+            </div>
+        </header>
+
+        <div class="content">
+
+            <!-- PAGE: OVERVIEW -->
+            <div class="page active" id="page-overview">
+                <div class="grid4" style="margin-bottom:24px;" id="kpi-grid"></div>
+                <div class="grid2" style="margin-bottom:24px;">
+                    <div class="glass-card">
+                        <div class="section-title">⭐ Top Performers</div>
+                        <div id="top-performers"></div>
+                    </div>
+                    <div class="glass-card">
+                        <div class="section-title">⚠️ At-Risk Students</div>
+                        <div id="at-risk-list"></div>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <div class="section-title">📅 7-Day Submission Activity</div>
+                    <div id="activity-bars"
+                        style="display:flex;gap:12px;align-items:flex-end;height:100px;margin-top:8px;"></div>
+                    <div style="display:flex;gap:12px;margin-top:8px;" id="activity-labels"></div>
+                </div>
+            </div>
+
+            <!-- PAGE: STUDENTS -->
+            <div class="page" id="page-students">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <input class="form-input" id="student-search" style="max-width:280px;"
+                        placeholder="🔍 Search by name or roll no..." oninput="filterStudents()">
+                    <div style="display:flex;gap:10px;">
+                        <select class="form-input" style="width:auto;" id="branch-filter" onchange="filterStudents()">
+                            <option value="">All Branches</option>
+                            <option>CSE</option>
+                            <option>ECE</option>
+                            <option>ME</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="glass-card" style="padding:0;overflow:hidden;">
+                    <table class="tbl" id="students-table">
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Branch</th>
+                                <th>Year</th>
+                                <th>XP</th>
+                                <th>Level</th>
+                                <th>Streak</th>
+                                <th>Last Active</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PAGE: ANALYTICS -->
+            <div class="page" id="page-analytics">
+                <div class="glass-card" style="margin-bottom:24px;">
+                    <div class="section-title">🧠 Class Skill Heatmap</div>
+                    <div style="overflow-x:auto;">
+                        <div id="heatmap-grid"></div>
+                    </div>
+                </div>
+                <div class="grid2">
+                    <div class="glass-card">
+                        <div class="section-title">📊 Class Average Skills</div>
+                        <div id="avg-skill-bars"></div>
+                    </div>
+                    <div class="glass-card">
+                        <div class="section-title">🎯 Skill Gap Insights</div>
+                        <div id="skill-insights"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: LEADERBOARD -->
+            <div class="page" id="page-leaderboard">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <div style="font-size:13px;color:var(--text-muted);">Ranked by total XP earned</div>
+                    <button class="btn btn-blue" onclick="exportCSV()">⬇️ Export CSV</button>
+                </div>
+                <div class="glass-card" style="padding:0;overflow:hidden;">
+                    <table class="tbl" id="lb-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Branch</th>
+                                <th>Year</th>
+                                <th>XP</th>
+                                <th>Level</th>
+                                <th>Submissions</th>
+                                <th>Streak</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lb-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PAGE: ASSIGNMENTS -->
+            <div class="page" id="page-assignments">
+                <div class="grid2" style="align-items:start;">
+                    <div class="glass-card">
+                        <div class="section-title">➕ Create Assignment</div>
+                        <div class="form-field"><label>Title</label><input class="form-input" id="asgn-title"
+                                placeholder="e.g. Array Sorting Challenge"></div>
+                        <div class="form-field"><label>Description</label><textarea class="form-input" id="asgn-desc"
+                                rows="3" style="resize:none;" placeholder="Describe the task..."></textarea></div>
+                        <div class="grid2" style="gap:12px;">
+                            <div class="form-field"><label>Due Date</label><input class="form-input" id="asgn-due"
+                                    type="date"></div>
+                            <div class="form-field"><label>Skill Tag</label>
+                                <select class="form-input" id="asgn-skill">
+                                    <option>Loops</option>
+                                    <option>Arrays</option>
+                                    <option>Recursion</option>
+                                    <option>OOP</option>
+                                    <option>Algorithms</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-field"><label>Assign To</label>
+                            <select class="form-input" id="asgn-target">
+                                <option value="all">All Students</option>
+                                <option value="CSE">CSE Branch</option>
+                                <option value="ECE">ECE Branch</option>
+                                <option value="ME">ME Branch</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-blue" style="width:100%;justify-content:center;"
+                            onclick="createAssignment()">Create Assignment</button>
+                    </div>
+                    <div>
+                        <div class="section-title">📋 Active Assignments</div>
+                        <div id="assignments-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: CREDENTIALS -->
+            <div class="page" id="page-credentials">
+                <div class="grid2" style="align-items:start;">
+                    <div>
+                        <div class="glass-card" style="margin-bottom:16px;">
+                            <div class="section-title">➕ Add Student</div>
+                            <div class="grid2" style="gap:12px;">
+                                <div class="form-field"><label>Roll Number</label><input class="form-input"
+                                        id="cred-roll" placeholder="20BCE5678"></div>
+                                <div class="form-field"><label>Full Name</label><input class="form-input" id="cred-name"
+                                        placeholder="Student Name"></div>
+                                <div class="form-field"><label>Branch</label>
+                                    <select class="form-input" id="cred-branch">
+                                        <option>CSE</option>
+                                        <option>ECE</option>
+                                        <option>ME</option>
+                                    </select>
+                                </div>
+                                <div class="form-field"><label>Year</label>
+                                    <select class="form-input" id="cred-year">
+                                        <option>1st</option>
+                                        <option>2nd</option>
+                                        <option>3rd</option>
+                                        <option>4th</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-blue" style="width:100%;justify-content:center;"
+                                onclick="addStudent()">Add Student</button>
+                        </div>
+                        <div class="glass-card"
+                            style="background:rgba(74,143,247,0.04);border-color:rgba(74,143,247,0.15);">
+                            <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;">📤 Bulk
+                                Upload Format</div>
+                            <div style="font-size:12px;color:var(--text-muted);line-height:1.7;">
+                                CSV columns: <code style="color:var(--blue);">rollNo, name, branch, year</code><br>
+                                Default password = first 4 chars of name (lowercase) + last 4 digits of roll no.<br>
+                                Example: <code style="color:#86efac;">haris1234</code>
+                            </div>
+                            <button class="btn btn-ghost" style="margin-top:12px;font-size:12px;"
+                                onclick="document.getElementById('bulk-csv-input').click()">📁 Upload CSV</button>
+                            <input type="file" id="bulk-csv-input" style="display:none;" accept=".csv"
+                                onchange="handleBulkUpload(event)">
+                        </div>
+                    </div>
+                    <div class="glass-card" style="padding:0;overflow:hidden;">
+                        <div
+                            style="padding:16px 20px;border-bottom:1px solid var(--border);font-weight:700;font-size:14px;">
+                            Student Credentials</div>
+                        <table class="tbl" id="cred-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Name</th>
+                                    <th>Branch</th>
+                                    <th>Yr</th>
+                                    <th>Default Password</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cred-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: SETTINGS -->
+            <div class="page" id="page-settings">
+                <div class="grid2" style="align-items:start;">
+                    <div class="glass-card">
+                        <div class="section-title">🏫 Institution Profile</div>
+                        <div class="form-field"><label>Institution Name</label><input class="form-input" id="set-name"
+                                placeholder="VIT Bangalore"></div>
+                        <div class="form-field"><label>Contact Person</label><input class="form-input" id="set-contact"
+                                placeholder="Dr. Ramesh Kumar"></div>
+                        <div class="form-field"><label>Official Email</label><input class="form-input" id="set-email"
+                                type="email" placeholder="admin@vit.ac.in"></div>
+                        <div class="form-field"><label>Phone</label><input class="form-input" id="set-phone"
+                                placeholder="+91 98765 43210"></div>
+                        <button class="btn btn-blue" style="width:100%;justify-content:center;"
+                            onclick="saveSettings()">Save Changes</button>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:16px;">
+                        <div class="glass-card">
+                            <div class="section-title">🔐 Change Admin Password</div>
+                            <div class="form-field"><label>Current Password</label><input class="form-input"
+                                    id="pass-current" type="password" placeholder="Current password"></div>
+                            <div class="form-field"><label>New Password</label><input class="form-input" id="pass-new"
+                                    type="password" placeholder="New password (min 6 chars)"></div>
+                            <div class="form-field"><label>Confirm New Password</label><input class="form-input"
+                                    id="pass-confirm" type="password" placeholder="Confirm new password"></div>
+                            <button class="btn btn-blue" style="width:100%;justify-content:center;"
+                                onclick="changePassword()">Update Password</button>
+                        </div>
+                        <div class="glass-card" style="border-color:rgba(255,107,107,0.2);">
+                            <div class="section-title" style="color:var(--error);">⚠️ Danger Zone</div>
+                            <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Reset all demo data
+                                back to defaults. This will clear all modifications made to student records.</p>
+                            <button class="btn btn-danger" onclick="resetData()">🔄 Reset Demo Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /content -->
+    </div><!-- /main -->
+
+    <!-- STUDENT DETAIL MODAL -->
+    <div class="modal-overlay" id="student-modal">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="student-modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // ─── AUTH GUARD ───────────────────────────────────────
+        const inst = JSON.parse(localStorage.getItem('cc_institution_session') || 'null');
+        if (!inst) { window.location.href = 'login.html'; }
+
+        // ─── DATA ─────────────────────────────────────────────
+        function getStudents() {
+            return JSON.parse(localStorage.getItem('cc_institution_students_' + inst.id) || '[]');
+        }
+        function saveStudents(arr) {
+            localStorage.setItem('cc_institution_students_' + inst.id, JSON.stringify(arr));
+        }
+        function getAssignments() {
+            return JSON.parse(localStorage.getItem('cc_assignments_' + inst.id) || '[]');
+        }
+        function saveAssignments(arr) {
+            localStorage.setItem('cc_assignments_' + inst.id, JSON.stringify(arr));
+        }
+
+        // ─── INIT ─────────────────────────────────────────────
+        window.onload = function () {
+            // Header branding
+            document.getElementById('sb-admin-name').textContent = inst.adminName || 'Admin';
+            document.getElementById('sb-avatar').textContent = (inst.adminName || 'A')[0].toUpperCase();
+            document.getElementById('hdr-inst').textContent = '🏫 ' + (inst.name || 'Institution');
+            // Settings prefill
+            document.getElementById('set-name').value = inst.name || '';
+            document.getElementById('set-contact').value = inst.adminName || '';
+            document.getElementById('set-email').value = inst.email || '';
+            showPage('overview');
+        };
+
+        // ─── NAVIGATION ───────────────────────────────────────
+        const PAGE_TITLES = {
+            overview: 'Dashboard Overview', students: 'Student Management',
+            analytics: 'Performance Analytics', leaderboard: 'Leaderboard',
+            assignments: 'Assignments', credentials: 'Credentials Management', settings: 'Settings'
+        };
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.sb-link').forEach(b => b.classList.remove('active'));
+            document.getElementById('page-' + id).classList.add('active');
+            document.getElementById('nav-' + id).classList.add('active');
+            document.getElementById('hdr-breadcrumb').textContent = PAGE_TITLES[id];
+            document.getElementById('hdr-title').textContent = PAGE_TITLES[id];
+            renderPage(id);
+        }
+        function renderPage(id) {
+            switch (id) {
+                case 'overview': renderOverview(); break;
+                case 'students': renderStudents(); break;
+                case 'analytics': renderAnalytics(); break;
+                case 'leaderboard': renderLeaderboard(); break;
+                case 'assignments': renderAssignments(); break;
+                case 'credentials': renderCredentials(); break;
+            }
+        }
+
+        // ─── OVERVIEW ─────────────────────────────────────────
+        function renderOverview() {
+            const s = getStudents();
+            const avg = v => Math.round(s.reduce((a, b) => a + b[v], 0) / s.length);
+            const atRisk = s.filter(x => x.status === 'at-risk');
+            const active = s.filter(x => x.status === 'active');
+
+            // KPIs
+            const kpis = [
+                { icon: '🎓', val: s.length, label: 'Total Students', delta: '↑ +2 this month', dColor: 'var(--success)' },
+                { icon: '💡', val: avg('confidenceScore') + '%', label: 'Avg Confidence Score', delta: '↑ +5% from last month', dColor: 'var(--success)' },
+                { icon: '🔥', val: avg('streak') + ' days', label: 'Avg Streak', delta: 'Active learners: ' + active.length, dColor: 'var(--blue)' },
+                { icon: '⚠️', val: atRisk.length, label: 'At-Risk Students', delta: 'Needs attention', dColor: 'var(--error)' }
+            ];
+            document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
+    <div class="kpi-card">
+      <div class="kpi-icon">${k.icon}</div>
+      <div class="kpi-val" style="color:var(--blue);">${k.val}</div>
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-delta" style="color:${k.dColor};">${k.delta}</div>
+    </div>`).join('');
+
+            // Top performers
+            const top = [...s].sort((a, b) => b.xp - a.xp).slice(0, 3);
+            document.getElementById('top-performers').innerHTML = top.map((s, i) => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.02);border-radius:10px;margin-bottom:8px;">
+      <div style="width:30px;height:30px;border-radius:8px;background:${['var(--primary)', 'rgba(200,200,200,0.3)', 'rgba(180,140,60,0.4)'][i]};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#000;">${i + 1}</div>
+      <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${s.name}</div><div style="font-size:11px;color:var(--text-muted);">${s.branch} • Level ${s.level}</div></div>
+      <div style="font-weight:700;color:var(--primary);font-size:13px;">${s.xp} XP</div>
+    </div>`).join('');
+
+            // At-risk
+            document.getElementById('at-risk-list').innerHTML = atRisk.length === 0
+                ? '<div style="color:var(--success);font-size:13px;padding:16px;text-align:center;">✅ No at-risk students!</div>'
+                : atRisk.map(s => `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,107,107,0.05);border:1px solid rgba(255,107,107,0.1);border-radius:10px;margin-bottom:8px;">
+        <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${s.name}</div><div style="font-size:11px;color:var(--text-muted);">${s.rollNo} • Last active: ${s.lastActive}</div></div>
+        <span class="badge badge-risk">At Risk</span>
+      </div>`).join('');
+
+            // Activity bar chart
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const vals = [12, 18, 9, 24, 16, 6, 21];
+            const mx = Math.max(...vals);
+            document.getElementById('activity-bars').innerHTML = vals.map((v, i) => `
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <div style="font-size:10px;color:var(--blue);font-weight:700;">${v}</div>
+      <div style="width:100%;background:rgba(74,143,247,0.15);border-radius:4px;height:${Math.round((v / mx) * 80) + 8}px;border-top:2px solid var(--blue);transition:height 0.6s;"></div>
+    </div>`).join('');
+            document.getElementById('activity-labels').innerHTML = days.map(d => `<div style="flex:1;text-align:center;font-size:10px;color:var(--text-muted);">${d}</div>`).join('');
+        }
+
+        // ─── STUDENTS ─────────────────────────────────────────
+        let allStudents = [];
+        function renderStudents() {
+            allStudents = getStudents();
+            renderStudentTable(allStudents);
+        }
+        function filterStudents() {
+            const q = document.getElementById('student-search').value.toLowerCase();
+            const branch = document.getElementById('branch-filter').value;
+            const filtered = allStudents.filter(s =>
+                (!q || s.name.toLowerCase().includes(q) || s.rollNo.toLowerCase().includes(q)) &&
+                (!branch || s.branch === branch)
+            );
+            renderStudentTable(filtered);
+        }
+        function renderStudentTable(arr) {
+            const statusMap = { active: 'badge-active', inactive: 'badge-inactive', 'at-risk': 'badge-risk' };
+            document.getElementById('students-tbody').innerHTML = arr.map(s => `
+    <tr onclick="openStudentModal('${s.rollNo}')">
+      <td style="font-family:monospace;font-size:12px;">${s.rollNo}</td>
+      <td style="font-weight:600;">${s.name}</td>
+      <td>${s.branch}</td><td>${s.year}</td>
+      <td style="font-weight:700;color:var(--primary);">${s.xp}</td>
+      <td>Lv ${s.level}</td>
+      <td>${s.streak}🔥</td>
+      <td style="font-size:11px;color:var(--text-muted);">${s.lastActive}</td>
+      <td><span class="badge ${statusMap[s.status] || 'badge-inactive'}">${s.status}</span></td>
+    </tr>`).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:32px;">No students found</td></tr>';
+        }
+        function openStudentModal(rollNo) {
+            const s = getStudents().find(x => x.rollNo === rollNo);
+            if (!s) return;
+            const skills = s.skills || {};
+            const skillColors = { loops: '#4a8ff7', functions: '#0ed97a', arrays: '#f0b429', oop: '#a855f7', recursion: '#f97316', algorithms: '#ff6b6b' };
+            document.getElementById('student-modal-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div style="width:60px;height:60px;border-radius:16px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#fff;">${s.name[0]}</div>
+      <div>
+        <div style="font-size:20px;font-weight:800;">${s.name}</div>
+        <div style="font-size:12px;color:var(--text-muted);">${s.rollNo} • ${s.branch} • ${s.year} Year</div>
+        <span class="badge ${s.status === 'active' ? 'badge-active' : s.status === 'at-risk' ? 'badge-risk' : 'badge-inactive'}" style="margin-top:4px;">${s.status}</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+      ${[['XP', s.xp, 'var(--primary)'], ['Level', 'Lv ' + s.level, 'var(--blue)'], ['Streak', s.streak + '🔥', 'var(--success)'], ['Score', s.confidenceScore + '%', 'var(--warning)']].map(([l, v, c]) => `
+        <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px;text-align:center;">
+          <div style="font-size:18px;font-weight:700;color:${c};">${v}</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${l}</div>
+        </div>`).join('')}
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Skill Breakdown</div>
+    ${Object.entries(skills).map(([k, v]) => `
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+          <span style="text-transform:capitalize;color:#fff;">${k}</span>
+          <span style="color:${skillColors[k] || '#888'};font-weight:700;">${v}%</span>
+        </div>
+        <div class="skill-bar"><div class="skill-fill" style="width:${v}%;background:${skillColors[k] || '#888'};"></div></div>
+      </div>`).join('')}`;
+            document.getElementById('student-modal').classList.add('open');
+        }
+        function closeModal() {
+            document.getElementById('student-modal').classList.remove('open');
+        }
+        document.getElementById('student-modal').addEventListener('click', e => { if (e.target === document.getElementById('student-modal')) closeModal(); });
+
+        // ─── ANALYTICS ────────────────────────────────────────
+        function renderAnalytics() {
+            const s = getStudents();
+            const skills = ['loops', 'functions', 'arrays', 'oop', 'recursion', 'algorithms'];
+            const colors = { 'loops': '#4a8ff7', 'functions': '#0ed97a', 'arrays': '#f0b429', 'oop': '#a855f7', 'recursion': '#f97316', 'algorithms': '#ff6b6b' };
+
+            // Heatmap
+            const skillLabels = skills.map(s => s[0].toUpperCase() + s.slice(1));
+            let hmHtml = `<div style="display:grid;grid-template-columns:140px ${skills.map(() => '60px').join(' ')};gap:4px;min-width:600px;">`;
+            hmHtml += `<div></div>${skillLabels.map(l => `<div style="text-align:center;font-size:10px;color:var(--text-muted);padding:4px;font-weight:700;">${l}</div>`).join('')}`;
+            s.forEach(stu => {
+                const skl = stu.skills || {};
+                hmHtml += `<div style="font-size:12px;padding:4px;display:flex;align-items:center;">${stu.name.split(' ')[0]}</div>`;
+                skills.forEach(k => {
+                    const v = skl[k] || 0;
+                    const alpha = v < 30 ? 0.15 : v < 60 ? 0.4 : v < 80 ? 0.65 : 0.9;
+                    hmHtml += `<div class="hm-cell" style="background:rgba(74,143,247,${alpha});color:${alpha > 0.5 ? '#fff' : '#aaa'};">${v}<span class="hm-tip">${stu.name.split(' ')[0]}: ${k} = ${v}%</span></div>`;
+                });
+            });
+            hmHtml += '</div>';
+            document.getElementById('heatmap-grid').innerHTML = hmHtml;
+
+            // Avg skill bars
+            const avgs = skills.map(k => ({ k, avg: Math.round(s.reduce((a, b) => a + (b.skills?.[k] || 0), 0) / s.length) }));
+            document.getElementById('avg-skill-bars').innerHTML = avgs.map(({ k, avg }) => `
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+        <span style="text-transform:capitalize;">${k}</span>
+        <span style="font-weight:700;color:${colors[k]};">${avg}%</span>
+      </div>
+      <div class="skill-bar"><div class="skill-fill" style="width:${avg}%;background:${colors[k]};"></div></div>
+    </div>`).join('');
+
+            // Insights
+            const sorted = [...avgs].sort((a, b) => a.avg - b.avg);
+            const weakest = sorted[0];
+            const strongest = sorted[sorted.length - 1];
+            const atRiskCount = s.filter(x => x.status === 'at-risk').length;
+            document.getElementById('skill-insights').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="padding:14px;background:rgba(255,107,107,0.06);border:1px solid rgba(255,107,107,0.15);border-radius:12px;">
+        <div style="font-size:11px;font-weight:700;color:var(--error);margin-bottom:4px;">🔴 WEAKEST SKILL</div>
+        <div style="font-size:15px;font-weight:700;text-transform:capitalize;">${weakest.k}</div>
+        <div style="font-size:12px;color:var(--text-muted);">Class average: ${weakest.avg}% — needs focus</div>
+      </div>
+      <div style="padding:14px;background:rgba(14,217,122,0.06);border:1px solid rgba(14,217,122,0.15);border-radius:12px;">
+        <div style="font-size:11px;font-weight:700;color:var(--success);margin-bottom:4px;">🟢 STRONGEST SKILL</div>
+        <div style="font-size:15px;font-weight:700;text-transform:capitalize;">${strongest.k}</div>
+        <div style="font-size:12px;color:var(--text-muted);">Class average: ${strongest.avg}% — great performance</div>
+      </div>
+      <div style="padding:14px;background:rgba(240,180,41,0.06);border:1px solid rgba(240,180,41,0.15);border-radius:12px;">
+        <div style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:4px;">⚠️ INTERVENTION NEEDED</div>
+        <div style="font-size:15px;font-weight:700;">${atRiskCount} student${atRiskCount !== 1 ? 's' : ''} at risk</div>
+        <div style="font-size:12px;color:var(--text-muted);">Consider assigning targeted ${weakest.k} exercises</div>
+      </div>
+    </div>`;
+        }
+
+        // ─── LEADERBOARD ──────────────────────────────────────
+        function renderLeaderboard() {
+            const s = [...getStudents()].sort((a, b) => b.xp - a.xp);
+            document.getElementById('lb-tbody').innerHTML = s.map((stu, i) => `
+    <tr>
+      <td><span style="font-weight:800;color:${i < 3 ? 'var(--primary)' : 'inherit'};">#${i + 1}</span></td>
+      <td style="font-weight:600;">${stu.name}</td>
+      <td>${stu.branch}</td><td>${stu.year}</td>
+      <td style="font-weight:700;color:var(--primary);">${stu.xp}</td>
+      <td>Lv ${stu.level}</td>
+      <td>${stu.submissions}</td>
+      <td>${stu.streak}🔥</td>
+    </tr>`).join('');
+        }
+        function exportCSV() {
+            const s = getStudents();
+            const headers = ['Roll No', 'Name', 'Branch', 'Year', 'XP', 'Level', 'Streak', 'Submissions', 'Confidence Score', 'Status'];
+            const rows = s.map(x => [x.rollNo, x.name, x.branch, x.year, x.xp, x.level, x.streak, x.submissions, x.confidenceScore, x.status].join(','));
+            const csv = [headers.join(','), ...rows].join('\n');
+            const a = document.createElement('a');
+            a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+            a.download = (inst.name || 'Institution').replace(/\s+/g, '_') + '_students.csv';
+            a.click();
+            showToast('✅ CSV exported successfully!');
+        }
+
+        // ─── ASSIGNMENTS ──────────────────────────────────────
+        function renderAssignments() {
+            const list = getAssignments();
+            if (!list.length) {
+                document.getElementById('assignments-list').innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:20px;text-align:center;background:rgba(255,255,255,0.02);border-radius:12px;">No assignments yet. Create one!</div>';
+                return;
+            }
+            document.getElementById('assignments-list').innerHTML = list.map((a, i) => `
+    <div class="glass-card" style="padding:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <div style="font-weight:700;font-size:14px;">${a.title}</div>
+        <button onclick="deleteAssignment(${i})" style="background:none;border:none;color:var(--error);cursor:pointer;font-size:16px;">🗑️</button>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">${a.desc}</div>
+      <div style="display:flex;gap:8px;">
+        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(74,143,247,0.1);color:var(--blue);">${a.skill}</span>
+        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text-muted);">Due: ${a.due}</span>
+        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text-muted);">${a.target === 'all' ? 'All Students' : a.target + ' Branch'}</span>
+      </div>
+    </div>`).join('');
+        }
+        function createAssignment() {
+            const title = document.getElementById('asgn-title').value.trim();
+            const desc = document.getElementById('asgn-desc').value.trim();
+            const due = document.getElementById('asgn-due').value;
+            const skill = document.getElementById('asgn-skill').value;
+            const target = document.getElementById('asgn-target').value;
+            if (!title || !due) { showToast('⚠️ Please fill title and due date.'); return; }
+            const list = getAssignments();
+            list.unshift({ title, desc, due, skill, target, createdAt: new Date().toISOString().split('T')[0] });
+            saveAssignments(list);
+            ['asgn-title', 'asgn-desc', 'asgn-due'].forEach(id => document.getElementById(id).value = '');
+            renderAssignments();
+            showToast('✅ Assignment created successfully!');
+        }
+        function deleteAssignment(i) {
+            const list = getAssignments();
+            list.splice(i, 1);
+            saveAssignments(list);
+            renderAssignments();
+            showToast('🗑️ Assignment deleted.');
+        }
+
+        // ─── CREDENTIALS ──────────────────────────────────────
+        function renderCredentials() {
+            const s = getStudents();
+            document.getElementById('cred-tbody').innerHTML = s.map(x => `
+    <tr>
+      <td style="font-family:monospace;font-size:12px;">${x.rollNo}</td>
+      <td style="font-weight:600;">${x.name}</td>
+      <td>${x.branch}</td><td>${x.year}</td>
+      <td style="font-family:monospace;font-size:12px;color:var(--text-muted);">${x.name.slice(0, 4).toLowerCase()}${x.rollNo.slice(-4)}</td>
+    </tr>`).join('');
+        }
+        function addStudent() {
+            const roll = document.getElementById('cred-roll').value.trim();
+            const name = document.getElementById('cred-name').value.trim();
+            const branch = document.getElementById('cred-branch').value;
+            const year = document.getElementById('cred-year').value;
+            if (!roll || !name) { showToast('⚠️ Roll No and Name are required.'); return; }
+            const students = getStudents();
+            if (students.find(s => s.rollNo === roll)) { showToast('⚠️ Roll number already exists!'); return; }
+            processNewStudent(roll, name, branch, year);
+            ['cred-roll', 'cred-name'].forEach(id => document.getElementById(id).value = '');
+            renderCredentials();
+            showToast('✅ Student ' + name + ' added!');
+        }
+
+        function processNewStudent(roll, name, branch, year) {
+            const students = getStudents();
+            const newStudent = {
+                rollNo: roll, name, email: name.toLowerCase().replace(/\s/g, '.') + '@vit.ac.in',
+                branch, year, password: name.slice(0, 4).toLowerCase() + roll.slice(-4),
+                xp: 0, level: 1, confidenceScore: 0, streak: 0,
+                lastActive: new Date().toISOString().split('T')[0],
+                status: 'active', submissions: 0,
+                skills: { loops: 0, functions: 0, arrays: 0, oop: 0, recursion: 0, algorithms: 0 }
+            };
+            students.push(newStudent);
+            saveStudents(students);
+        }
+
+        function handleBulkUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const text = e.target.result;
+                const rows = text.split('\n').filter(r => r.trim());
+                let count = 0;
+                // Skip header if it exists
+                const startIdx = rows[0].toLowerCase().includes('roll') ? 1 : 0;
+                for (let i = startIdx; i < rows.length; i++) {
+                    const cols = rows[i].split(',').map(c => c.trim());
+                    if (cols.length >= 2) {
+                        const roll = cols[0];
+                        const name = cols[1];
+                        const branch = cols[2] || 'CSE';
+                        const year = cols[3] || '1st';
+                        const students = getStudents();
+                        if (!students.find(s => s.rollNo === roll)) {
+                            processNewStudent(roll, name, branch, year);
+                            count++;
+                        }
+                    }
+                }
+                renderCredentials();
+                renderPage('overview'); // Refresh overview too
+                showToast(`✅ Successfully uploaded ${count} students!`);
+                event.target.value = ''; // Reset input
+            };
+            reader.readAsText(file);
+        }
+
+        // ─── SETTINGS ─────────────────────────────────────────
+        function saveSettings() {
+            const updated = { ...inst, name: document.getElementById('set-name').value, adminName: document.getElementById('set-contact').value, email: document.getElementById('set-email').value };
+            localStorage.setItem('cc_institution', JSON.stringify(updated));
+            localStorage.setItem('cc_institution_session', JSON.stringify(updated));
+            document.getElementById('hdr-inst').textContent = '🏫 ' + updated.name;
+            document.getElementById('sb-admin-name').textContent = updated.adminName;
+            showToast('✅ Institution profile saved!');
+        }
+        function changePassword() {
+            const cur = document.getElementById('pass-current').value;
+            const nw = document.getElementById('pass-new').value;
+            const cf = document.getElementById('pass-confirm').value;
+            const stored = JSON.parse(localStorage.getItem('cc_institution') || '{}');
+            if (stored.password !== cur) { showToast('❌ Current password is incorrect.'); return; }
+            if (nw.length < 6) { showToast('❌ Password must be at least 6 characters.'); return; }
+            if (nw !== cf) { showToast('❌ Passwords do not match.'); return; }
+            stored.password = nw;
+            localStorage.setItem('cc_institution', JSON.stringify(stored));
+            ['pass-current', 'pass-new', 'pass-confirm'].forEach(id => document.getElementById(id).value = '');
+            showToast('✅ Password updated successfully!');
+        }
+        function resetData() {
+            if (!confirm('Reset all demo data? This cannot be undone.')) return;
+            ['cc_institution_seeded', 'cc_institution', 'cc_institution_session', 'cc_institution_students_VIT-BLR-2024', 'cc_assignments_VIT-BLR-2024'].forEach(k => localStorage.removeItem(k));
+            showToast('🔄 Data reset. Redirecting to login...');
+            setTimeout(() => window.location.href = 'login.html', 1500);
+        }
+
+        // ─── LOGOUT ───────────────────────────────────────────
+        function logout() {
+            localStorage.removeItem('cc_institution_session');
+            window.location.href = 'login.html';
+        }
+
+        // ─── TOAST ────────────────────────────────────────────
+        function showToast(msg) {
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => { t.style.animation = 'slideOut 0.4s ease forwards'; setTimeout(() => t.remove(), 400); }, 2800);
+        }
+        // ─── Theme Support ────────────────────────────────────────
+        function initTheme() {
+            const savedTheme = localStorage.getItem('cc_theme') || 'dark';
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        }
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle('light-theme');
+            localStorage.setItem('cc_theme', isLight ? 'light' : 'dark');
+        }
+        initTheme();
+    </script>
+</body>
+
+</html>
