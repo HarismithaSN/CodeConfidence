@@ -1,4 +1,4 @@
-const GEMINI_API_KEY = window.__GEMINI_API_KEY__
+﻿const GEMINI_API_KEY = window.__GEMINI_API_KEY__
     || 'PASTE-YOUR-GEMINI-KEY-HERE';
 window.__GEMINI_MODEL__ = localStorage.getItem('cc_gemini_model') || 'gemini-2.0-flash';
 
@@ -98,17 +98,41 @@ function init() {
 }
 
 function initTheme() {
-    const savedTheme = localStorage.getItem('cc_theme') || 'dark';
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
+    const saved = localStorage.getItem('cc_theme') || 'dark'
+    applyTheme(saved)
+}
+
+function applyTheme(theme) {
+    const body = document.body
+    const btn = document.getElementById('theme-toggle-btn')
+
+    if (theme === 'light') {
+        body.classList.add('light-theme')
+        if (btn) btn.innerHTML = getMoonIcon()
+        if (btn) btn.title = 'Switch to dark mode'
+    } else {
+        body.classList.remove('light-theme')
+        if (btn) btn.innerHTML = getSunIcon()
+        if (btn) btn.title = 'Switch to light mode'
     }
+
+    localStorage.setItem('cc_theme', theme)
+    updateCareerThemeVariables()
 }
 
 function toggleTheme() {
-    const isLight = document.body.classList.toggle('light-theme');
-    localStorage.setItem('cc_theme', isLight ? 'light' : 'dark');
-    updateCareerThemeVariables();
-    showToast(`🌓 Switched to ${isLight ? 'Light' : 'Dark'} theme`);
+    const current = localStorage.getItem('cc_theme') || 'dark'
+    const next = current === 'dark' ? 'light' : 'dark'
+    applyTheme(next)
+    showToast(`ðŸŒ“ Switched to ${next === 'light' ? 'Light' : 'Dark'} theme`)
+}
+
+function getSunIcon() {
+    return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+}
+
+function getMoonIcon() {
+    return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`
 }
 
 let analysisTimeout;
@@ -128,13 +152,13 @@ function initRealTimeAnalysis() {
 
 function renderSidebar() {
     const navItems = [
-        { id: 'dashboard', icon: '🏠', label: 'Dashboard' },
-        { id: 'roadmap', icon: '🗺️', label: 'Roadmap' },
-        { id: 'challenges', icon: '🎯', label: 'Challenges' },
-        { id: 'submit', icon: '🚀', label: 'Submit Code' },
-        { id: 'community', icon: '👥', label: 'Community' },
-        { id: 'career', icon: '🎓', label: 'Career Prep' },
-        { id: 'profile', icon: '👤', label: 'My Profile' }
+        { id: 'dashboard', icon: 'ðŸ ', label: 'Dashboard' },
+        { id: 'roadmap', icon: 'ðŸ—ºï¸', label: 'Roadmap' },
+        { id: 'challenges', icon: 'ðŸŽ¯', label: 'Challenges' },
+        { id: 'submit', icon: 'ðŸš€', label: 'Submit Code' },
+        { id: 'community', icon: 'ðŸ‘¥', label: 'Community' },
+        { id: 'career', icon: 'ðŸŽ“', label: 'Career Prep' },
+        { id: 'profile', icon: 'ðŸ‘¤', label: 'My Profile' }
     ];
 
     const container = document.getElementById('nav-menu');
@@ -214,7 +238,7 @@ function renderDashboard() {
 }
 
 async function renderCareer() {
-    console.log("🚀 Rendering AI-Driven Career Prep...");
+    console.log("ðŸš€ Rendering AI-Driven Career Prep...");
     const container = document.getElementById('page-career');
     if (!container) return;
 
@@ -301,9 +325,9 @@ function initPlacementData() {
     }
 }
 
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PERSONALIZATION FORMULAS
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function calculateCareerMetrics() {
     const user = state.user || {};
@@ -390,7 +414,7 @@ function getPlacementDashboardFallback(m) {
         readiness_breakdown: { coding: m.readiness, aptitude: 45, database: 30, core_cs: 40, communication: 65, resume: 70 },
         todays_focus: { topic: 'SQL Joins', reason: 'High frequency in technical rounds', task: 'Solve 5 Join challenges', estimated_minutes: 30, xp_reward: 50 },
         weekly_targets: [{ target: 'Aptitude Practice', deadline: 'Friday', current: 2, goal: 5, metric: 'Sets' }],
-        placement_prediction: { likely_companies: ['TCS', 'Wipro'], stretch_companies: ['Capgemini', 'Accenture'], dream_companies: ['Amazon', 'Zoho'], salary_range: '₹3.5-5 LPA' },
+        placement_prediction: { likely_companies: ['TCS', 'Wipro'], stretch_companies: ['Capgemini', 'Accenture'], dream_companies: ['Amazon', 'Zoho'], salary_range: 'â‚¹3.5-5 LPA' },
         urgent_alerts: [{ type: 'warning', message: 'Improve your SQL score to unlock Accenture track!' }]
     };
 }
@@ -454,7 +478,7 @@ async function renderPlacementDashboard() {
                 <h3 style="font-size:20px; margin-bottom:12px;">${data.todays_focus.topic}</h3>
                 <p style="font-size:13px; color:var(--text-muted); line-height:1.7; margin-bottom:20px;">${data.todays_focus.reason}</p>
                 <div style="background:rgba(255,255,255,0.03); padding:16px; border-radius:16px; margin-bottom:22px; font-size:13px;">
-                    🎯 <strong>Action:</strong> ${data.todays_focus.task}
+                    ðŸŽ¯ <strong>Action:</strong> ${data.todays_focus.task}
                 </div>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="navigateFromDashboard('${data.todays_focus.topic}')">Launch Focus Plan</button>
             </div>
@@ -543,9 +567,9 @@ function navigateFromDashboard(topic) {
     else switchCareerTab('mock');
 }
 
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // AI INTERVIEW SYSTEM
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function showCompanyPrepModal(company) {
     const modal = document.createElement('div');
@@ -561,7 +585,7 @@ async function showCompanyPrepModal(company) {
              max-width: 600px; width: 90%; border: 1px solid rgba(255,255,255,0.1);
              box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
             <div style="text-align: center; margin-bottom: 32px;">
-                <h2 style="font-size: 28px; margin-bottom: 8px;">🎯 ${company} Preparation</h2>
+                <h2 style="font-size: 28px; margin-bottom: 8px;">ðŸŽ¯ ${company} Preparation</h2>
                 <p style="color: var(--text-muted); font-size: 14px;">
                     Choose your preparation focus for ${company}
                 </p>
@@ -572,7 +596,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(240,180,41,0.1), rgba(240,180,41,0.05));
                     border: 1px solid rgba(240,180,41,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">🧮</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ§®</div>
                     <h3 style="margin-bottom: 8px; color: var(--primary);">Aptitude Test</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         Quant, Logical, Verbal - Company specific patterns
@@ -583,7 +607,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(99,102,241,0.05));
                     border: 1px solid rgba(99,102,241,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ’¬</div>
                     <h3 style="margin-bottom: 8px; color: var(--secondary);">Communication</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         Verbal ability, GD prep, Presentation skills
@@ -594,7 +618,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.05));
                     border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">💻</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ’»</div>
                     <h3 style="margin-bottom: 8px; color: #22c55e;">Coding Round</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         DSA problems, ${company} coding patterns
@@ -605,7 +629,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(168,85,247,0.05));
                     border: 1px solid rgba(168,85,247,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">🧠</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ§ </div>
                     <h3 style="margin-bottom: 8px; color: #a855f7;">Behavioral</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         HR questions, Situational judgment
@@ -616,7 +640,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05));
                     border: 1px solid rgba(239,68,68,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">🔧</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ”§</div>
                     <h3 style="margin-bottom: 8px; color: #ef4444;">Technical</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         Domain knowledge, System design
@@ -627,7 +651,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(236,72,153,0.1), rgba(236,72,153,0.05));
                     border: 1px solid rgba(236,72,153,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">🎭</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸŽ­</div>
                     <h3 style="margin-bottom: 8px; color: #ec4899;">Full Mock Test</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         Complete ${company} placement simulation
@@ -667,7 +691,7 @@ async function showCompanyPrepModal(company) {
 }
 
 async function launchCompanyPrep(company, type) {
-    console.log(`🚀 Launching ${type} prep for ${company}`);
+    console.log(`ðŸš€ Launching ${type} prep for ${company}`);
 
     switch (type) {
         case 'aptitude':
@@ -699,36 +723,98 @@ async function launchCompanyPrep(company, type) {
     }
 }
 
-async function launchCompanyAptitude(company) {
-    if (!checkAIConfig()) return;
-
+function launchCommunicationPrep(company) {
     const container = document.getElementById('career-tab-content');
     container.innerHTML = `
-        <div style="text-align:center; padding:100px;">
+        <div style="text-align:center; padding:60px;">
             <div class="spinner"></div>
-            <p style="margin-top:24px; color:var(--text-muted); font-size:14px; animation: pulse 2s infinite;">
-                AI is generating ${company}-specific aptitude questions...
-            </p>
+            <p style="margin-top:24px; color:var(--text-muted); font-size:14px;">Loading ${company} communication prep...</p>
         </div>
     `;
 
-    try {
-        // Generate company-specific aptitude questions
-        const systemPrompt = `You are an aptitude test expert. Generate 10 company-specific aptitude questions based on ${company}'s placement patterns. Include quantitative, logical reasoning, and verbal ability questions. Reference real ${company} test patterns from sources like Google aptitude.com. Return as JSON: {questions: [{id, type, question, options: [4 options], correctAnswer, explanation}]}`;
+    setTimeout(() => {
+        try {
+            const vocab = getCompanyCommunication(company, 5);
+            const gd = getGDTopic();
+            renderCommunicationPrep(vocab, gd, company);
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">Failed to load communication prep.</div>`;
+        }
+    }, 300);
+}
 
-        const userPrompt = `Generate aptitude questions for ${company} placement test. Focus on their typical difficulty level and question types. Include time-based problems, pattern recognition, data interpretation, and verbal reasoning.`;
+function renderCommunicationPrep(vocab, gd, company) {
+    const container = document.getElementById('career-tab-content');
+    container.innerHTML = `
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h2 style="font-size: 28px;">ðŸ—£ï¸ ${company} Communication Prep</h2>
+                <p style="color: var(--text-muted);">Master Verbal Ability & Group Discussions required by ${company}</p>
+            </div>
 
-        const response = await callGemini(systemPrompt, userPrompt);
-        const data = JSON.parse(response.replace(/```json|```/g, '').trim());
+            <div class="glass-card" style="padding: 32px; margin-bottom: 24px;">
+                <h3 style="font-size: 20px; margin-bottom: 16px;">ðŸ“š Essential Vocabulary</h3>
+                ${vocab.map(v => `
+                    <div style="padding: 16px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 12px; display:flex; justify-content:space-between;">
+                        <div>
+                            <div style="font-weight: 700; color:var(--primary); font-size:16px;">${v.word} <span style="font-size:12px; font-weight:400; color:var(--text-muted); italic; margin-left:8px;">${v.type}</span></div>
+                            <div style="font-size:13px; margin-top:8px;">${v.meaning}</div>
+                        </div>
+                        <div style="text-align:right; font-size:12px; color:var(--text-muted);">
+                            <div>Synonym: <span style="color:#0ed97a;">${v.synonym}</span></div>
+                            <div>Antonym: <span style="color:#f25c54;">${v.antonym}</span></div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
 
-        // Start the aptitude quiz
-        renderCompanyAptitudeQuiz(data.questions, company);
+            <div class="glass-card" style="padding: 32px;">
+                <h3 style="font-size: 20px; margin-bottom: 16px;">ðŸŽ­ Group Discussion Highlight</h3>
+                <div style="padding: 16px; background: rgba(74,143,247,0.1); border-left: 3px solid #4a8ff7; border-radius:8px;">
+                    <strong style="color:var(--text); font-size:15px;">Topic:</strong> ${gd.topic}
+                    <div style="margin-top:12px; font-size:13px;">
+                        <strong style="color:#0ed97a;">Point For:</strong> ${gd.key_points_for[0]}
+                    </div>
+                    <div style="margin-top:8px; font-size:13px;">
+                        <strong style="color:#f25c54;">Point Against:</strong> ${gd.key_points_against[0]}
+                    </div>
+                    <div style="margin-top:16px; font-size:12px; color:var(--gold);">
+                        <strong>Conclusion Tip:</strong> ${gd.conclusion}
+                    </div>
+                </div>
+            </div>
 
-    } catch (e) {
-        console.error('Aptitude generation failed:', e);
-        // Fallback to general aptitude
-        renderFallbackAptitude();
-    }
+            <div style="text-align: center; margin-top: 32px;">
+                <button class="btn-gold" onclick="renderCompanyTracks()">Back to Companies</button>
+            </div>
+        </div>
+    `;
+}
+
+function launchCompanyAptitude(company) {
+    const container = document.getElementById('career-tab-content');
+    container.innerHTML = `
+        <div style="text-align:center; padding:60px;">
+            <div class="spinner"></div>
+            <p style="margin-top:24px; color:var(--text-muted); font-size:14px;">Loading ${company} aptitude questions...</p>
+        </div>
+    `;
+
+    setTimeout(() => {
+        try {
+            const questions = getCompanyAptitude(company, 10);
+            if (!questions || questions.length === 0) {
+                container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">No questions found for ${company}.</div>`;
+                return;
+            }
+            showToast(`âœ… ${questions.length} ${company} aptitude questions loaded!`);
+            renderCompanyAptitudeQuiz(questions, company);
+        } catch (e) {
+            console.error(e);
+            renderFallbackAptitude();
+        }
+    }, 300);
 }
 
 function renderCompanyAptitudeQuiz(questions, company) {
@@ -826,7 +912,7 @@ function renderCompanyAptitudeQuiz(questions, company) {
             <div style="max-width: 600px; margin: 0 auto; text-align: center;">
                 <div class="glass-card" style="padding: 40px; margin-bottom: 24px;">
                     <div style="font-size: 48px; margin-bottom: 16px;">
-                        ${percentage >= 70 ? '🎉' : percentage >= 50 ? '👍' : '💪'}
+                        ${percentage >= 70 ? 'ðŸŽ‰' : percentage >= 50 ? 'ðŸ‘' : 'ðŸ’ª'}
                     </div>
                     <h2 style="font-size: 32px; margin-bottom: 8px;">${company} Aptitude Results</h2>
                     <div style="font-size: 24px; color: var(--primary); margin-bottom: 16px;">
@@ -846,201 +932,25 @@ function renderCompanyAptitudeQuiz(questions, company) {
     }
 }
 
-async function launchCommunicationPrep(company) {
-    if (!checkAIConfig()) return;
-
-    const container = document.getElementById('career-tab-content');
-    container.innerHTML = `
-        <div style="text-align:center; padding:100px;">
-            <div class="spinner"></div>
-            <p style="margin-top:24px; color:var(--text-muted); font-size:14px; animation: pulse 2s infinite;">
-                Preparing ${company} communication scenarios...
-            </p>
-        </div>
-    `;
-
-    try {
-        const systemPrompt = `Generate communication preparation content for ${company} placement. Include GD topics, verbal ability questions, and presentation tips. Return as JSON: {gdTopics: [5 topics], verbalQuestions: [5 questions with answers], tips: [5 tips]}`;
-
-        const userPrompt = `Create communication prep content for ${company}. Focus on their interview style and common GD topics.`;
-
-        const response = await callGemini(systemPrompt, userPrompt);
-        const data = JSON.parse(response.replace(/```json|```/g, '').trim());
-
-        renderCommunicationPrep(data, company);
-
-    } catch (e) {
-        console.error('Communication prep failed:', e);
-        renderCommunicationPrep({
-            gdTopics: ['Technology Impact', 'Remote Work', 'AI Ethics', 'Climate Change', 'Digital Education'],
-            verbalQuestions: [
-                { question: 'What is the synonym of "ubiquitous"?', answer: 'Omnipresent' },
-                { question: 'Correct the sentence: "He go to school"', answer: 'He goes to school' }
-            ],
-            tips: ['Speak clearly', 'Maintain eye contact', 'Use positive body language']
-        }, company);
-    }
-}
-
-function renderCommunicationPrep(data, company) {
-    const container = document.getElementById('career-tab-content');
-
-    container.innerHTML = `
-        <div style="max-width: 1000px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 32px;">
-                <h2 style="font-size: 28px;">💬 ${company} Communication Prep</h2>
-                <p style="color: var(--text-muted);">Master verbal ability and group discussion skills</p>
-            </div>
-
-            <div class="grid-cols-2" style="gap: 24px;">
-                <div class="glass-card" style="padding: 24px;">
-                    <h3 style="font-size: 20px; margin-bottom: 16px;">🎭 GD Topics</h3>
-                    <div style="space-y: 12px;">
-                        ${data.gdTopics.map(topic => `
-                            <div style="padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 8px;">
-                                ${topic}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <div class="glass-card" style="padding: 24px;">
-                    <h3 style="font-size: 20px; margin-bottom: 16px;">📝 Verbal Questions</h3>
-                    <div style="space-y: 12px;">
-                        ${data.verbalQuestions.map(q => `
-                            <div style="padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 8px;">
-                                <div style="font-weight: 500; margin-bottom: 4px;">${q.question}</div>
-                                <div style="font-size: 12px; color: var(--primary);">Answer: ${q.answer}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card" style="padding: 24px; margin-top: 24px;">
-                <h3 style="font-size: 20px; margin-bottom: 16px;">💡 Communication Tips</h3>
-                <div class="grid-cols-2" style="gap: 16px;">
-                    ${data.tips.map(tip => `
-                        <div style="padding: 16px; background: rgba(99,102,241,0.1); border-radius: 12px; border-left: 4px solid var(--secondary);">
-                            ${tip}
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 32px;">
-                <button class="btn-gold" onclick="renderCompanyTracks()">Back to Companies</button>
-            </div>
-        </div>
-    `;
-}
-
-async function launchCodingPrep(company) {
-    // Redirect to challenges page with company filter
-    showPage('challenges');
-    // Could add company-specific filtering here
-}
-
-async function launchBehavioralPrep(company) {
-    if (!checkAIConfig()) return;
-
-    const container = document.getElementById('career-tab-content');
-    container.innerHTML = `
-        <div style="text-align:center; padding:100px;">
-            <div class="spinner"></div>
-            <p style="margin-top:24px; color:var(--text-muted); font-size:14px; animation: pulse 2s infinite;">
-                Generating ${company} behavioral questions...
-            </p>
-        </div>
-    `;
-
-    try {
-        const systemPrompt = `Generate behavioral interview questions for ${company}. Include leadership, teamwork, problem-solving scenarios. Return as JSON: {questions: [5 questions], tips: [3 tips]}`;
-
-        const userPrompt = `Create behavioral prep for ${company} interviews. Focus on their values and common scenarios.`;
-
-        const response = await callGemini(systemPrompt, userPrompt);
-        const data = JSON.parse(response.replace(/```json|```/g, '').trim());
-
-        renderBehavioralPrep(data, company);
-
-    } catch (e) {
-        console.error('Behavioral prep failed:', e);
-        renderBehavioralPrep({
-            questions: [
-                'Tell me about a time you faced a challenge and how you overcame it.',
-                'Describe a situation where you worked in a team.',
-                'How do you handle pressure and deadlines?'
-            ],
-            tips: ['Use STAR method', 'Be specific', 'Show self-awareness']
-        }, company);
-    }
-}
-
-function renderBehavioralPrep(data, company) {
-    const container = document.getElementById('career-tab-content');
-
-    container.innerHTML = `
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 32px;">
-                <h2 style="font-size: 28px;">🧠 ${company} Behavioral Interview</h2>
-                <p style="color: var(--text-muted);">Practice HR round questions</p>
-            </div>
-
-            <div class="glass-card" style="padding: 32px; margin-bottom: 24px;">
-                <h3 style="font-size: 20px; margin-bottom: 16px;">Common Questions</h3>
-                ${data.questions.map((q, index) => `
-                    <div style="padding: 16px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 12px;">
-                        <div style="font-weight: 500; margin-bottom: 8px;">${index + 1}. ${q}</div>
-                        <button class="btn-gold" style="font-size: 12px; padding: 6px 12px;" onclick="practiceAnswer(${index})">
-                            Practice Answer
-                        </button>
-                    </div>
-                `).join('')}
-            </div>
-
-            <div class="glass-card" style="padding: 24px;">
-                <h3 style="font-size: 20px; margin-bottom: 16px;">💡 Interview Tips</h3>
-                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-                    ${data.tips.map(tip => `
-                        <div style="padding: 12px 16px; background: rgba(168,85,247,0.1); border-radius: 8px; border: 1px solid rgba(168,85,247,0.3);">
-                            ${tip}
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-
-            <div style="text-align: center; margin-top: 32px;">
-                <button class="btn-gold" onclick="renderCompanyTracks()">Back to Companies</button>
-            </div>
-        </div>
-    `;
-}
-
-async function launchFullMockTest(company) {
-    // Launch a comprehensive mock test combining all types
-    const container = document.getElementById('career-tab-content');
-
-    container.innerHTML = `
         <div style="max-width: 600px; margin: 0 auto; text-align: center;">
             <div class="glass-card" style="padding: 40px;">
-                <h2 style="font-size: 28px; margin-bottom: 16px;">🎭 ${company} Full Mock Test</h2>
+                <h2 style="font-size: 28px; margin-bottom: 16px;">ðŸŽ­ ${company} Full Mock Test</h2>
                 <p style="color: var(--text-muted); margin-bottom: 32px;">
                     Complete placement simulation including aptitude, coding, and interview rounds
                 </p>
 
                 <div style="display: flex; flex-direction: column; gap: 16px;">
                     <button class="btn-gold" onclick="launchCompanyAptitude('${company}')">
-                        🧮 Start with Aptitude Test
+                        ðŸ§® Start with Aptitude Test
                     </button>
                     <button class="btn-gold" onclick="launchCodingPrep('${company}')">
-                        💻 Coding Round
+                        ðŸ’» Coding Round
                     </button>
-                    <button class="btn-gold" onclick="launchTechnicalInterview('${company}')">
-                        🔧 Technical Interview
+                    <button class="btn-gold" onclick="launchMockInterview('technical')">
+                        ðŸ”§ Technical Interview
                     </button>
-                    <button class="btn-gold" onclick="launchBehavioralPrep('${company}')">
-                        🧠 HR Interview
+                    <button class="btn-gold" onclick="launchMockInterview('behavioral')">
+                        ðŸ§  HR Interview
                     </button>
                 </div>
 
@@ -1053,7 +963,7 @@ async function launchFullMockTest(company) {
 }
 
 async function startInterview(company) {
-    console.log(`🎤 Starting Interview for ${company}`);
+    console.log(`ðŸŽ¤ Starting Interview for ${company}`);
 
     // Show preparation type selection modal first
     showCompanyPrepModal(company);
@@ -1072,27 +982,38 @@ async function submitInterviewAnswer() {
     const ans = document.getElementById('int-ans-input').value.trim();
     if (!ans) return showToast("Please type an answer first");
 
-    document.getElementById('int-waiting-msg').innerHTML = `<div class="skeleton" style="width:40px; height:40px; border-radius:10px; margin-bottom:10px;"></div> Evaluating your response...`;
+    document.getElementById('int-waiting-msg').innerHTML = `<div class="spinner" style="border: 2px solid rgba(255, 255, 255, 0.1); border-left-color: var(--primary); width: 30px; height: 30px; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div> Evaluating your response...`;
     document.getElementById('int-waiting-msg').style.display = 'flex';
     document.getElementById('int-result-area').style.display = 'none';
 
-    try {
-        const systemPrompt = "Evaluate the student's interview answer. Provide a score (0-10), feedback, and a better version. Respond in JSON with {score, feedback, better_version}.";
-        const userPrompt = `Question: ${interviewState.questions[interviewState.currentIndex]}\nAnswer: ${ans}`;
-        const evalData = await callGemini(systemPrompt, userPrompt);
+    setTimeout(() => {
+        try {
+            // Local algorithmic feedback
+            const words = ans.split(' ').length;
+            let score = 5;
+            let feedback = "Good start, but your answer lacks depth.";
 
-        if (!evalData) {
-            // Fallback evaluation
-            displayInterviewFeedback({ score: 7, feedback: "Good effort! You covered the basics, but could be more specific.", better_version: "A better answer would include more details about implementation." });
-            return;
+            if (words > 50) {
+                score = 8;
+                feedback = "Great detail! You structured your answer well.";
+            } else if (words > 20) {
+                score = 7;
+                feedback = "Good effort! You covered the basics, but could be more specific.";
+            }
+
+            const evalData = {
+                score: score,
+                feedback: feedback,
+                better_version: "To improve, make sure to explicitly outline your actions and focus on quantifiable outcomes instead of generalized descriptions."
+            };
+
+            displayInterviewFeedback(evalData);
+            interviewState.answers.push({ q: interviewState.questions[interviewState.currentIndex], a: ans, eval: evalData });
+
+        } catch (e) {
+            displayInterviewFeedback({ score: 7, feedback: "Good effort!", better_version: "A better answer would include details." });
         }
-
-        displayInterviewFeedback(evalData);
-        interviewState.answers.push({ q: interviewState.questions[interviewState.currentIndex], a: ans, eval: evalData });
-
-    } catch (e) {
-        displayInterviewFeedback({ score: 7, feedback: "Good effort! You covered the basics, but could be more specific about time complexity.", better_version: "A better answer would include..." });
-    }
+    }, 800);
 }
 
 function displayInterviewFeedback(data) {
@@ -1113,7 +1034,7 @@ function displayInterviewFeedback(data) {
             <p style="font-size:12px; font-style:italic; color:#aaa;">${data.better_version}</p>
         </div>
         <button class="btn-gold" style="width:100%; justify-content:center;" onclick="nextInterviewStep()">
-            ${interviewState.currentIndex === interviewState.questions.length - 1 ? 'Finish Interview' : 'Next Question →'}
+            ${interviewState.currentIndex === interviewState.questions.length - 1 ? 'Finish Interview' : 'Next Question â†’'}
         </button>
     `;
 }
@@ -1132,6 +1053,12 @@ function closeInterview() {
         clearInterval(interviewState.timerInterval);
         document.getElementById('interview-modal').style.display = 'none';
         interviewState.active = false;
+
+        // Stop the webcam stream
+        if (webcamStream) {
+            webcamStream.getTracks().forEach(track => track.stop());
+            webcamStream = null;
+        }
     }
 }
 
@@ -1139,7 +1066,7 @@ async function finishInterview() {
     clearInterval(interviewState.timerInterval);
     document.getElementById('int-eval-area').innerHTML = `
         <div style="text-align:center; padding:40px;">
-            <div style="font-size:60px; margin-bottom:20px;">🏆</div>
+            <div style="font-size:60px; margin-bottom:20px;">ðŸ†</div>
             <h2>Interview Complete!</h2>
             <p style="color:var(--text-muted); margin:12px 0 24px;">Generating your final performance report...</p>
             <div class="skeleton" style="height:100px; border-radius:12px;"></div>
@@ -1154,9 +1081,9 @@ async function finishInterview() {
     }, 2000);
 }
 
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // RESUME ANALYSIS
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function analyzeResume() {
     const modal = document.getElementById('resume-modal');
@@ -1187,7 +1114,7 @@ async function analyzeResume() {
     } catch (e) {
         content.innerHTML = `
             <div style="padding:40px; text-align:center;">
-                <div style="font-size:40px; margin-bottom:20px;">⚠️</div>
+                <div style="font-size:40px; margin-bottom:20px;">âš ï¸</div>
                 <h3 style="color:var(--error);">Analysis Failed</h3>
                 <p style="font-size:14px; color:var(--text-muted); margin:12px 0 24px;">${e.message || "Could not connect to Gemini AI. Please check your API key."}</p>
                 <button class="btn-gold" onclick="analyzeResume()">Retry</button>
@@ -1207,7 +1134,7 @@ function renderProfile() {
     if (document.getElementById('profile-skills-input')) document.getElementById('profile-skills-input').value = user.skillsList || 'Python, Java, DSA';
     if (document.getElementById('profile-gemini-key')) document.getElementById('profile-gemini-key').value = localStorage.getItem('cc_gemini_key') || '';
     if (document.getElementById('preview-name')) document.getElementById('preview-name').innerText = user.name || 'Harismitha';
-    if (document.getElementById('preview-tagline')) document.getElementById('preview-tagline').innerText = `${user.branch || 'MCA'} • ${user.college || 'Dayananda Sagar College'}`;
+    if (document.getElementById('preview-tagline')) document.getElementById('preview-tagline').innerText = `${user.branch || 'MCA'} â€¢ ${user.college || 'Dayananda Sagar College'}`;
 
     // Render skill tags
     const tagsEl = document.getElementById('preview-skills-tags');
@@ -1219,12 +1146,12 @@ function renderProfile() {
     const badgesContainer = document.getElementById('profile-badges');
     if (badgesContainer) {
         const badges = [
-            { icon: '🔥', label: '12 Day Streak', color: '#fb923c' },
-            { icon: '⚡', label: 'First Submit', color: '#f0b429' },
-            { icon: '🎯', label: '5 Challenges', color: '#0ed97a' },
-            { icon: '👥', label: 'Community', color: '#60a5fa' },
-            { icon: '📚', label: 'Roadmap Start', color: '#a78bfa' },
-            { icon: '💻', label: 'Code Master', color: '#f472b6' }
+            { icon: 'ðŸ”¥', label: '12 Day Streak', color: '#fb923c' },
+            { icon: 'âš¡', label: 'First Submit', color: '#f0b429' },
+            { icon: 'ðŸŽ¯', label: '5 Challenges', color: '#0ed97a' },
+            { icon: 'ðŸ‘¥', label: 'Community', color: '#60a5fa' },
+            { icon: 'ðŸ“š', label: 'Roadmap Start', color: '#a78bfa' },
+            { icon: 'ðŸ’»', label: 'Code Master', color: '#f472b6' }
         ];
         badgesContainer.innerHTML = badges.map(b => `
             <div style="padding:16px; text-align:center; background:rgba(255,255,255,0.03); border-radius:16px; border:1px solid rgba(255,255,255,0.06);">
@@ -1257,7 +1184,7 @@ function saveProfile() {
     }
     renderProfile();
     updateCommunityBanner();
-    showToast("✅ Profile updated successfully!");
+    showToast("âœ… Profile updated successfully!");
 }
 
 function renderHeatmap() {
@@ -1279,9 +1206,9 @@ function handleResumeUpload(event) {
     const file = event.target.files[0];
     if (file) {
         const status = document.getElementById('resume-status');
-        status.innerText = `✓ ${file.name} uploaded successfully`;
+        status.innerText = `âœ“ ${file.name} uploaded successfully`;
         status.style.display = 'block';
-        showToast(`📄 Resume "${file.name}" ready!`);
+        showToast(`ðŸ“„ Resume "${file.name}" ready!`);
 
         // In a real app, you'd upload this to a server
         state.user.resumeName = file.name;
@@ -1304,7 +1231,7 @@ function renderRoadmap() {
             ${l.status === 'locked' ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>' : ''}
             <div style="font-size:40px; background:var(--surface-light); width:80px; height:80px; border-radius:20px; display:flex; align-items:center; justify-content:center; position:relative; z-index:2;">
                 ${l.icon}
-                ${l.status === 'completed' ? '<div style="position:absolute; bottom:-5px; right:-5px; background:var(--success); width:24px; height:24px; border-radius:50%; font-size:12px; display:flex; align-items:center; justify-content:center;">✓</div>' : ''}
+                ${l.status === 'completed' ? '<div style="position:absolute; bottom:-5px; right:-5px; background:var(--success); width:24px; height:24px; border-radius:50%; font-size:12px; display:flex; align-items:center; justify-content:center;">âœ“</div>' : ''}
             </div>
             <div style="flex:1; position:relative; z-index:2;">
                 <div style="font-size:11px; color:var(--primary); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Level 0${l.level}</div>
@@ -1314,7 +1241,7 @@ function renderRoadmap() {
                 </div>
             </div>
             <div style="position:relative; z-index:2;">
-                ${l.status === 'current' ? '<button class="btn-gold">Resume</button>' : l.status === 'locked' ? '🔒' : ''}
+                ${l.status === 'current' ? '<button class="btn-gold">Resume</button>' : l.status === 'locked' ? 'ðŸ”’' : ''}
             </div>
         </div>
     `).join('');
@@ -1336,8 +1263,8 @@ function renderChallenges(filter = 'All') {
             <div style="font-size:18px; font-weight:700; margin-bottom:8px;">${c.title}</div>
             <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">${c.desc}</p>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-weight:700; color:var(--primary);">⚡ ${c.xp} XP</span>
-                <button class="btn-gold" style="padding:8px 16px; font-size:12px;" onclick="showChallenge(${JSON.stringify(c).replace(/"/g, '&quot;')})">Solve →</button>
+                <span style="font-weight:700; color:var(--primary);">âš¡ ${c.xp} XP</span>
+                <button class="btn-gold" style="padding:8px 16px; font-size:12px;" onclick="showChallenge(${JSON.stringify(c).replace(/"/g, '&quot;')})">Solve â†’</button>
             </div>
         </div>
     `).join('') || '<div style="grid-column: span 3; color: var(--text-muted); text-align: center; padding: 40px;">No challenges found for this difficulty.</div>';
@@ -1387,7 +1314,7 @@ function showChallenge(challenge) {
         el.style.background = (diffColors[challenge.diff] || '#f0b429') + '18';
     }
     if (document.getElementById('ctx-lang-badge')) document.getElementById('ctx-lang-badge').textContent = challenge.lang;
-    document.getElementById('submit-lab-title').textContent = '🎯 ' + challenge.title;
+    document.getElementById('submit-lab-title').textContent = 'ðŸŽ¯ ' + challenge.title;
 
     // Set language picker to match challenge
     const langPicker = document.getElementById('lang-picker');
@@ -1406,7 +1333,7 @@ function showChallenge(challenge) {
     const discSection = document.getElementById('discussion-section');
     if (discSection) discSection.style.display = 'none';
 
-    showToast(`🎯 Loaded: ${challenge.title}`);
+    showToast(`ðŸŽ¯ Loaded: ${challenge.title}`);
 }
 
 function updateEditorLanguage() {
@@ -1425,12 +1352,12 @@ function updateEditorLanguage() {
         ta.value = `# ${title}\n# Language: ${lang}\n\n` + ta.value;
     }
 
-    showToast(`🌐 Switched to ${lang}`);
+    showToast(`ðŸŒ Switched to ${lang}`);
 }
 
-// ══════════════════════════════════════════════
-// COMMUNITY PAGE — DSC College-Based Competition
-// ══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// COMMUNITY PAGE â€” DSC College-Based Competition
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const DSC_USER = {
     name: 'Harismitha', usn: '1DS24MC034', college: 'Dayananda Sagar College',
@@ -1445,35 +1372,35 @@ const TARGET_SKILLS = { Loops: 68, Functions: 62, Arrays: 75, OOP: 55, Recursion
 
 const DSC_LB = {
     alltime: [
-        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 1840, score: 91, level: 'Journeyman', trend: '↑' },
-        { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 1620, score: 87, level: 'Journeyman', trend: '↑' },
-        { rank: 3, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 1340, score: 83, level: 'Apprentice', trend: '→' },
-        { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 1180, score: 80, level: 'Apprentice', trend: '↑' },
-        { rank: 5, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 1050, score: 77, level: 'Apprentice', trend: '↓' },
-        { rank: 6, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 980, score: 74, level: 'Apprentice', trend: '→' },
-        { rank: 7, name: 'Amit P', usn: '1DS24MC031', branch: 'MCA', xp: 890, score: 71, level: 'Apprentice', trend: '↑' },
-        { rank: 8, name: 'Meena J', usn: '1DS24MC035', branch: 'MCA', xp: 820, score: 69, level: 'Apprentice', trend: '↑' },
-        { rank: 9, name: 'Arun V', usn: '1DS24MC038', branch: 'MCA', xp: 760, score: 68, level: 'Apprentice', trend: '↓' },
-        { rank: 10, name: 'Lakshmi C', usn: '1DS24MC041', branch: 'MCA', xp: 710, score: 67, level: 'Apprentice', trend: '↑' },
-        { rank: 11, name: 'Preethi A', usn: '1DS24MC042', branch: 'MCA', xp: 680, score: 65, level: 'Apprentice', trend: '→' },
-        { rank: 12, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 620, score: 72, level: 'Apprentice', trend: '↑', isYou: true },
-        { rank: 13, name: 'Suresh T', usn: '1DS24MC045', branch: 'MCA', xp: 580, score: 63, level: 'Explorer', trend: '↓' },
-        { rank: 14, name: 'Asha D', usn: '1DS24MC047', branch: 'MCA', xp: 540, score: 60, level: 'Explorer', trend: '→' },
-        { rank: 15, name: 'Rahul G', usn: '1DS24MC048', branch: 'MCA', xp: 490, score: 58, level: 'Explorer', trend: '↑' }
+        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 1840, score: 91, level: 'Journeyman', trend: 'â†‘' },
+        { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 1620, score: 87, level: 'Journeyman', trend: 'â†‘' },
+        { rank: 3, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 1340, score: 83, level: 'Apprentice', trend: 'â†’' },
+        { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 1180, score: 80, level: 'Apprentice', trend: 'â†‘' },
+        { rank: 5, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 1050, score: 77, level: 'Apprentice', trend: 'â†“' },
+        { rank: 6, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 980, score: 74, level: 'Apprentice', trend: 'â†’' },
+        { rank: 7, name: 'Amit P', usn: '1DS24MC031', branch: 'MCA', xp: 890, score: 71, level: 'Apprentice', trend: 'â†‘' },
+        { rank: 8, name: 'Meena J', usn: '1DS24MC035', branch: 'MCA', xp: 820, score: 69, level: 'Apprentice', trend: 'â†‘' },
+        { rank: 9, name: 'Arun V', usn: '1DS24MC038', branch: 'MCA', xp: 760, score: 68, level: 'Apprentice', trend: 'â†“' },
+        { rank: 10, name: 'Lakshmi C', usn: '1DS24MC041', branch: 'MCA', xp: 710, score: 67, level: 'Apprentice', trend: 'â†‘' },
+        { rank: 11, name: 'Preethi A', usn: '1DS24MC042', branch: 'MCA', xp: 680, score: 65, level: 'Apprentice', trend: 'â†’' },
+        { rank: 12, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 620, score: 72, level: 'Apprentice', trend: 'â†‘', isYou: true },
+        { rank: 13, name: 'Suresh T', usn: '1DS24MC045', branch: 'MCA', xp: 580, score: 63, level: 'Explorer', trend: 'â†“' },
+        { rank: 14, name: 'Asha D', usn: '1DS24MC047', branch: 'MCA', xp: 540, score: 60, level: 'Explorer', trend: 'â†’' },
+        { rank: 15, name: 'Rahul G', usn: '1DS24MC048', branch: 'MCA', xp: 490, score: 58, level: 'Explorer', trend: 'â†‘' }
     ],
     week: [
-        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 320, score: 91, level: 'Journeyman', trend: '↑', label: '+320 XP' },
-        { rank: 2, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 280, score: 80, level: 'Apprentice', trend: '↑', label: '+280 XP' },
-        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 210, score: 72, level: 'Apprentice', trend: '↑', label: '+210 XP', isYou: true },
-        { rank: 4, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 190, score: 77, level: 'Apprentice', trend: '↑', label: '+190 XP' },
-        { rank: 5, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 160, score: 74, level: 'Apprentice', trend: '→', label: '+160 XP' }
+        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 320, score: 91, level: 'Journeyman', trend: 'â†‘', label: '+320 XP' },
+        { rank: 2, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 280, score: 80, level: 'Apprentice', trend: 'â†‘', label: '+280 XP' },
+        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 210, score: 72, level: 'Apprentice', trend: 'â†‘', label: '+210 XP', isYou: true },
+        { rank: 4, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 190, score: 77, level: 'Apprentice', trend: 'â†‘', label: '+190 XP' },
+        { rank: 5, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 160, score: 74, level: 'Apprentice', trend: 'â†’', label: '+160 XP' }
     ],
     month: [
-        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 780, score: 91, level: 'Journeyman', trend: '↑', label: '+780 XP' },
-        { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 640, score: 87, level: 'Journeyman', trend: '↑', label: '+640 XP' },
-        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 410, score: 72, level: 'Apprentice', trend: '↑', label: '+410 XP', isYou: true },
-        { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 360, score: 80, level: 'Apprentice', trend: '↑', label: '+360 XP' },
-        { rank: 5, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 290, score: 83, level: 'Apprentice', trend: '→', label: '+290 XP' }
+        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 780, score: 91, level: 'Journeyman', trend: 'â†‘', label: '+780 XP' },
+        { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 640, score: 87, level: 'Journeyman', trend: 'â†‘', label: '+640 XP' },
+        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 410, score: 72, level: 'Apprentice', trend: 'â†‘', label: '+410 XP', isYou: true },
+        { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 360, score: 80, level: 'Apprentice', trend: 'â†‘', label: '+360 XP' },
+        { rank: 5, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 290, score: 83, level: 'Apprentice', trend: 'â†’', label: '+290 XP' }
     ],
     branch: [] // filled from alltime (MCA)
 };
@@ -1499,9 +1426,9 @@ const DSC_REVIEW_ITEMS = [
 ];
 
 const DSC_STUDY_GROUPS = [
-    { id: 'dsg1', name: 'Python Beginners', members: 14, status: 'Active', emoji: '🐍', joined: false },
-    { id: 'dsg2', name: 'DSA Prep 2026', members: 11, status: 'Active', emoji: '🧠', joined: false },
-    { id: 'dsg3', name: 'MCA Placement', members: 18, status: 'Active', emoji: '🎓', joined: false }
+    { id: 'dsg1', name: 'Python Beginners', members: 14, status: 'Active', emoji: 'ðŸ', joined: false },
+    { id: 'dsg2', name: 'DSA Prep 2026', members: 11, status: 'Active', emoji: 'ðŸ§ ', joined: false },
+    { id: 'dsg3', name: 'MCA Placement', members: 18, status: 'Active', emoji: 'ðŸŽ“', joined: false }
 ];
 
 let activeReviewItem = null;
@@ -1529,16 +1456,16 @@ function updateCommunityBanner() {
     const collegeName = document.getElementById('community-college-name');
     const collegeSubtitle = document.getElementById('community-college-subtitle');
     if (collegeName) collegeName.textContent = state.user.college || 'Dayananda Sagar College';
-    if (collegeSubtitle) collegeSubtitle.textContent = `${state.user.branch || 'MCA'} Department • Batch ${state.user.year || '2026'}`;
+    if (collegeSubtitle) collegeSubtitle.textContent = `${state.user.branch || 'MCA'} Department â€¢ Batch ${state.user.year || '2026'}`;
 }
 
-// ── XP HELPERS ────────────────────────────────────────
+// â”€â”€ XP HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function addCommunityXP(amount, reason) {
     const prevXP = currentXP;
     currentXP += amount;
     localStorage.setItem('cc_xp_total', currentXP);
     updateXPDisplays();
-    showToast(`⚡ +${amount} XP earned! ${reason}`);
+    showToast(`âš¡ +${amount} XP earned! ${reason}`);
     // Rank-up check
     if (prevXP < TARGET_XP && currentXP >= TARGET_XP) {
         setTimeout(showRankUpModal, 800);
@@ -1553,7 +1480,7 @@ function updateXPDisplays() {
     if (riXP) riXP.textContent = currentXP;
     if (riGap) {
         const gap = Math.max(0, TARGET_XP - currentXP);
-        riGap.textContent = gap === 0 ? '0 XP ✓' : gap + ' XP';
+        riGap.textContent = gap === 0 ? '0 XP âœ“' : gap + ' XP';
     }
     if (riProgress) {
         const pct = Math.min(100, Math.round((currentXP / TARGET_XP) * 100));
@@ -1571,7 +1498,7 @@ function updateXPDisplays() {
     }
 }
 
-// ── LEADERBOARD ───────────────────────────────────────
+// â”€â”€ LEADERBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function switchDSCLeaderboard(tab) {
     currentLbTab = tab;
     document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('lb-tab-active'));
@@ -1601,7 +1528,7 @@ function switchDSCLeaderboard(tab) {
                 <span style="font-weight:700; color:${row.isYou ? 'var(--primary)' : 'inherit'}; font-family:monospace;">${isXPGain ? (row.label || '+' + row.xp + ' XP') : row.xp + ' XP'}</span>
                 <span style="color:var(--text-muted); font-size:12px;">${row.score}</span>
                 <span style="font-size:11px; color:var(--text-muted);">${row.level}</span>
-                <span style="font-size:18px; color:${row.trend === '↑' ? '#0ed97a' : row.trend === '↓' ? '#ff6b6b' : '#666'};">${row.trend}</span>
+                <span style="font-size:18px; color:${row.trend === 'â†‘' ? '#0ed97a' : row.trend === 'â†“' ? '#ff6b6b' : '#666'};">${row.trend}</span>
             </div>`).join('')}`;
 }
 
@@ -1613,11 +1540,11 @@ function showDSCProfilePopup(event, user) {
     popup.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <div style="font-weight:800;font-size:15px;">${user.name}</div>
-            <button onclick="document.getElementById('profile-popup').style.display='none'" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
+            <button onclick="document.getElementById('profile-popup').style.display='none'" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">âœ•</button>
         </div>
         <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;font-family:monospace;">${user.usn}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
-            ${[['XP', user.xp, 'var(--primary)'], ['Rank', '#' + user.rank, '#4a8ff7'], ['Streak', '12🔥', '#0ed97a']].map(([l, v, c]) =>
+            ${[['XP', user.xp, 'var(--primary)'], ['Rank', '#' + user.rank, '#4a8ff7'], ['Streak', '12ðŸ”¥', '#0ed97a']].map(([l, v, c]) =>
         `<div style="background:rgba(255,255,255,0.04);padding:8px;border-radius:8px;text-align:center;"><div style="font-size:14px;font-weight:800;color:${c};">${v}</div><div style="font-size:9px;color:var(--text-muted);margin-top:2px;">${l}</div></div>`
     ).join('')}
         </div>
@@ -1635,7 +1562,7 @@ function showDSCProfilePopup(event, user) {
     setTimeout(() => { document.addEventListener('click', () => { popup.style.display = 'none'; }, { once: true }); }, 60);
 }
 
-// ── RANK INTELLIGENCE ─────────────────────────────────
+// â”€â”€ RANK INTELLIGENCE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderGapBars() {
     const mySkills = DSC_USER.skills;
     const theirSkills = TARGET_SKILLS;
@@ -1661,16 +1588,16 @@ function renderGapBars() {
     }).join('');
 }
 
-// ── AI RANK PLAN ──────────────────────────────────────
+// â”€â”€ AI RANK PLAN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function getAIRankPlan() {
     const btn = document.getElementById('ai-plan-btn');
     if (!btn) return;
 
-    btn.innerHTML = '⏳ Generating your plan...';
+    btn.innerHTML = 'â³ Generating your plan...';
     btn.disabled = true;
     const section = document.getElementById('rank-plan-section');
     section.style.display = 'block';
-    section.innerHTML = `<div class="glass-card" style="padding:32px;text-align:center;"><div style="font-size:28px;animation:fadeUp 0.5s;">⚡</div><p style="color:var(--text-muted);margin-top:8px;">AI is crafting your personal rank boost plan...</p></div>`;
+    section.innerHTML = `<div class="glass-card" style="padding:32px;text-align:center;"><div style="font-size:28px;animation:fadeUp 0.5s;">âš¡</div><p style="color:var(--text-muted);margin-top:8px;">AI is crafting your personal rank boost plan...</p></div>`;
 
     try {
         const payload = {
@@ -1698,10 +1625,10 @@ async function getAIRankPlan() {
             days_to_target: '5-7 days if consistent',
             daily_plan: [
                 { day: 'Day 1', focus: 'Arrays', task: 'Complete Two Sum + Binary Search challenges', xp_goal: '+80 XP', why: 'Arrays is your biggest gap.' },
-                { day: 'Day 2', focus: 'Recursion', task: 'Solve Factorial + Fibonacci with recursion', xp_goal: '+70 XP', why: 'Recursion is far below target — high leverage.' },
-                { day: 'Day 3', focus: 'OOP', task: 'Submit a Class-based solution in Python', xp_goal: '+60 XP', why: 'OOP gap is closing — one good submission helps.' },
+                { day: 'Day 2', focus: 'Recursion', task: 'Solve Factorial + Fibonacci with recursion', xp_goal: '+70 XP', why: 'Recursion is far below target â€” high leverage.' },
+                { day: 'Day 3', focus: 'OOP', task: 'Submit a Class-based solution in Python', xp_goal: '+60 XP', why: 'OOP gap is closing â€” one good submission helps.' },
                 { day: 'Day 4', focus: 'Arrays', task: 'Try 2 Medium Array problems from Challenges', xp_goal: '+80 XP', why: 'Consistency compounds growth.' },
-                { day: 'Day 5', focus: 'Algorithms', task: 'Start Binary Search — submit 1 problem', xp_goal: '+50 XP', why: 'Algorithms needs most improvement.' },
+                { day: 'Day 5', focus: 'Algorithms', task: 'Start Binary Search â€” submit 1 problem', xp_goal: '+50 XP', why: 'Algorithms needs most improvement.' },
                 { day: 'Day 6', focus: 'Peer Reviews', task: 'Do 3 peer code reviews (+40 XP each)', xp_goal: '+120 XP', why: 'Guaranteed XP gain!' },
                 { day: 'Day 7', focus: 'Full Sprint', task: 'Submit 2 problems + 1 peer review', xp_goal: '+100 XP', why: 'Final push to cross the rank gap!' }
             ],
@@ -1709,7 +1636,7 @@ async function getAIRankPlan() {
             motivational_message: `You are very close to crossing the next rank! Keep going!`
         });
     } finally {
-        btn.innerHTML = '⚡ Regenerate Plan';
+        btn.innerHTML = 'âš¡ Regenerate Plan';
         btn.disabled = false;
     }
 }
@@ -1720,8 +1647,8 @@ function renderRankPlan(plan) {
     section.innerHTML = `
         <div class="glass-card" style="padding:28px;border-color:rgba(240,180,41,0.3);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-                <h3 style="color:var(--primary);font-size:18px;">⚡ Your 7-Day Rank Boost Plan</h3>
-                <div style="font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:6px 12px;border-radius:8px;">#12 → #11 in ${plan.days_to_target}</div>
+                <h3 style="color:var(--primary);font-size:18px;">âš¡ Your 7-Day Rank Boost Plan</h3>
+                <div style="font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:6px 12px;border-radius:8px;">#12 â†’ #11 in ${plan.days_to_target}</div>
             </div>
             <div style="overflow-x:auto;padding-bottom:12px;">
                 <div style="display:flex;gap:12px;min-width:max-content;">
@@ -1735,7 +1662,7 @@ function renderRankPlan(plan) {
                 </div>
             </div>
             <div style="margin-top:24px;">
-                <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;">⚡ Quick Wins — Do These Right Now</div>
+                <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;">âš¡ Quick Wins â€” Do These Right Now</div>
                 <div style="display:flex;flex-direction:column;gap:8px;">
                     ${plan.quick_wins.map((w, i) => `
                         <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
@@ -1745,10 +1672,10 @@ function renderRankPlan(plan) {
                 </div>
             </div>
             <div style="margin-top:24px;padding:16px;background:rgba(240,180,41,0.06);border-radius:12px;border:1px solid rgba(240,180,41,0.15);">
-                <div style="font-size:12px;color:var(--primary);font-weight:700;margin-bottom:6px;">💬 Message from your AI Mentor</div>
+                <div style="font-size:12px;color:var(--primary);font-weight:700;margin-bottom:6px;">ðŸ’¬ Message from your AI Mentor</div>
                 <div style="font-size:13px;line-height:1.6;font-style:italic;">${plan.motivational_message}</div>
             </div>
-            <button class="btn-gold" style="margin-top:20px;background:#26d9c7;color:#000;" onclick="showPage('challenges')">🚀 Start Day 1 — Go to Challenges</button>
+            <button class="btn-gold" style="margin-top:20px;background:#26d9c7;color:#000;" onclick="showPage('challenges')">ðŸš€ Start Day 1 â€” Go to Challenges</button>
         </div>`;
 }
 
@@ -1761,14 +1688,14 @@ function handleQuickWin(cb, i) {
     if (cb.checked) addCommunityXP(10, 'Quick win completed!');
 }
 
-// ── PEER REVIEW QUEUE ─────────────────────────────────
+// â”€â”€ PEER REVIEW QUEUE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderReviewQueue() {
     const container = document.getElementById('review-queue');
     const badge = document.getElementById('review-count-badge');
     if (!container) return;
     if (badge) badge.textContent = reviewItems.length + ' waiting';
     if (!reviewItems.length) {
-        container.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);">No pending reviews 🎉 Check back later!</div>`;
+        container.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);">No pending reviews ðŸŽ‰ Check back later!</div>`;
         return;
     }
     const diffColors = { Beginner: '#0ed97a', Intermediate: '#f0b429', Hard: '#ff6b6b' };
@@ -1785,7 +1712,7 @@ function renderReviewQueue() {
             </div>
             <div style="text-align:right;flex-shrink:0;">
                 <div style="color:var(--primary);font-weight:700;font-size:14px;margin-bottom:8px;">+${item.xp} XP</div>
-                <button class="btn-gold" style="padding:8px 16px;font-size:12px;" onclick="openReviewModal('${item.id}')">Review Now →</button>
+                <button class="btn-gold" style="padding:8px 16px;font-size:12px;" onclick="openReviewModal('${item.id}')">Review Now â†’</button>
             </div>
         </div>`).join('');
 }
@@ -1800,7 +1727,7 @@ function openReviewModal(itemId) {
         <div style="padding:28px 32px;border-bottom:1px solid rgba(255,255,255,0.07);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
                 <h3 style="font-size:18px;">Review this code anonymously</h3>
-                <button onclick="closeReviewModal()" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;">✕</button>
+                <button onclick="closeReviewModal()" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;">âœ•</button>
             </div>
             <p style="font-size:12px;color:var(--text-muted);">Your identity is hidden. Be kind and constructive.</p>
         </div>
@@ -1808,33 +1735,33 @@ function openReviewModal(itemId) {
             <div style="display:flex;gap:8px;margin-bottom:16px;">
                 <span style="font-size:10px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:${diffColors[item.diff]};font-weight:700;">${item.diff}</span>
                 <span style="font-size:10px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:${langColors[item.lang] || '#888'};font-weight:700;">${item.lang}</span>
-                <span style="font-size:10px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:#888;">${item.title} · ${item.lines} lines</span>
+                <span style="font-size:10px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:#888;">${item.title} Â· ${item.lines} lines</span>
             </div>
             <div style="background:#020205;border-radius:14px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;margin-bottom:20px;">
                 <div style="background:rgba(255,255,255,0.03);padding:10px 16px;display:flex;gap:6px;border-bottom:1px solid rgba(255,255,255,0.06);">
                     <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
                     <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
                     <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
-                    <span style="font-size:10px;color:#555;margin-left:8px;">${item.lang} · Anonymous Submission</span>
+                    <span style="font-size:10px;color:#555;margin-left:8px;">${item.lang} Â· Anonymous Submission</span>
                 </div>
                 <pre style="padding:18px;font-family:monospace;font-size:13px;color:#86efac;overflow-x:auto;white-space:pre;margin:0;line-height:1.6;">${item.code}</pre>
             </div>
             <div style="margin-bottom:14px;">
-                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">⭐ Overall Rating</label>
+                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">â­ Overall Rating</label>
                 <div style="display:flex;gap:4px;" id="star-row">
-                    ${[1, 2, 3, 4, 5].map(n => `<button class="star-btn" id="star-${n}" onclick="setStars(${n})" style="font-size:22px;color:#444;">☆</button>`).join('')}
+                    ${[1, 2, 3, 4, 5].map(n => `<button class="star-btn" id="star-${n}" onclick="setStars(${n})" style="font-size:22px;color:#444;">â˜†</button>`).join('')}
                 </div>
             </div>
             <div style="margin-bottom:14px;">
-                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">✅ What did they do well?</label>
+                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">âœ… What did they do well?</label>
                 <textarea id="rv-good" style="width:100%;min-height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px;color:#fff;font-size:13px;resize:none;outline:none;font-family:inherit;" placeholder="e.g. Good variable names, clear logic..."></textarea>
             </div>
             <div style="margin-bottom:14px;">
-                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">⚠️ What can be improved?</label>
+                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">âš ï¸ What can be improved?</label>
                 <textarea id="rv-improve" style="width:100%;min-height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px;color:#fff;font-size:13px;resize:none;outline:none;font-family:inherit;" placeholder="e.g. The loop can be simplified..."></textarea>
             </div>
             <div style="margin-bottom:20px;">
-                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px;">🎯 How hard was this code?</label>
+                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px;">ðŸŽ¯ How hard was this code?</label>
                 <div style="display:flex;gap:8px;">
                     <button class="difficulty-toggle" onclick="setDiff(this,'Easy')">Easy</button>
                     <button class="difficulty-toggle active" onclick="setDiff(this,'Medium')">Medium</button>
@@ -1846,7 +1773,7 @@ function openReviewModal(itemId) {
             <span style="font-size:12px;color:var(--text-muted);">You'll earn <strong style="color:var(--primary);">+${item.xp} XP</strong> for this review</span>
             <div style="display:flex;gap:10px;">
                 <button onclick="closeReviewModal()" style="padding:10px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-muted);cursor:pointer;font-size:13px;">Cancel</button>
-                <button class="btn-gold" id="submit-review-btn" onclick="submitReview()">Submit Review — Earn +${item.xp} XP</button>
+                <button class="btn-gold" id="submit-review-btn" onclick="submitReview()">Submit Review â€” Earn +${item.xp} XP</button>
             </div>
         </div>`;
     document.getElementById('review-modal').classList.add('open');
@@ -1855,7 +1782,7 @@ function openReviewModal(itemId) {
 function setStars(n) {
     for (let i = 1; i <= 5; i++) {
         const s = document.getElementById('star-' + i);
-        if (s) { s.textContent = i <= n ? '★' : '☆'; s.style.color = i <= n ? '#f0b429' : '#444'; }
+        if (s) { s.textContent = i <= n ? 'â˜…' : 'â˜†'; s.style.color = i <= n ? '#f0b429' : '#444'; }
     }
 }
 
@@ -1873,7 +1800,7 @@ function closeReviewModal(e) {
 function submitReview() {
     const good = document.getElementById('rv-good')?.value?.trim();
     const improve = document.getElementById('rv-improve')?.value?.trim();
-    if (!good || !improve) { showToast('⚠️ Please fill both sections before submitting.'); return; }
+    if (!good || !improve) { showToast('âš ï¸ Please fill both sections before submitting.'); return; }
     const item = activeReviewItem;
     const btn = document.getElementById('submit-review-btn');
     if (btn) { btn.textContent = 'Submitting...'; btn.disabled = true; }
@@ -1889,7 +1816,7 @@ function submitReview() {
     }, 1500);
 }
 
-// ── RANK UP MODAL ─────────────────────────────────────
+// â”€â”€ RANK UP MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showRankUpModal() {
     const modal = document.getElementById('rankup-modal');
     if (!modal) return;
@@ -1915,7 +1842,7 @@ function spawnConfetti() {
     }
 }
 
-// ── STUDY GROUPS ──────────────────────────────────────
+// â”€â”€ STUDY GROUPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderStudyGroups() {
     const container = document.getElementById('study-groups-grid');
     if (!container) return;
@@ -1929,10 +1856,10 @@ function renderStudyGroups() {
             <div style="display:flex;justify-content:center;gap:4px;margin-bottom:10px;">
                 ${avatarColors.map(c => `<div style="width:22px;height:22px;border-radius:50%;background:${c};border:2px solid var(--surface);"></div>`).join('')}
             </div>
-            <div style="font-size:10px;color:${statusDot[g.status] || '#888'};margin-bottom:14px;">● ${g.status}</div>
-            <button id="sg-btn-${g.id}" class="btn-gold" style="width:100%;justify-content:center;font-size:12px;" onclick="joinGroup('${g.id}','${g.name}')">${g.joined ? 'Joined ✓' : 'Join'}</button>
+            <div style="font-size:10px;color:${statusDot[g.status] || '#888'};margin-bottom:14px;">â— ${g.status}</div>
+            <button id="sg-btn-${g.id}" class="btn-gold" style="width:100%;justify-content:center;font-size:12px;" onclick="joinGroup('${g.id}','${g.name}')">${g.joined ? 'Joined âœ“' : 'Join'}</button>
         </div>`).join(`
-        <div style="border:2px dashed rgba(255,255,255,0.1);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'" onclick="showToast('ℹ️ Create Group coming soon!')">
+        <div style="border:2px dashed rgba(255,255,255,0.1);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'" onclick="showToast('â„¹ï¸ Create Group coming soon!')">
             <div style="font-size:28px;margin-bottom:8px;color:var(--text-muted);">+</div>
             <div style="font-size:12px;color:var(--text-muted);">Create Group</div>
         </div>`);
@@ -1944,16 +1871,16 @@ function joinGroup(id, name) {
     if (!g || g.joined) return;
     g.joined = true;
     g.members++;
-    if (btn) { btn.textContent = 'Joined ✓'; btn.style.background = '#0ed97a'; btn.style.color = '#000'; }
+    if (btn) { btn.textContent = 'Joined âœ“'; btn.style.background = '#0ed97a'; btn.style.color = '#000'; }
     addCommunityXP(10, `Joined ${name}!`);
 }
 
 
 
 
-// ══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PEER DISCUSSION SYSTEM
-// ══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 let currentDiscTab = 'discussion';
 let currentDiscKey = 'general';
@@ -1961,9 +1888,9 @@ let currentDiscKey = 'general';
 // Seed some starter posts for each company/challenge
 const SEED_POSTS = {
     'Capgemini': [
-        { id: 's1', author: 'Anon Coder', avatar: 'A', tab: 'tips', text: 'Focus on time complexity — Capgemeni rounds always have at least one O(N log N) problem. Practice sorting variants!', likes: 14, liked: false, spoiler: false, ts: Date.now() - 3600000 },
+        { id: 's1', author: 'Anon Coder', avatar: 'A', tab: 'tips', text: 'Focus on time complexity â€” Capgemeni rounds always have at least one O(N log N) problem. Practice sorting variants!', likes: 14, liked: false, spoiler: false, ts: Date.now() - 3600000 },
         { id: 's2', author: 'DSA Ninja', avatar: 'D', tab: 'discussion', text: 'Anyone else struggling with the string manipulation tasks? The edge case for empty string was tricky.', likes: 7, liked: false, spoiler: false, ts: Date.now() - 7200000 },
-        { id: 's3', author: 'Harismitha', avatar: 'H', tab: 'solutions', text: 'Two Sum pattern → use a HashMap. O(N) time, O(N) space. Works for all Capgemini variants. Here\'s the key insight: store complement, not current value.', likes: 22, liked: false, spoiler: true, ts: Date.now() - 1800000 }
+        { id: 's3', author: 'Harismitha', avatar: 'H', tab: 'solutions', text: 'Two Sum pattern â†’ use a HashMap. O(N) time, O(N) space. Works for all Capgemini variants. Here\'s the key insight: store complement, not current value.', likes: 22, liked: false, spoiler: true, ts: Date.now() - 1800000 }
     ],
     'LTIMindtree': [
         { id: 's4', author: 'Code Wizard', avatar: 'C', tab: 'tips', text: 'LTIMindtree loves graph problems in rounds 2+. Make sure you\'re comfortable with BFS/DFS.', likes: 9, liked: false, spoiler: false, ts: Date.now() - 5400000 },
@@ -1974,7 +1901,7 @@ const SEED_POSTS = {
     ],
     'general': [
         { id: 'g1', author: 'Arjun S', avatar: 'A', tab: 'discussion', text: 'Great challenge! The tricky part was handling negative numbers in the array. Make sure to add that edge case.', likes: 8, liked: false, spoiler: false, ts: Date.now() - 1200000 },
-        { id: 'g2', author: 'Priya R', avatar: 'P', tab: 'tips', text: '💡 Tip: Try solving this in O(n) first using a HashMap before going for brute force — it\'ll help you understand the optimal approach.', likes: 15, liked: false, spoiler: false, ts: Date.now() - 6000000 },
+        { id: 'g2', author: 'Priya R', avatar: 'P', tab: 'tips', text: 'ðŸ’¡ Tip: Try solving this in O(n) first using a HashMap before going for brute force â€” it\'ll help you understand the optimal approach.', likes: 15, liked: false, spoiler: false, ts: Date.now() - 6000000 },
         { id: 'g3', author: 'Anon Coder', avatar: '?', tab: 'solutions', text: 'Here\'s my approach: iterate through the array once, store seen values in a set, and check if the complement exists.', likes: 5, liked: false, spoiler: true, ts: Date.now() - 9000000 }
     ]
 };
@@ -2024,7 +1951,7 @@ function refreshDiscFeed() {
 
     if (!filtered.length) {
         container.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);">
-            <div style="font-size:32px;margin-bottom:8px;">🤫</div>
+            <div style="font-size:32px;margin-bottom:8px;">ðŸ¤«</div>
             <div>No posts in this category yet. Be the first!</div>
         </div>`;
         return;
@@ -2033,7 +1960,7 @@ function refreshDiscFeed() {
     container.innerHTML = filtered.map(p => {
         const timeAgo = getTimeAgo(p.ts);
         const tabColors = { tips: '#0ed97a', solutions: '#60a5fa', discussion: '#f0b429' };
-        const tabLabels = { tips: '💡 Tip', solutions: '✅ Solution', discussion: '💬 Discussion' };
+        const tabLabels = { tips: 'ðŸ’¡ Tip', solutions: 'âœ… Solution', discussion: 'ðŸ’¬ Discussion' };
         const avatarColors = ['#f0b429', '#0ed97a', '#60a5fa', '#f472b6', '#a78bfa'];
         const avatarBg = avatarColors[p.avatar.charCodeAt(0) % avatarColors.length];
         return `
@@ -2044,24 +1971,24 @@ function refreshDiscFeed() {
                     <div style="display:flex;align-items:center;gap:8px;">
                         <span style="font-weight:700;font-size:13px;">${p.author}</span>
                         <span style="font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:${tabColors[p.tab]};font-weight:700;">${tabLabels[p.tab]}</span>
-                        ${p.spoiler ? '<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,107,107,0.1);color:#ff6b6b;font-weight:700;">⚠️ Spoiler</span>' : ''}
+                        ${p.spoiler ? '<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,107,107,0.1);color:#ff6b6b;font-weight:700;">âš ï¸ Spoiler</span>' : ''}
                     </div>
                     <span style="font-size:11px;color:var(--text-muted);">${timeAgo}</span>
                 </div>
                 ${p.spoiler
                 ? `<div id="spoiler-${p.id}" style="cursor:pointer;font-size:13px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:10px;border-radius:8px;text-align:center;" onclick="revealSpoiler('${p.id}')">
-                        🙈 Click to reveal spoiler
+                        ðŸ™ˆ Click to reveal spoiler
                        </div>`
                 : `<p style="font-size:13px;line-height:1.6;color:rgba(255,255,255,0.85);margin:0;" id="spoiler-${p.id}">${p.text}</p>`
             }
                 <div style="display:flex;gap:16px;margin-top:10px;">
                     <button onclick="likeDiscussionPost('${p.id}')" id="like-btn-${p.id}"
                         style="background:none;border:none;cursor:pointer;font-size:12px;color:${p.liked ? 'var(--primary)' : 'var(--text-muted)'};display:flex;align-items:center;gap:4px;transition:color 0.2s;">
-                        ${p.liked ? '❤️' : '🤍'} <span id="like-count-${p.id}">${p.likes}</span>
+                        ${p.liked ? 'â¤ï¸' : 'ðŸ¤'} <span id="like-count-${p.id}">${p.likes}</span>
                     </button>
                     <button onclick="replyToPost('${p.id}')"
                         style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--text-muted);">
-                        💬 Reply
+                        ðŸ’¬ Reply
                     </button>
                 </div>
             </div>
@@ -2086,7 +2013,7 @@ function likeDiscussionPost(postId) {
     saveDiscPosts(currentDiscKey, posts);
     const btn = document.getElementById('like-btn-' + postId);
     const cnt = document.getElementById('like-count-' + postId);
-    if (btn) { btn.style.color = post.liked ? 'var(--primary)' : 'var(--text-muted)'; btn.innerHTML = (post.liked ? '❤️' : '🤍') + ` <span id="like-count-${postId}">${post.likes}</span>`; }
+    if (btn) { btn.style.color = post.liked ? 'var(--primary)' : 'var(--text-muted)'; btn.innerHTML = (post.liked ? 'â¤ï¸' : 'ðŸ¤') + ` <span id="like-count-${postId}">${post.likes}</span>`; }
 }
 
 function replyToPost(postId) {
@@ -2097,7 +2024,7 @@ function replyToPost(postId) {
 function postDiscussionMessage() {
     const input = document.getElementById('disc-input');
     const text = input?.value?.trim();
-    if (!text) { showToast('⚠️ Please write something before posting!'); return; }
+    if (!text) { showToast('âš ï¸ Please write something before posting!'); return; }
     const isAnon = document.getElementById('disc-anon')?.checked;
     const isSpoiler = document.getElementById('disc-spoiler')?.checked;
     const tab = currentDiscTab === 'discussion' ? 'discussion' : currentDiscTab;
@@ -2116,7 +2043,7 @@ function postDiscussionMessage() {
     input.placeholder = 'Share a hint, ask a question, or post your approach...';
     if (document.getElementById('disc-spoiler')) document.getElementById('disc-spoiler').checked = false;
     refreshDiscFeed();
-    showToast('✅ Posted! Your message is live.');
+    showToast('âœ… Posted! Your message is live.');
 }
 
 function getTimeAgo(ts) {
@@ -2127,9 +2054,9 @@ function getTimeAgo(ts) {
     return Math.floor(diff / 86400) + 'd ago';
 }
 
-// ══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // COMPANY COMPLETION CERTIFICATES
-// ══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 let _certCurrentCompany = null;
 let _certCurrentScore = 0;
@@ -2157,13 +2084,13 @@ function checkAndAwardCertificate(companyName, score) {
 function showCertModal(cert) {
     const modal = document.getElementById('cert-modal');
     if (!modal) return;
-    const companyEmojis = { Capgemini: '🔵', LTIMindtree: '🟢', Deloitte: '🔷' };
-    const emoji = companyEmojis[cert.company] || '🏅';
+    const companyEmojis = { Capgemini: 'ðŸ”µ', LTIMindtree: 'ðŸŸ¢', Deloitte: 'ðŸ”·' };
+    const emoji = companyEmojis[cert.company] || 'ðŸ…';
     document.getElementById('cert-emoji').textContent = emoji;
     document.getElementById('cert-company-title').textContent = cert.company + ' Mock Practice';
     document.getElementById('cert-student-name').textContent = state.user.name || 'Harismitha';
     document.getElementById('cert-track-label').textContent = cert.company + ' Coding Practice Track';
-    document.getElementById('cert-date-score').textContent = 'Issued ' + cert.month + ' · Score: ' + cert.score + '/100';
+    document.getElementById('cert-date-score').textContent = 'Issued ' + cert.month + ' Â· Score: ' + cert.score + '/100';
     document.getElementById('cert-score-bar').style.width = '0%';
     modal.style.display = 'flex';
     spawnCertConfetti();
@@ -2223,7 +2150,7 @@ function downloadCertificate() {
     </style></head><body>
     <div class="page">
         <div class="header">
-            <div class="logo">🏅</div>
+            <div class="logo">ðŸ…</div>
             <div class="cert-label">Certificate of Completion</div>
             <div class="company">${cert.company} Mock Practice Track</div>
         </div>
@@ -2243,7 +2170,7 @@ function downloadCertificate() {
                 <div class="footer-item"><div class="val">${cert.date}</div><div class="lbl">Issue Date</div></div>
                 <div class="footer-item"><div class="val">${cert.id.slice(-8).toUpperCase()}</div><div class="lbl">Certificate ID</div></div>
             </div>
-            <div class="watermark">Verify at: codeconfidence.app/verify · This certificate demonstrates proficiency in company-specific coding challenges.</div>
+            <div class="watermark">Verify at: codeconfidence.app/verify Â· This certificate demonstrates proficiency in company-specific coding challenges.</div>
         </div>
     </div>
     <script>window.onload=()=>{window.print();}<\/script>
@@ -2262,10 +2189,10 @@ function renderCertificates() {
     const existingBadgesHtml = container.innerHTML;
 
     const companyColors = { Capgemini: '#0070f3', LTIMindtree: '#00a650', Deloitte: '#86bc25' };
-    const companyEmojis = { Capgemini: '🔵', LTIMindtree: '🟢', Deloitte: '🔷' };
+    const companyEmojis = { Capgemini: 'ðŸ”µ', LTIMindtree: 'ðŸŸ¢', Deloitte: 'ðŸ”·' };
     const certHtml = certs.map(cert => {
         const color = companyColors[cert.company] || '#d4af37';
-        const emoji = companyEmojis[cert.company] || '🏅';
+        const emoji = companyEmojis[cert.company] || 'ðŸ…';
         return `
         <div class="cert-card" style="grid-column:span 2; padding:20px; border-radius:20px; border:2px solid ${color}40; background:linear-gradient(135deg,${color}0d,transparent); position:relative; overflow:hidden; cursor:pointer;" onclick="downloadCertificate._company='${cert.company}'; _certCurrentCompany='${cert.company}'; downloadCertificate()">
             <div style="position:absolute;inset:0;background:linear-gradient(135deg,${color}08,transparent);pointer-events:none;"></div>
@@ -2277,8 +2204,8 @@ function renderCertificates() {
                 </div>
                 <div style="margin-left:auto;background:${color}18;border:1px solid ${color}40;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;color:${color};">${cert.score}/100</div>
             </div>
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">${cert.company} Coding Practice Track · Issued ${cert.date}</div>
-            <button style="background:${color};color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;" onclick="event.stopPropagation();_certCurrentCompany='${cert.company}';downloadCertificate()">⬇ Download</button>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">${cert.company} Coding Practice Track Â· Issued ${cert.date}</div>
+            <button style="background:${color};color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;" onclick="event.stopPropagation();_certCurrentCompany='${cert.company}';downloadCertificate()">â¬‡ Download</button>
             <div class="cert-shimmer"></div>
         </div>`;
     }).join('');
@@ -2287,7 +2214,7 @@ function renderCertificates() {
         // Prepend certificates at the top of badges
         const header = document.createElement('div');
         header.style.cssText = 'grid-column:span 6;font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;';
-        header.textContent = '🏅 Earned Certificates';
+        header.textContent = 'ðŸ… Earned Certificates';
         container.prepend(header);
         header.insertAdjacentHTML('afterend', certHtml);
     }
@@ -2300,7 +2227,7 @@ function updateXP(add) {
     document.getElementById('xp-text').innerText = `${state.user.xp} / ${state.user.nextLevelXp} XP mastered`;
 
     if (add > 0) {
-        showToast(`⚡ +${add} XP Earned!`);
+        showToast(`âš¡ +${add} XP Earned!`);
     }
 }
 
@@ -2350,7 +2277,7 @@ async function analyzeCode(silent = false) {
         const data = await res.json();
 
         if (!data || !data.score) {
-            if (!silent) showToast("❌ AI analysis unavailable.");
+            if (!silent) showToast("âŒ AI analysis unavailable.");
             return;
         }
 
@@ -2369,7 +2296,7 @@ async function analyzeCode(silent = false) {
                 renderFeedback(data);
                 if (!silent) updateXP(data.xp_earned || 50);
             } else {
-                if (!silent) showAIError('AI analysis unavailable — check your API key or server.');
+                if (!silent) showAIError('AI analysis unavailable â€” check your API key or server.');
             }
         } catch (e2) {
             if (!silent) showAIError('Analysis failed: ' + e2.message);
@@ -2384,7 +2311,7 @@ async function analyzeCode(silent = false) {
 
 async function runCode() {
     const code = document.querySelector('#page-submit textarea').value;
-    if (!code.trim()) return showToast("⚠️ No code to run!");
+    if (!code.trim()) return showToast("âš ï¸ No code to run!");
 
     const btn = document.getElementById('btn-run-local');
     const originalText = btn.innerText;
@@ -2410,7 +2337,7 @@ async function runCode() {
             if (!data.error) updateXP(10);
         }
     } catch (e) {
-        showToast("❌ Connection error to compiler.");
+        showToast("âŒ Connection error to compiler.");
     } finally {
         btn.innerText = originalText;
         btn.disabled = false;
@@ -2450,7 +2377,7 @@ function renderFeedback(data) {
                         ${data.issues.map(issue => `
                             <div class="glass" style="padding:16px; border-radius:12px; border-left:4px solid ${issue.type === 'bug' ? 'var(--error)' : 'var(--warning)'}">
                                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                    <span style="font-size:12px; font-weight:700; color:${issue.type === 'bug' ? 'var(--error)' : 'var(--warning)'}">${issue.type.toUpperCase()} ${issue.line ? `• Line ${issue.line}` : ''}</span>
+                                    <span style="font-size:12px; font-weight:700; color:${issue.type === 'bug' ? 'var(--error)' : 'var(--warning)'}">${issue.type.toUpperCase()} ${issue.line ? `â€¢ Line ${issue.line}` : ''}</span>
                                 </div>
                                 <div style="font-size:13px; line-height:1.4; margin-bottom:8px;">${issue.message}</div>
                                 <div style="font-size:12px; padding:8px 12px; background:rgba(255,255,255,0.03); border-radius:6px; color:var(--primary);">
@@ -2494,10 +2421,10 @@ function renderFeedback(data) {
         `;
     }
 
-    // ── Show discussion section ──
+    // â”€â”€ Show discussion section â”€â”€
     renderDiscussion(getDiscKey());
 
-    // ── Certificate check for company practice ──
+    // â”€â”€ Certificate check for company practice â”€â”€
     if (state.activeCompany && data.score >= 70) {
         checkAndAwardCertificate(state.activeCompany, data.score);
     }
@@ -2524,9 +2451,9 @@ function showCompanyPractice(companyName) {
     if (chalBar) chalBar.style.display = 'none';
 
     // Populate company banner
-    const companyEmojis = { Capgemini: '🔵', LTIMindtree: '🟢', Deloitte: '🔷' };
+    const companyEmojis = { Capgemini: 'ðŸ”µ', LTIMindtree: 'ðŸŸ¢', Deloitte: 'ðŸ”·' };
     if (document.getElementById('ctx-company-name')) document.getElementById('ctx-company-name').textContent = companyName;
-    if (document.getElementById('ctx-company-emoji')) document.getElementById('ctx-company-emoji').textContent = companyEmojis[companyName] || '🏢';
+    if (document.getElementById('ctx-company-emoji')) document.getElementById('ctx-company-emoji').textContent = companyEmojis[companyName] || 'ðŸ¢';
     document.getElementById('submit-lab-title').textContent = companyEmojis[companyName] + ' ' + companyName + ' Practice';
 
     // Populate Task Picker in the company banner
@@ -2537,7 +2464,7 @@ function showCompanyPractice(companyName) {
 
     // Load first task
     loadCompanyTask(track.practice[0].id);
-    showToast(`🎯 Loaded ${companyName} Training Module`);
+    showToast(`ðŸŽ¯ Loaded ${companyName} Training Module`);
 
     // Load company-specific discussion thread
     renderDiscussion(companyName);
@@ -2551,14 +2478,14 @@ function loadCompanyTask(taskId) {
 
     const textarea = document.querySelector('#page-submit textarea');
     textarea.value = task.code;
-    showToast(`📝 Task Switched: ${task.title}`);
+    showToast(`ðŸ“ Task Switched: ${task.title}`);
 }
 
 // Init call happens at bottom of app.html
 
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // AI CONFIGURATION & HELPERS
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function getAIKey() {
     const key = localStorage.getItem('cc_gemini_key');
@@ -2588,8 +2515,8 @@ function showAIConfigModal() {
     modal.innerHTML = `
         <div class="glass-card" style="width:100%; max-width:480px; padding:32px; border:1px solid var(--primary); box-shadow:0 0 40px rgba(240,180,41,0.15); animation: fadeUp 0.3s ease-out;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-                <h3 style="display:flex; align-items:center; gap:10px;">⚙️ Configure Gemini AI</h3>
-                <button onclick="document.getElementById('ai-config-modal').remove()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:20px;">✕</button>
+                <h3 style="display:flex; align-items:center; gap:10px;">âš™ï¸ Configure Gemini AI</h3>
+                <button onclick="document.getElementById('ai-config-modal').remove()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:20px;">âœ•</button>
             </div>
 
             <div style="display:flex; flex-direction:column; gap:24px;">
@@ -2598,7 +2525,7 @@ function showAIConfigModal() {
                     <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Step 1: Get your free Gemini API key</div>
                     <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Visit Google AI Studio to get your free API key.</p>
                     <button class="glass" style="width:100%; padding:10px; border-radius:10px; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="window.open('https://aistudio.google.com/apikey', '_blank')">
-                        Open aistudio.google.com <span style="font-size:14px;">↗</span>
+                        Open aistudio.google.com <span style="font-size:14px;">â†—</span>
                     </button>
                 </div>
 
@@ -2647,7 +2574,7 @@ async function testGeminiConnection() {
 
     if (!key) {
         resultEl.style.color = '#ff6b6b';
-        resultEl.innerText = "❌ Please enter a key";
+        resultEl.innerText = "âŒ Please enter a key";
         return;
     }
 
@@ -2673,15 +2600,15 @@ async function testGeminiConnection() {
 
         if (res.ok) {
             resultEl.style.color = '#0ed97a';
-            resultEl.innerText = "✅ Connected! Gemini ready.";
+            resultEl.innerText = "âœ… Connected! Gemini ready.";
         } else {
             const err = await res.json();
             resultEl.style.color = '#ff6b6b';
-            resultEl.innerText = `❌ Error: ${err.error?.message || 'Invalid key'}`;
+            resultEl.innerText = `âŒ Error: ${err.error?.message || 'Invalid key'}`;
         }
     } catch (err) {
         resultEl.style.color = '#ff6b6b';
-        resultEl.innerText = "❌ Connection failed";
+        resultEl.innerText = "âŒ Connection failed";
     } finally {
         btn.disabled = false;
         btn.innerText = "Test connection";
@@ -2697,13 +2624,13 @@ function saveGeminiConfig() {
         localStorage.setItem('cc_gemini_model', model);
         window.__GEMINI_API_KEY__ = key;
         window.__GEMINI_MODEL__ = model;
-        showToast('✅ Gemini AI activated!');
+        showToast('âœ… Gemini AI activated!');
         document.getElementById('ai-config-modal').remove();
 
         const activeTab = document.querySelector('.career-tab.active');
         if (activeTab) activeTab.click();
     } else {
-        showToast("⚠️ Please enter an API key");
+        showToast("âš ï¸ Please enter an API key");
     }
 }
 
@@ -2734,10 +2661,10 @@ function showAIError(message, fallbackFn) {
     }
 
     banner.innerHTML = `
-        ⚠️ ${message}
+        âš ï¸ ${message}
         <button onclick="this.parentElement.style.display='none'" 
         style="margin-left:auto;background:none;border:none;
-        color:#ff6b6b;cursor:pointer;font-size:16px;">✕</button>
+        color:#ff6b6b;cursor:pointer;font-size:16px;">âœ•</button>
     `;
     banner.style.display = 'flex';
 
@@ -2760,7 +2687,7 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
     No markdown. No explanation. No code blocks. 
     Start immediately with { or [ and end with } or ]`;
 
-    // ── PROXY MODE ──
+    // â”€â”€ PROXY MODE â”€â”€
     // If no key is set, call our local proxy endpoint
     if (!key || key === '' || key.includes('PASTE')) {
         try {
@@ -2833,13 +2760,13 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
             const status = response.status;
 
             if (status === 400) {
-                showAIError('Bad request — check your prompt format', loadFallbackContent);
+                showAIError('Bad request â€” check your prompt format', loadFallbackContent);
             } else if (status === 401 || status === 403) {
-                showAIError('Invalid Gemini API key — get a new key from aistudio.google.com', loadFallbackContent);
+                showAIError('Invalid Gemini API key â€” get a new key from aistudio.google.com', loadFallbackContent);
             } else if (status === 429) {
-                showAIError('Rate limit reached — Gemini free tier allows 15 requests/min.', loadFallbackContent);
+                showAIError('Rate limit reached â€” Gemini free tier allows 15 requests/min.', loadFallbackContent);
             } else if (status === 500) {
-                showAIError('Google server error — try again in a moment', loadFallbackContent);
+                showAIError('Google server error â€” try again in a moment', loadFallbackContent);
             } else {
                 showAIError(`Gemini API error ${status}: ${errData.error?.message || 'Unknown'}`, loadFallbackContent);
             }
@@ -2849,12 +2776,12 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
         const data = await response.json();
 
         if (data.candidates?.[0]?.finishReason === 'SAFETY') {
-            showAIError('Response blocked by safety filters — rephrase your prompt', loadFallbackContent);
+            showAIError('Response blocked by safety filters â€” rephrase your prompt', loadFallbackContent);
             return null;
         }
 
         if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-            showAIError('Empty response from Gemini — try again', loadFallbackContent);
+            showAIError('Empty response from Gemini â€” try again', loadFallbackContent);
             return null;
         }
 
@@ -2869,7 +2796,7 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
                     return JSON.parse(clean);
                 } catch {
                     console.error('JSON parse failed:', text);
-                    showAIError('AI response format error — using fallback content', loadFallbackContent);
+                    showAIError('AI response format error â€” using fallback content', loadFallbackContent);
                     return null;
                 }
             }
@@ -2880,9 +2807,9 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
     } catch (err) {
         console.error('Gemini API error:', err);
         if (err.name === 'TypeError' || err.message.includes('fetch')) {
-            showAIError('Network error — check your internet connection', loadFallbackContent);
+            showAIError('Network error â€” check your internet connection', loadFallbackContent);
         } else {
-            showAIError('AI temporarily unavailable — showing sample content', loadFallbackContent);
+            showAIError('AI temporarily unavailable â€” showing sample content', loadFallbackContent);
         }
         return null;
     }
@@ -2918,21 +2845,21 @@ function renderFallbackAptitude() {
             question: "If a train travels 60 km in 1 hour, how far will it travel in 2.5 hours?",
             options: ["A) 120 km", "B) 150 km", "C) 140 km", "D) 160 km"],
             answerIndex: 1, // B
-            solution_explanation: "Distance = Speed × Time = 60 × 2.5 = 150 km",
+            solution_explanation: "Distance = Speed Ã— Time = 60 Ã— 2.5 = 150 km",
             topic: "Time Speed Distance"
         },
         {
             question: "What is 15% of 240?",
             options: ["A) 36", "B) 32", "C) 38", "D) 34"],
             answerIndex: 0, // A
-            solution_explanation: "15% of 240 = (15/100) × 240 = 36",
+            solution_explanation: "15% of 240 = (15/100) Ã— 240 = 36",
             topic: "Percentages"
         },
         {
             question: "If 6 workers complete a job in 8 days, how many days will 4 workers take?",
             options: ["A) 10 days", "B) 12 days", "C) 14 days", "D) 16 days"],
             answerIndex: 1, // B
-            solution_explanation: "Workers × Days = constant. 6×8 = 4×D. D = 12 days",
+            solution_explanation: "Workers Ã— Days = constant. 6Ã—8 = 4Ã—D. D = 12 days",
             topic: "Time and Work"
         }
     ];
@@ -2982,7 +2909,7 @@ async function renderAptitudeHub() {
 
         <div class="grid-cols-3" style="gap:24px;">
             <div class="topic-card">
-                <div style="font-size:32px; margin-bottom:18px;">🔢</div>
+                <div style="font-size:32px; margin-bottom:18px;">ðŸ”¢</div>
                 <h3 style="margin-bottom:8px;">Quantitative</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Numbers, algebra, geometry, DI and quick calculation drills.</p>
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -2991,7 +2918,7 @@ async function renderAptitudeHub() {
                 </div>
             </div>
             <div class="topic-card">
-                <div style="font-size:32px; margin-bottom:18px;">🧩</div>
+                <div style="font-size:32px; margin-bottom:18px;">ðŸ§©</div>
                 <h3 style="margin-bottom:8px;">Logical Reasoning</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Puzzles, patterns, syllogisms and critical thinking drills.</p>
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -3000,7 +2927,7 @@ async function renderAptitudeHub() {
                 </div>
             </div>
             <div class="topic-card">
-                <div style="font-size:32px; margin-bottom:18px;">💬</div>
+                <div style="font-size:32px; margin-bottom:18px;">ðŸ’¬</div>
                 <h3 style="margin-bottom:8px;">Verbal Ability</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Grammar, comprehension, vocabulary and interview-ready expression.</p>
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -3023,36 +2950,30 @@ async function renderAptitudeHub() {
     `;
 }
 
-async function launchAptitudeSet(type) {
-    if (!checkAIConfig()) return;
-
+function launchAptitudeSet(type) {
     const container = document.getElementById('career-tab-content');
     container.innerHTML = `
-        <div style="text-align:center; padding:100px;">
+        <div style="text-align:center; padding:60px;">
             <div class="spinner"></div>
-            <p style="margin-top:24px; color:var(--text-muted); font-size:14px; animation: pulse 2s infinite;">AI is crafting your personalized ${type} set...</p>
+            <p style="margin-top:24px; color:var(--text-muted); font-size:14px;">Loading ${type} questions from question bank...</p>
         </div>
     `;
 
-    try {
-        const systemPrompt = `Generate a ${type} aptitude test set of 3 MCQs for an MCA student. Format: Respond ONLY as a JSON array of objects: [{question, options:[], answerIndex, solution_explanation}].`;
-        const aiResponse = await callGemini(systemPrompt, `Generate 3 questions for: ${type}`);
-
-        if (!aiResponse) return; // Error already handled in callGemini
-
-        const questions = Array.isArray(aiResponse) ? aiResponse : JSON.parse(aiResponse.replace(/```json|```/g, '').trim());
-        renderAptitudeQuiz(questions, type);
-    } catch (e) {
-        console.error(e);
-        showAIError("AI Service Unavailable or Rate Limited. Please try again in a moment.", () => {
-            container.innerHTML = `
-                <div style="padding:40px; text-align:center;">
-                    <button class="btn-gold" style="margin:0 auto;" onclick="launchAptitudeSet('${type}')">🔄 Retry Generation</button>
-                    <button class="glass" style="margin-top:12px; padding:10px 24px; border-radius:12px; cursor:pointer;" onclick="renderAptitudeHub()">Back to Hub</button>
-                </div>
-            `;
-        });
-    }
+    // Small timeout so spinner renders, then load instantly from local bank
+    setTimeout(() => {
+        try {
+            const questions = getAptitudeQuestions(type, null, 10);
+            if (!questions || questions.length === 0) {
+                container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">No questions found for "${type}". Try another topic.</div>`;
+                return;
+            }
+            showToast(`âœ… ${questions.length} ${type} questions loaded!`);
+            renderAptitudeQuiz(questions, type);
+        } catch (e) {
+            console.error(e);
+            container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">Failed to load questions. Please refresh.</div>`;
+        }
+    }, 300);
 }
 
 function renderAptitudeQuiz(questions, type) {
@@ -3100,7 +3021,7 @@ function renderAptResults(score, total, results, type) {
                 ${results.map((res, i) => `
                     <div class="glass-card" style="padding:16px; margin-bottom:12px; border-left:4px solid ${res.correct ? '#0ed97a' : '#ff6b6b'};">
                         <div style="font-size:14px; font-weight:700;">${res.q.question}</div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">💡 ${res.q.solution_explanation}</div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">ðŸ’¡ ${res.q.solution_explanation}</div>
                     </div>
                 `).join('')}
             </div>
@@ -3109,9 +3030,9 @@ function renderAptResults(score, total, results, type) {
     `;
 }
 
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PLACEHOLDERS FOR REMAINING TABS
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function renderFundamentalsHub() {
     const container = document.getElementById('career-tab-content');
@@ -3151,7 +3072,7 @@ async function renderFundamentalsHub() {
                         <p style="font-size:13px; color:var(--text-muted); line-height:1.7;">${challenge.desc}</p>
                     </div>
                     <button class="btn-gold" style="width:100%; justify-content:center;" onclick="executeSQL()">Run Query</button>
-                    ${state.sqlSuccess ? `<button class="btn-gold" style="width:100%; justify-content:center; background:#0ed97a; border-color:#0ed97a; color:#000; margin-top:12px;" onclick="nextSQLChallenge()">Next Challenge →</button>` : ''}
+                    ${state.sqlSuccess ? `<button class="btn-gold" style="width:100%; justify-content:center; background:#0ed97a; border-color:#0ed97a; color:#000; margin-top:12px;" onclick="nextSQLChallenge()">Next Challenge â†’</button>` : ''}
                 </div>
                 <div style="display:flex; flex-direction:column; gap:18px;">
                     <div class="glass-card" style="padding:24px; min-height:320px; display:flex; flex-direction:column;">
@@ -3224,7 +3145,7 @@ function executeSQL() {
 
         if (isCorrect) {
             state.sqlSuccess = true;
-            showToast("🎯 Challenge Mastered! Click 'Next' to proceed.");
+            showToast("ðŸŽ¯ Challenge Mastered! Click 'Next' to proceed.");
             renderFundamentalsHub(); // Refresh UI to show Next button
         }
     } catch (e) {
@@ -3238,9 +3159,9 @@ function nextSQLChallenge() {
 
     if (state.sqlChallengeIndex < SQL_CHALLENGES.length) {
         renderFundamentalsHub();
-        showToast(`📝 Next Challenge: ${SQL_CHALLENGES[state.sqlChallengeIndex].title}`);
+        showToast(`ðŸ“ Next Challenge: ${SQL_CHALLENGES[state.sqlChallengeIndex].title}`);
     } else {
-        showToast("🏆 All SQL Challenges Completed!");
+        showToast("ðŸ† All SQL Challenges Completed!");
         switchFundSubTab('nosql');
     }
 }
@@ -3271,7 +3192,7 @@ function switchFundSubTab(tab) {
             <div class="grid-cols-3" style="gap:24px;">
                 ${['DBMS', 'OS', 'Networking', 'System Design'].map(topic => `
                     <div class="topic-card">
-                        <div style="font-size:24px; margin-bottom:12px;">📚</div>
+                        <div style="font-size:24px; margin-bottom:12px;">ðŸ“š</div>
                         <h3 style="margin-bottom:8px;">${topic}</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">AI-generated interview questions and flashcards for ${topic}.</p>
                         <button class="btn-gold" style="width:100%; justify-content:center; font-size:12px;" onclick="startCSReview('${topic}')">Start Review</button>
@@ -3316,7 +3237,7 @@ async function startCSReview(topic) {
                 <div style="padding:40px; text-align:center;">
                     <p style="color:var(--text-muted); margin-bottom:20px;">AI Service temporarily unavailable or rate limited.</p>
                     <div style="display:flex; gap:12px; justify-content:center;">
-                        <button class="btn-gold" onclick="startCSReview('${topic}')">🔄 Retry</button>
+                        <button class="btn-gold" onclick="startCSReview('${topic}')">ðŸ”„ Retry</button>
                         <button class="glass" style="padding:10px 24px; border-radius:12px; cursor:pointer;" onclick="switchFundSubTab('review')">Back</button>
                     </div>
                 </div>
@@ -3392,7 +3313,7 @@ function renderCSQuiz(questions, topic) {
         else {
             container.innerHTML = `
                 <div style="text-align:center; padding:40px;">
-                    <div style="font-size:48px; margin-bottom:24px;">🏆</div>
+                    <div style="font-size:48px; margin-bottom:24px;">ðŸ†</div>
                     <h2 style="margin-bottom:8px;">Quiz Completed!</h2>
                     <p style="color:var(--text-muted); margin-bottom:32px;">You scored ${score} out of ${questions.length}</p>
                     <div style="display:flex; gap:12px; justify-content:center;">
@@ -3439,11 +3360,11 @@ async function renderCompanyTracks() {
                             <div style="font-weight:800; font-size:16px;">${c.name}</div>
                             <div style="font-size:10px; background:rgba(212,175,55,0.1); color:var(--primary); padding:2px 8px; border-radius:4px;">${comp}% Match</div>
                         </div>
-                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px;">${c.sector} • ${c.level}</div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px;">${c.sector} â€¢ ${c.level}</div>
                         <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:20px;">
                             ${c.tech.map(t => `<span style="font-size:9px; background:rgba(255,255,255,0.03); padding:2px 6px; border-radius:4px;">${t}</span>`).join('')}
                         </div>
-                        ${isLocked ? `<div style="font-size:10px; color:#ff6b6b;">🔒 Requires ${c.minXp} XP</div>` : `<button class="btn-gold" style="width:100%; justify-content:center; font-size:12px;" onclick="startInterview('${c.name}')">Crack the Code</button>`}
+                        ${isLocked ? `<div style="font-size:10px; color:#ff6b6b;">ðŸ”’ Requires ${c.minXp} XP</div>` : `<button class="btn-gold" style="width:100%; justify-content:center; font-size:12px;" onclick="startInterview('${c.name}')">Crack the Code</button>`}
                     </div>
                 `;
     }).join('')}
@@ -3451,9 +3372,9 @@ async function renderCompanyTracks() {
     `;
 }
 
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // REMAINING TABS (PLACEHOLDERS)
-// ════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function renderInterviewHub() {
     const container = document.getElementById('career-tab-content');
@@ -3469,19 +3390,19 @@ async function renderInterviewHub() {
 
         <div class="grid-cols-3" style="gap:24px;">
             <div class="topic-card" style="border-color:var(--primary);">
-                <div style="font-size:32px; margin-bottom:16px;">🔧</div>
+                <div style="font-size:32px; margin-bottom:16px;">ðŸ”§</div>
                 <h3 style="margin-bottom:8px;">Technical Interview</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Get a technical question set with instant Gemini evaluation.</p>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="launchMockInterview('technical')">Start Technical</button>
             </div>
             <div class="topic-card" style="border-color:var(--secondary);">
-                <div style="font-size:32px; margin-bottom:16px;">💼</div>
+                <div style="font-size:32px; margin-bottom:16px;">ðŸ’¼</div>
                 <h3 style="margin-bottom:8px;">Behavioral & HR</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Practice STAR responses and receive polished answers from AI.</p>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="launchMockInterview('behavioral')">Start Behavioral</button>
             </div>
             <div class="topic-card" style="border-color:rgba(99,102,241,0.3);">
-                <div style="font-size:32px; margin-bottom:16px;">📝</div>
+                <div style="font-size:32px; margin-bottom:16px;">ðŸ“</div>
                 <h3 style="margin-bottom:8px;">Online Test Simulator</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">AI-curated aptitude + reasoning problems in timed format.</p>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="launchOTSim()">Launch OT Sim</button>
@@ -3510,9 +3431,7 @@ function showInterviewPrepModal() {
     launchMockInterview('company');
 }
 
-async function launchMockInterview(type) {
-    if (!checkAIConfig()) return;
-
+function launchMockInterview(type) {
     const container = document.getElementById('career-tab-content');
     const labelMap = {
         technical: 'Technical Interview',
@@ -3520,37 +3439,40 @@ async function launchMockInterview(type) {
         hr: 'HR Interview',
         company: 'Company-Specific Interview'
     };
-    const promptMap = {
-        technical: 'Generate 5 high-impact technical interview questions for an MCA student preparing for software development roles. Return a JSON array of question strings.',
-        behavioral: 'Generate 5 behavioral interview questions that focus on teamwork, leadership, handling pressure, and problem solving. Return a JSON array of question strings.',
-        hr: 'Generate 5 HR interview questions for freshers focusing on motivation, strengths, weaknesses, and career goals. Return a JSON array of question strings.',
-        company: 'Generate 5 interview questions for a company placement round. Include technical, HR and behavioral questions appropriate for a fresh graduate. Return a JSON array of question strings.'
-    };
 
     container.innerHTML = `
         <div style="text-align:center; padding:100px;">
             <div class="spinner"></div>
-            <p style="margin-top:24px; color:var(--text-muted); font-size:14px;">AI is preparing your ${labelMap[type] || 'mock'} session...</p>
+            <p style="margin-top:24px; color:var(--text-muted); font-size:14px;">Preparing your ${labelMap[type] || 'mock'} session...</p>
         </div>
     `;
 
-    try {
-        const systemPrompt = `You are an expert interviewer. ${promptMap[type]}`;
-        const aiResponse = await callGemini(systemPrompt, promptMap[type]);
-
-        if (!aiResponse) return;
-
-        const questions = Array.isArray(aiResponse) ? aiResponse : JSON.parse(String(aiResponse).replace(/```json|```/g, '').trim());
-        if (!questions || !questions.length) throw new Error('No questions returned');
-
-        openInterviewSession(labelMap[type] || 'Mock Interview', questions);
-    } catch (e) {
-        console.error('Mock interview generation failed:', e);
-        showAIError('Could not generate interview questions. Please try again.', renderInterviewHub);
-    }
+    setTimeout(() => {
+        try {
+            let questions = [];
+            if (type === 'hr' || type === 'behavioral' || type === 'company') {
+                questions = getBehavioralQuestions("your dream company", 5);
+            } else {
+                questions = [
+                    "Explain the concept of Object-Oriented Programming (OOP).",
+                    "What is the difference between an Array and a Linked List?",
+                    "How does garbage collection work in modern languages?",
+                    "Explain a project where you solved a complex technical problem.",
+                    "What are the ACID properties in database management?"
+                ];
+            }
+            openInterviewSession(labelMap[type] || 'Mock Interview', questions, type);
+        } catch (e) {
+            console.error('Mock interview generation failed:', e);
+            alert('Could not start the simulated interview. Please try again.');
+            renderInterviewHub();
+        }
+    }, 400);
 }
 
-function openInterviewSession(title, questions) {
+let webcamStream = null;
+
+function openInterviewSession(title, questions, type = "technical") {
     interviewState.active = true;
     interviewState.company = title;
     interviewState.questions = questions;
@@ -3572,10 +3494,30 @@ function openInterviewSession(title, questions) {
         interviewState.timer += 1;
         const minutes = String(Math.floor(interviewState.timer / 60)).padStart(2, '0');
         const seconds = String(interviewState.timer % 60).padStart(2, '0');
-        const timerText = `🕒 ${minutes}:${seconds}`;
+        const timerText = `ðŸ•’ ${minutes}:${seconds}`;
         const timerElement = document.getElementById('int-timer');
         if (timerElement) timerElement.innerText = timerText;
     }, 1000);
+
+    // Setup Webcam for HR / Behavioral Simulation
+    const videoElem = document.getElementById('interview-webcam');
+    if (videoElem) {
+        if (type === 'hr' || type === 'behavioral' || type === 'company') {
+            videoElem.style.display = 'block';
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                .then(stream => {
+                    webcamStream = stream;
+                    videoElem.srcObject = stream;
+                })
+                .catch(err => {
+                    console.error("Camera access denied or unavilable: ", err);
+                    showToast("No camera detected for HR simulation.");
+                    videoElem.style.display = 'none';
+                });
+        } else {
+            videoElem.style.display = 'none';
+        }
+    }
 }
 
 async function launchOTSim() {
@@ -3620,7 +3562,7 @@ async function evaluateGDPoint() {
                 <div style="font-size:11px; font-weight:700; color:var(--text); margin-bottom:8px;">REFINED VERSION</div>
                 <div style="font-size:13px; font-style:italic; color:#0ed97a; margin-bottom:16px;">"${data.refined_version || '...'}"</div>
                 <div style="display:flex; flex-direction:column; gap:8px;">
-                    ${(data.tips || []).map(tip => `<div style="font-size:11px; color:var(--text-muted);">🎯 ${tip}</div>`).join('')}
+                    ${(data.tips || []).map(tip => `<div style="font-size:11px; color:var(--text-muted);">ðŸŽ¯ ${tip}</div>`).join('')}
                 </div>
             </div>
         `;
@@ -3642,26 +3584,26 @@ async function renderSoftSkillsHub() {
         <div class="grid-cols-2" style="gap:24px;">
             <!-- HR Question Bank -->
             <div class="glass-card" style="padding:28px;">
-                <h3 style="margin-bottom:16px;">💡 HR Answer Evaluator</h3>
+                <h3 style="margin-bottom:16px;">ðŸ’¡ HR Answer Evaluator</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Submit your answers to common HR questions for AI scoring and refinement.</p>
                 <div style="margin-bottom:16px;">
-                    <select id="hr-q-select" style="width:100%; border-radius:8px; padding:8px; font-size:12px;">
+                    <select id="hr-q-select" style="width:100%; border-radius:8px; padding:8px; font-size:12px; background:var(--surface-light); color:var(--text); border:1px solid var(--border); outline:none;">
                         <option value="Tell me about yourself">"Tell me about yourself"</option>
                         <option value="What are your strengths?">"What are your strengths?"</option>
                         <option value="Why should we hire you?">"Why should we hire you?"</option>
                         <option value="Describe a difficult situation.">"Describe a difficult situation (STAR method)"</option>
                     </select>
                 </div>
-                <textarea id="hr-answer-input" style="width:100%; height:100px; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:12px; color:#fff; padding:12px; font-size:13px; margin-bottom:16px; outline:none;" placeholder="Type your answer..."></textarea>
+                <textarea id="hr-answer-input" style="width:100%; height:100px; background:var(--surface-light); border:1px solid var(--border); border-radius:12px; color:var(--text); padding:12px; font-size:13px; margin-bottom:16px; outline:none; font-family:inherit;" placeholder="Type your answer..."></textarea>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="evaluateHRAnswer()">Get AI Feedback</button>
             </div>
 
             <!-- Email Practice -->
             <div class="glass-card" style="padding:28px;">
-                <h3 style="margin-bottom:16px;">📧 Professional Email Grader</h3>
+                <h3 style="margin-bottom:16px;">ðŸ“§ Professional Email Grader</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Write a follow-up or cold email. AI will score it on tone and clarity.</p>
                 <div style="font-size:11px; color:var(--primary); margin-bottom:12px;">Scenario: Follow-up after interview</div>
-                <textarea id="email-input" style="width:100%; height:150px; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:12px; color:#fff; padding:12px; font-size:13px; margin-bottom:16px; outline:none;" placeholder="Subject: ...\n\nDear Hiring Manager..."></textarea>
+                <textarea id="email-input" style="width:100%; height:150px; background:var(--surface-light); border:1px solid var(--border); border-radius:12px; color:var(--text); padding:12px; font-size:13px; margin-bottom:16px; outline:none; font-family:inherit;" placeholder="Subject: ...\n\nDear Hiring Manager..."></textarea>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="gradeEmail()">Grade Email</button>
             </div>
         </div>
@@ -3721,7 +3663,7 @@ async function gradeEmail() {
             <div class="glass-card" style="padding:24px; border-left:4px solid var(--secondary);">
                 <h3 style="margin-bottom:16px;">Email Score: ${data.score || '8'}/10</h3>
                 <div style="display:flex; flex-direction:column; gap:12px;">
-                    ${(data.tips || []).map(tip => `<div style="font-size:13px;">✅ ${tip}</div>`).join('')}
+                    ${(data.tips || []).map(tip => `<div style="font-size:13px;">âœ… ${tip}</div>`).join('')}
                 </div>
             </div>
         `;
@@ -3741,15 +3683,15 @@ async function renderDocumentsHub() {
         </div>
         <div class="grid-cols-2" style="gap:24px;">
             <div class="glass-card" style="padding:28px;">
-                <h3 style="margin-bottom:16px;">📄 AI Resume Builder</h3>
+                <h3 style="margin-bottom:16px;">ðŸ“„ AI Resume Builder</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Generates a high-impact resume using your CodeConfidence profile.</p>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="generateAIResume()">Generate Resume</button>
             </div>
             <div class="glass-card" style="padding:28px;">
-                <h3 style="margin-bottom:16px;">✍️ Cover Letter Generator</h3>
+                <h3 style="margin-bottom:16px;">âœï¸ Cover Letter Generator</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Tailor your cover letter for specific roles.</p>
-                <input id="cl-company" style="width:100%; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:8px; color:#fff; padding:10px; font-size:12px; margin-bottom:12px; outline:none;" placeholder="Company Name">
-                <input id="cl-role" style="width:100%; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:8px; color:#fff; padding:10px; font-size:12px; margin-bottom:20px; outline:none;" placeholder="Role">
+                <input id="cl-company" style="width:100%; background:var(--surface-light); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:10px; font-size:12px; margin-bottom:12px; outline:none; font-family:inherit;" placeholder="Company Name">
+                <input id="cl-role" style="width:100%; background:var(--surface-light); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:10px; font-size:12px; margin-bottom:20px; outline:none; font-family:inherit;" placeholder="Role">
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="generateCoverLetter()">Generate Letter</button>
             </div>
         </div>
@@ -3799,13 +3741,13 @@ async function generateAIResume() {
             </div>
         `;
         updateXP(50);
-        showToast("🎓 AI Resume Generated!");
+        showToast("ðŸŽ“ AI Resume Generated!");
     } catch (e) {
         console.error(e);
         showAIError("AI Resume generation failed due to rate limits or connection issue.", () => {
             area.innerHTML = `
                 <div style="padding:40px; text-align:center;">
-                    <button class="btn-gold" style="margin:0 auto;" onclick="generateAIResume()">🔄 Retry Resume Build</button>
+                    <button class="btn-gold" style="margin:0 auto;" onclick="generateAIResume()">ðŸ”„ Retry Resume Build</button>
                 </div>
             `;
         });
@@ -3845,788 +3787,10 @@ async function generateCoverLetter() {
             </div>
         `;
         updateXP(30);
-        showToast("📧 AI Cover Letter Created!");
+        showToast("ðŸ“§ AI Cover Letter Created!");
     } catch (e) {
         console.error(e);
         showAIError("Failed to generate cover letter.", renderDocumentsHub);
     }
 }
 
-async function renderAptitudeHub() {
-    const container = document.getElementById('career-tab-content');
-    const apt = JSON.parse(localStorage.getItem('cc_aptitude') || '{"quant":{"avgScore":0},"logical":{"avgScore":0},"verbal":{"avgScore":0}}');
-
-    const quantScore = apt.quant?.avgScore || Math.floor(Math.random() * 100);
-    const logScore = apt.logical?.avgScore || Math.floor(Math.random() * 100);
-    const verScore = apt.verbal?.avgScore || Math.floor(Math.random() * 100);
-    const totalQs = (apt.quant?.practicedCount || 0) + (apt.logical?.practicedCount || 0) + (apt.verbal?.practicedCount || 0);
-
-    container.innerHTML = `
-        <div style="margin-bottom:24px;">
-            <h2 style="font-size:20px; margin-bottom:16px; font-weight:700;">Aptitude Mastery Hub</h2>
-            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px;">
-                <div style="background:#1e1e26; padding:20px; border-radius:12px; text-align:center;">
-                    <div style="font-size:11px; color:#888; margin-bottom:8px;">QUANT SCORE</div>
-                    <div style="font-size:32px; font-weight:700; color:#f0b429; font-family:'JetBrains Mono';">${quantScore}%</div>
-                </div>
-                <div style="background:#1e1e26; padding:20px; border-radius:12px; text-align:center;">
-                    <div style="font-size:11px; color:#888; margin-bottom:8px;">LOGICAL SCORE</div>
-                    <div style="font-size:32px; font-weight:700; color:#4a8ff7; font-family:'JetBrains Mono';">${logScore}%</div>
-                </div>
-                <div style="background:#1e1e26; padding:20px; border-radius:12px; text-align:center;">
-                    <div style="font-size:11px; color:#888; margin-bottom:8px;">VERBAL SCORE</div>
-                    <div style="font-size:32px; font-weight:700; color:#9b7cf8; font-family:'JetBrains Mono';">${verScore}%</div>
-                </div>
-                <div style="background:#1e1e26; padding:20px; border-radius:12px; text-align:center;">
-                    <div style="font-size:11px; color:#888; margin-bottom:8px;">TOTAL Qs</div>
-                    <div style="font-size:32px; font-weight:700; color:#0ed97a; font-family:'JetBrains Mono';">${totalQs}</div>
-                </div>
-            </div>
-
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:32px;">
-                ${renderAptitudeCard('🧮 Quantitative', '#f0b429', quantScore, ['Algebra', 'Geometry', '+8 more'])}
-                ${renderAptitudeCard('🔷 Logical Reasoning', '#4a8ff7', logScore, ['Patterns', 'Series', '+6 more'])}
-                ${renderAptitudeCard('📝 Verbal Ability', '#9b7cf8', verScore, ['Vocab', 'Reading', '+4 more'])}
-            </div>
-
-            <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px;">
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-                    <div>
-                        <div style="font-size:14px; font-weight:700;">⏱️ Timed Test Mode</div>
-                        <div style="font-size:12px; color:#888; margin-top:4px;">20 mixed questions • 30-minute countdown</div>
-                    </div>
-                    <button onclick="startTimedAptitudeTest()" style="background:#f0b429; color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:700; cursor:pointer; font-size:12px;">Start Timed Test</button>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-function renderAptitudeCard(title, color, score, tags) {
-    return `
-        <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden;">
-            <div style="height:3px; background:${color}; border-radius:12px 12px 0 0;"></div>
-            <div style="padding:20px 22px;">
-                <div style="font-size:14px; font-weight:700; margin-bottom:12px;">${title}</div>
-                <div style="margin-bottom:16px;">
-                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:6px; color:#888;">
-                        <span>Progress</span>
-                        <span style="font-family:'JetBrains Mono'; color:${color}; font-weight:700;">${score}%</span>
-                    </div>
-                    <div style="height:5px; background:rgba(255,255,255,0.07); border-radius:10px; overflow:hidden;">
-                        <div style="height:100%; width:${score}%; background:${color};"></div>
-                    </div>
-                </div>
-                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px;">
-                    ${tags.slice(0, 2).map(t => `<span style="font-size:11px; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:6px; color:#888;">${t}</span>`).join('')}
-                    ${tags.length > 2 ? `<span style="font-size:11px; background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:6px; color:#888;">${tags[2]}</span>` : ''}
-                </div>
-                <button onclick="genAptitudeQuestions('${title.split(' ')[1]}')" style="width:100%; background:${color}; color:#000; border:none; padding:8px; border-radius:6px; font-weight:700; cursor:pointer; font-size:11px;">Practice Now</button>
-            </div>
-        </div>
-    `;
-}
-
-async function startTimedAptitudeTest() {
-    showToast('⏳ Calling AI to generate 20 mixed aptitude questions...');
-    try {
-        const prompt = "Generate exactly 20 multiple-choice aptitude questions mixing Quantitative Reasoning, Logical Reasoning, and Verbal Ability. Format: JSON array with {question, options: [A,B,C,D], correct: 'A'} for each. Ensure varied difficulty.";
-        const response = await callGemini("You are an aptitude test generator for placement prep.", prompt, 3000, false);
-
-        if (!response) throw new Error("Failed to generate questions");
-
-        // Parse JSON from response
-        const questions = JSON.parse(response);
-        state.timedTest = { questions, startTime: Date.now(), duration: 30 * 60 * 1000, answers: [] };
-
-        const container = document.getElementById('career-tab-content');
-        renderTimedTestUI();
-        showToast('✅ Test started! 30 minutes on the clock.');
-        updateXP(50);
-    } catch (e) {
-        console.error(e);
-        showAIError("Test generation failed", () => startTimedAptitudeTest());
-    }
-}
-
-function renderTimedTestUI() {
-    const test = state.timedTest;
-    const elapsed = Date.now() - test.startTime;
-    const remaining = Math.max(0, test.duration - elapsed);
-    const mins = Math.floor(remaining / 60000);
-    const secs = Math.floor((remaining % 60000) / 1000);
-
-    const container = document.getElementById('career-tab-content');
-    const qIndex = state.timedTest.answers.length;
-    const q = test.questions[qIndex];
-
-    if (qIndex >= test.questions.length) {
-        container.innerHTML = `<div style="text-align:center; padding:40px;"><div style="font-size:48px; margin-bottom:16px;">🎉</div><h2>Test Complete!</h2><p>You scored ${state.timedTest.answers.filter((a, i) => a === test.questions[i].correct).length}/${test.questions.length}</p></div>`;
-        return;
-    }
-
-    container.innerHTML = `
-        <div style="max-width:800px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-                <div style="font-size:14px;"><strong>Question ${qIndex + 1}/${test.questions.length}</strong></div>
-                <div style="font-size:20px; font-weight:700; color:${remaining < 5 * 60 * 1000 ? '#ff6b6b' : '#f0b429'};">${mins}:${String(secs).padStart(2, '0')}</div>
-            </div>
-            <div style="margin-bottom:20px;">
-                <div style="font-size:16px; font-weight:700; margin-bottom:16px;">${q.question}</div>
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    ${q.options.map((opt, i) => `
-                        <button onclick="submitTestAnswer('${String.fromCharCode(65 + i)}')" style="text-align:left; padding:12px 16px; background:#16161c; border:1px solid rgba(255,255,255,0.08); border-radius:8px; color:#fff; cursor:pointer; font-size:14px; transition:all 0.2s;">
-                            <strong>${String.fromCharCode(65 + i)}.</strong> ${opt}
-                        </button>
-                    `).join('')}
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-function submitTestAnswer(choice) {
-    state.timedTest.answers.push(choice);
-    renderTimedTestUI();
-}
-
-async function renderMockInterviewHub() {
-    const container = document.getElementById('career-tab-content');
-
-    container.innerHTML = `
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-            <!-- LEFT: Setup Panel -->
-            <div>
-                <h2 style="font-size:18px; font-weight:700; margin-bottom:20px;">Interview Setup</h2>
-                
-                <!-- Step 1: Company Selection -->
-                <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px; margin-bottom:20px;">
-                    <div style="font-size:12px; color:#888; font-weight:700; margin-bottom:12px;">STEP 1: COMPANY</div>
-                    <div id="company-grid" style="display:grid; grid-template-columns:2fr 2fr; gap:8px;">
-                        ${['TCS', 'Infosys', 'Capgemini', 'Deloitte', 'Wipro', 'LTIMindtree'].map(c => `
-                            <button onclick="selectMockCompany('${c}')" style="padding:10px; background:#1a1a2e; border:1px solid #888; border-radius:8px; color:#fff; cursor:pointer; font-size:11px; transition:all 0.2s;" id="mock-co-${c}">${c}</button>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <!-- Step 2: Interview Type -->
-                <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px; margin-bottom:20px;">
-                    <div style="font-size:12px; color:#888; font-weight:700; margin-bottom:12px;">STEP 2: ROUND</div>
-                    <div style="display:flex; gap:8px;">
-                        <button onclick="selectMockRound('technical')" id="mock-round-technical" style="flex:1; padding:10px; background:#1a1a2e; border:1px solid #888; border-radius:8px; color:#fff; cursor:pointer; font-size:11px; font-weight:700; transition:all 0.2s;">💻 Technical</button>
-                        <button onclick="selectMockRound('hr')" id="mock-round-hr" style="flex:1; padding:10px; background:#1a1a2e; border:1px solid #888; border-radius:8px; color:#fff; cursor:pointer; font-size:11px; font-weight:700; transition:all 0.2s;">👔 HR</button>
-                    </div>
-                </div>
-
-                <!-- Step 3: Difficulty -->
-                <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px;">
-                    <div style="font-size:12px; color:#888; font-weight:700; margin-bottom:12px;">STEP 3: DIFFICULTY</div>
-                    <div style="display:flex; gap:8px;">
-                        <button onclick="selectMockDifficulty('easy')" id="mock-diff-easy" style="flex:1; padding:8px; background:#0ed97a; color:#000; border:none; border-radius:8px; cursor:pointer; font-size:11px; font-weight:700;">Easy</button>
-                        <button onclick="selectMockDifficulty('medium')" id="mock-diff-medium" style="flex:1; padding:8px; background:#1a1a2e; border:1px solid #888; border-radius:8px; color:#fff; cursor:pointer; font-size:11px; font-weight:700;">Medium</button>
-                        <button onclick="selectMockDifficulty('hard')" id="mock-diff-hard" style="flex:1; padding:8px; background:#1a1a2e; border:1px solid #888; border-radius:8px; color:#fff; cursor:pointer; font-size:11px; font-weight:700;">Hard</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RIGHT: Confirm & Launch -->
-            <div>
-                <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:24px; sticky; top:24px;">
-                    <div style="font-size:14px; font-weight:700; margin-bottom:20px;">Interview Summary</div>
-                    <div style="background:#1a1a2e; padding:16px; border-radius:8px; margin-bottom:20px; font-size:13px;">
-                        <div style="display:flex; gap:8px; margin-bottom:10px;">
-                            <span>🏢</span>
-                            <strong id="mock-summary-co">Select Company</strong>
-                        </div>
-                        <div style="display:flex; gap:8px; margin-bottom:10px;">
-                            <span>📋</span>
-                            <strong id="mock-summary-round">Select Round</strong> · <span id="mock-summary-diff">Select Difficulty</span>
-                        </div>
-                        <div style="display:flex; gap:8px;">
-                            <span>⏱️</span>
-                            <strong id="mock-summary-meta">6 questions · Est. 25 min · +80 XP</strong>
-                        </div>
-                    </div>
-                    <button onclick="launchMockInterview()" style="width:100%; background:#4a8ff7; color:#fff; border:none; padding:12px; border-radius:8px; font-weight:700; cursor:pointer; font-size:12px;">Start Interview →</button>
-                </div>
-
-                <div style="margin-top:24px;">
-                    <h3 style="font-size:14px; font-weight:700; margin-bottom:12px;">Recent Sessions</h3>
-                    <div id="recent-sessions" style="display:flex; flex-direction:column; gap:12px; max-height:300px; overflow-y:auto;">
-                        <p style="color:#888; font-size:12px;">No sessions yet. Start one to see history.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    state.mockInterview = { company: null, round: null, difficulty: 'easy' };
-}
-
-function selectMockCompany(co) {
-    state.mockInterview.company = co;
-    document.querySelectorAll('#company-grid button').forEach(b => b.style.background = '#1a1a2e');
-    document.getElementById(`mock-co-${co}`).style.background = '#4a8ff7';
-    document.getElementById(`mock-co-${co}`).style.borderColor = '#4a8ff7';
-    updateMockSummary();
-}
-
-function selectMockRound(round) {
-    state.mockInterview.round = round;
-    ['technical', 'hr'].forEach(r => {
-        const el = document.getElementById(`mock-round-${r}`);
-        const color = round === r ? '#4a8ff7' : '#888';
-        el.style.borderColor = color;
-    });
-    updateMockSummary();
-}
-
-function selectMockDifficulty(diff) {
-    state.mockInterview.difficulty = diff;
-    const colors = { easy: '#0ed97a', medium: '#f0b429', hard: '#ff6b6b' };
-    ['easy', 'medium', 'hard'].forEach(d => {
-        const el = document.getElementById(`mock-diff-${d}`);
-        el.style.background = diff === d ? colors[d] : '#1a1a2e';
-        el.style.color = diff === d ? '#000' : '#fff';
-        el.style.borderColor = diff === d ? colors[d] : '#888';
-    });
-    updateMockSummary();
-}
-
-function updateMockSummary() {
-    const cfg = state.mockInterview;
-    document.getElementById('mock-summary-co').textContent = cfg.company || 'Select Company';
-    document.getElementById('mock-summary-round').textContent = (cfg.round || 'Select Round').toUpperCase();
-    document.getElementById('mock-summary-diff').textContent = cfg.difficulty?.toUpperCase();
-}
-
-async function launchMockInterview() {
-    const cfg = state.mockInterview;
-    if (!cfg.company || !cfg.round) return showToast('❌ Please select company and round first');
-
-    showToast('🎬 Generating interview questions...');
-    try {
-        const prompt = `Generate 6 ${cfg.difficulty} level ${cfg.round} round interview questions for ${cfg.company}. Format as JSON: [{question: "", followUp: ""}, ...]. Make them realistic and company-specific.`;
-        const json = await callGemini("You are a placement interview expert preparing students.", prompt, 2000, false);
-        if (!json) throw new Error("Generation failed");
-
-        state.mockInterview.questions = JSON.parse(json);
-        state.mockInterview.currentQ = 0;
-        state.mockInterview.answers = [];
-        state.mockInterview.sessionStart = Date.now();
-
-        renderMockInterviewSession();
-        updateXP(40);
-    } catch (e) {
-        console.error(e);
-        showAIError("Failed to launch interview", launchMockInterview);
-    }
-}
-
-function renderMockInterviewSession() {
-    const cfg = state.mockInterview;
-    const q = cfg.questions[cfg.currentQ];
-    const container = document.getElementById('career-tab-content');
-
-    container.innerHTML = `
-        <div style="max-width:900px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:24px;">
-                <div><strong>Q${cfg.currentQ + 1}/${cfg.questions.length}</strong></div>
-                <button onclick="switchCareerTab('mock')" style="background:none; border:none; color:#888; cursor:pointer; font-size:12px;">← Back</button>
-            </div>
-            <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:24px; margin-bottom:20px;">
-                <div style="font-size:16px; font-weight:700; margin-bottom:20px;">${q.question}</div>
-                <textarea id="answer-input" placeholder="Your answer (the AI will evaluate)..." style="width:100%; height:120px; background:#0f0f13; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px; color:#fff; font-size:13px; resize:none; outline:none;"></textarea>
-                <div style="margin-top:16px; display:flex; gap:10px;">
-                    <button onclick="submitMockAnswer()" style="flex:1; background:#0ed97a; color:#000; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">Submit Answer</button>
-                    <button onclick="skipMockQuestion()" style="flex:1; background:transparent; border:1px solid #888; color:#fff; padding:10px; border-radius:8px; font-weight:700; cursor:pointer;">Skip</button>
-                </div>
-            </div>
-            ${cfg.currentQ > 0 ? `<div style="font-size:12px; color:#888;">💡 Follow-up: ${cfg.questions[cfg.currentQ - 1].followUp}</div>` : ''}
-        </div>
-    `;
-}
-
-async function submitMockAnswer() {
-    const answer = document.getElementById('answer-input')?.value;
-    if (!answer?.trim()) return showToast('Please type an answer first');
-
-    state.mockInterview.answers.push(answer);
-
-    if (state.mockInterview.currentQ + 1 < state.mockInterview.questions.length) {
-        state.mockInterview.currentQ++;
-        renderMockInterviewSession();
-    } else {
-        finalizeMockInterview();
-    }
-}
-
-function skipMockQuestion() {
-    state.mockInterview.answers.push('(skipped)');
-    if (state.mockInterview.currentQ + 1 < state.mockInterview.questions.length) {
-        state.mockInterview.currentQ++;
-        renderMockInterviewSession();
-    } else {
-        finalizeMockInterview();
-    }
-}
-
-async function finalizeMockInterview() {
-    showToast('🤖 AI is evaluating your interview...');
-    try {
-        const cfg = state.mockInterview;
-        const q_a_pairs = cfg.questions.map((q, i) => `Q: ${q.question}\nA: ${cfg.answers[i]}`).join('\n\n');
-        const evalPrompt = `Evaluate this ${cfg.round} interview performance for ${cfg.company}. Score 0-100. Format: {score: N, feedback: "...", strengths: [...], improvements: [...]}.\n\n${q_a_pairs}`;
-
-        const evaluation = await callGemini("You are calibrating an interview scorer.", evalPrompt, 1500, false);
-        if (!evaluation) throw new Error("Evaluation failed");
-
-        const result = JSON.parse(evaluation);
-
-        // Save session
-        const sessions = JSON.parse(localStorage.getItem('cc_mock_sessions') || '[]');
-        sessions.push({
-            company: cfg.company,
-            round: cfg.round,
-            score: result.score,
-            date: new Date().toLocaleDateString(),
-            feedback: result.feedback
-        });
-        localStorage.setItem('cc_mock_sessions', JSON.stringify(sessions));
-
-        const container = document.getElementById('career-tab-content');
-        container.innerHTML = `
-            <div style="text-align:center; padding:40px;">
-                <div style="font-size:48px; margin-bottom:16px;">${result.score >= 70 ? '🎉' : result.score >= 50 ? '👍' : '💪'}</div>
-                <h2>Score: ${result.score}/100</h2>
-                <p>${result.feedback}</p>
-                <button onclick="switchCareerTab('mock')" style="margin-top:20px; background:#4a8ff7; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Try Another</button>
-            </div>
-        `;
-
-        updateXP(60);
-    } catch (e) {
-        console.error(e);
-        showAIError("Evaluation failed", finalizeMockInterview);
-    }
-}
-
-async function renderFundamentalsHub() {
-    const container = document.getElementById('career-tab-content');
-    const db = JSON.parse(localStorage.getItem('cc_database') || '{}');
-
-    const topics = [
-        { name: 'SQL', icon: '🔵', score: db.sql?.topicScores || 0, color: '#4a8ff7' },
-        { name: 'DBMS', icon: '🛢️', score: Math.floor(Math.random() * 100), color: '#f0b429' },
-        { name: 'OOP', icon: '🎯', score: db.oop?.topicScores || 0, color: '#9b7cf8' },
-        { name: 'OS', icon: '⚙️', score: db.os?.topicScores || 0, color: '#26d9c7' },
-        { name: 'Networks', icon: '🌐', score: db.cn?.topicScores || 0, color: '#0ed97a' },
-        { name: 'MongoDB', icon: '🗄️', score: db.nosql?.topicScores || 0, color: '#ff6b6b' }
-    ];
-
-    container.innerHTML = `
-        <h2 style="font-size:20px; font-weight:700; margin-bottom:20px;">CS Fundamentals Bootcamp</h2>
-        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
-            ${topics.map(t => {
-        const statusColor = t.score >= 70 ? '#0ed97a' : t.score >= 40 ? '#f0b429' : '#ff6b6b';
-        const statusText = t.score >= 70 ? 'Good' : t.score >= 40 ? 'Weak' : 'Critical';
-        return `
-                    <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden;">
-                        <div style="height:3px; background:${t.color};"></div>
-                        <div style="padding:20px 22px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                                <div style="font-size:14px; font-weight:700;">${t.icon} ${t.name}</div>
-                                <span style="font-size:10px; background:rgba(${statusColor === '#0ed97a' ? '14,217,122' : statusColor === '#f0b429' ? '240,180,41' : '255,107,107'},0.1); color:${statusColor}; padding:2px 6px; border-radius:4px; font-weight:700;">${statusText}</span>
-                            </div>
-                            <div style="margin-bottom:12px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10px; color:#888; margin-bottom:6px;">
-                                    <span>Progress</span>
-                                    <span style="font-family:'JetBrains Mono';">${t.score}%</span>
-                                </div>
-                                <div style="height:5px; background:rgba(255,255,255,0.07); border-radius:10px; overflow:hidden;">
-                                    <div style="height:100%; width:${t.score}%; background:${statusColor};"></div>
-                                </div>
-                            </div>
-                            <p style="font-size:11px; color:#888; margin-bottom:14px;">Master core ${t.name} concepts and interview Q&A</p>
-                            <button onclick="genFundamentalQuestions('${t.name}')" style="width:100%; background:${t.color}; color:#000; border:none; padding:8px; border-radius:6px; font-weight:700; cursor:pointer; font-size:11px;">Practice</button>
-                        </div>
-                    </div>
-                `;
-    }).join('')}
-        </div>
-    `;
-}
-
-async function renderSoftSkillsHub() {
-    const container = document.getElementById('career-tab-content');
-
-    container.innerHTML = `
-        <h2 style="font-size:20px; font-weight:700; margin-bottom:20px;">Soft Skills Mastery</h2>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-            <!-- LEFT: HR Questions -->
-            <div>
-                <h3 style="font-size:14px; font-weight:700; margin-bottom:12px;">HR Interview Prep</h3>
-                <div style="display:flex; flex-direction:column; gap:12px;">
-                    ${['Tell me about yourself', 'Why this company?', 'Strengths & weaknesses'].map(q => `
-                        <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px 16px; display:flex; justify-content:space-between; align-items:center;">
-                            <div style="font-size:12px;">${q}</div>
-                            <button onclick="practiceHRQuestion('${q}')" style="background:#9b7cf8; color:#fff; border:none; padding:6px 12px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;">Practice</button>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-
-            <!-- RIGHT: GD + Vocab -->
-            <div>
-                <h3 style="font-size:14px; font-weight:700; margin-bottom:12px;">Communication Hub</h3>
-                <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px; margin-bottom:12px;">
-                    <div style="font-size:11px; color:#888; margin-bottom:8px;">TODAY'S GD TOPIC</div>
-                    <div style="font-size:14px; font-weight:700; margin-bottom:12px;">AI in Healthcare Ethics</div>
-                    <button onclick="startGDSimulation()" style="width:100%; background:#26d9c7; color:#000; border:none; padding:8px; border-radius:6px; font-weight:700; cursor:pointer; font-size:11px;">Start GD Simulation</button>
-                </div>
-                <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px;">
-                    <div style="font-size:11px; color:#888; margin-bottom:8px;">DAILY VOCABULARY</div>
-                    <div style="font-size:14px; font-weight:700; margin-bottom:4px;" id="vocab-word">Loading...</div>
-                    <div style="font-size:12px; color:#888; margin-bottom:12px;" id="vocab-meaning">Fetching meaning...</div>
-                    <button onclick="nextVocabularyWord()" style="width:100%; background:#f0b429; color:#000; border:none; padding:8px; border-radius:6px; font-weight:700; cursor:pointer; font-size:11px;">Next Word</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-    loadDailyVocab();
-}
-
-async function loadDailyVocab() {
-    try {
-        const prompt = "Generate a professional vocabulary word suitable for interview prep. JSON: {word, pronunciation, meaning}. Example: {word: 'Paradigm', pronunciation: 'PAIR-uh-dime', meaning: 'A typical example or pattern of something'}";
-        const response = await callGemini("You are a vocabulary building assistant for interviews.", prompt, 800, false);
-        if (response) {
-            const vocab = JSON.parse(response);
-            document.getElementById('vocab-word').textContent = vocab.word;
-            document.getElementById('vocab-meaning').textContent = vocab.meaning + ` (${vocab.pronunciation})`;
-        }
-    } catch (e) {
-        document.getElementById('vocab-word').textContent = 'Paradigm';
-        document.getElementById('vocab-meaning').textContent = 'A typical example or pattern';
-    }
-}
-
-async function renderDocumentsHub() {
-    const container = document.getElementById('career-tab-content');
-    const docs = JSON.parse(localStorage.getItem('cc_documents') || '{}');
-
-    container.innerHTML = `
-        <h2 style="font-size:20px; font-weight:700; margin-bottom:20px;">Professional Documents</h2>
-        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
-            <!-- Resume Card -->
-            <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <div style="font-size:14px; font-weight:700;">📄 Resume</div>
-                    <span style="font-size:11px; background:rgba(240,180,41,0.1); color:#f0b429; padding:2px 8px; border-radius:4px; font-weight:700;">${docs.resume?.score || 0}/100</span>
-                </div>
-                <div style="margin-bottom:12px;">
-                    <div style="height:5px; background:rgba(255,255,255,0.07); border-radius:10px; overflow:hidden;">
-                        <div style="height:100%; width:${docs.resume?.score || 0}%; background:#f0b429;"></div>
-                    </div>
-                </div>
-                <p style="font-size:11px; color:#888; margin-bottom:12px;">Missing: Keywords, Action verbs</p>
-                <div style="display:flex; gap:8px;">
-                    <button onclick="analyzeResume()" style="flex:1; background:#f0b429; color:#000; border:none; padding:8px; border-radius:4px; font-weight:700; cursor:pointer; font-size:10px;">Analyze</button>
-                    <button onclick="generateResume()" style="flex:1; background:#9b7cf8; color:#fff; border:none; padding:8px; border-radius:4px; font-weight:700; cursor:pointer; font-size:10px;">Generate</button>
-                </div>
-            </div>
-
-            <!-- Cover Letter Card -->
-            <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px;">
-                <div style="font-size:14px; font-weight:700; margin-bottom:12px;">📧 Cover Letter</div>
-                <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
-                    ${['TCS', 'Capgemini', 'Accenture'].map(c => `
-                        <button onclick="selectCoverLetterCompany('${c}')" style="background:${state.covLetterCompany === c ? '#4a8ff7' : '#1a1a2e'}; color:#fff; border:1px solid ${state.covLetterCompany === c ? '#4a8ff7' : '#888'}; padding:6px 10px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700;">${c}</button>
-                    `).join('')}
-                </div>
-                <button onclick="generateCoverLetter()" style="width:100%; background:#4a8ff7; color:#fff; border:none; padding:8px; border-radius:4px; font-weight:700; cursor:pointer; font-size:10px;">Generate Letter</button>
-            </div>
-
-            <!-- LinkedIn Card -->
-            <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px;">
-                <div style="font-size:14px; font-weight:700; margin-bottom:12px;">💼 LinkedIn</div>
-                <div style="font-size:11px; color:#888; margin-bottom:12px; line-height:1.4="">Full-stack Developer | AI Enthusiast | DSC Bengaluru</div>
-                <button onclick="optimizeLinkedIn()" style="width:100%; background:#26d9c7; color:#000; border:none; padding:8px; border-radius:4px; font-weight:700; cursor:pointer; font-size:10px;">Optimize Profile</button>
-            </div>
-        </div>
-    `;
-
-    state.covLetterCompany = state.covLetterCompany || 'TCS';
-}
-
-async function renderPlacementAnalytics() {
-    const container = document.getElementById('career-tab-content');
-    const metrics = calculateCareerMetrics();
-    const placement = JSON.parse(localStorage.getItem('cc_placement') || '{}');
-
-    container.innerHTML = `
-        <h2 style="font-size:20px; font-weight:700; margin-bottom:20px;">Readiness Score</h2>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-            <!-- LEFT: Ring Chart + Company Readiness -->
-            <div>
-                <div style="text-align:center; margin-bottom:24px;">
-                    <svg width="200" height="200" viewBox="0 0 200 200" style="transform:rotate(-90deg);">
-                        <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12"/>
-                        <circle cx="100" cy="100" r="80" fill="none" stroke="#f0b429" stroke-width="12" stroke-dasharray="${metrics.readiness * 5.02} 502" stroke-linecap="round"/>
-                    </svg>
-                    <div style="position:relative; top:-140px; font-size:32px; font-weight:700; color:#f0b429;">${metrics.readiness}%</div>
-                    <div style="position:relative; top:-120px; font-size:12px; color:#888;">Developing</div>
-                </div>
-
-                <div style="margin-top:20px;">
-                    <h3 style="font-size:12px; color:#888; font-weight:700; margin-bottom:12px;">COMPANY READINESS</h3>
-                    ${['TCS', 'Infosys', 'Capgemini', 'Deloitte', 'Wipro'].map((c, i) => {
-        const score = 40 + (i * 10);
-        const color = score >= 65 ? '#0ed97a' : score >= 45 ? '#f0b429' : '#ff6b6b';
-        return `
-                            <div style="margin-bottom:12px;">
-                                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;">
-                                    <span>${c}</span>
-                                    <span style="font-weight:700; color:${color};">${score}%</span>
-                                </div>
-                                <div style="height:4px; background:rgba(255,255,255,0.07); border-radius:10px; overflow:hidden;">
-                                    <div style="height:100%; width:${score}%; background:${color};"></div>
-                                </div>
-                            </div>
-                        `;
-    }).join('')}
-                </div>
-            </div>
-
-            <!-- RIGHT: Breakdown + Insight -->
-            <div>
-                <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px 22px; margin-bottom:20px;">
-                    <h3 style="font-size:12px; color:#888; font-weight:700; margin-bottom:16px;">SCORE BREAKDOWN</h3>
-                    ${['Coding', 'Aptitude', 'Database', 'CS Theory', 'Communication', 'Resume'].map((cat, i) => {
-        const score = 35 + (i * 8);
-        return `
-                            <div style="margin-bottom:14px;">
-                                <div style="display:flex; justify-content:space-between; font-size:11px; color:#888; margin-bottom:4px;">
-                                    <span>${cat}</span>
-                                    <span style="font-family:'JetBrains Mono'; color:#f0b429;">${score}%</span>
-                                </div>
-                                <div style="height:4px; background:rgba(255,255,255,0.07); border-radius:10px; overflow:hidden;">
-                                    <div style="height:100%; width:${score}%; background:#f0b429;"></div>
-                                </div>
-                            </div>
-                        `;
-    }).join('')}
-                </div>
-
-                <div style="background:#16161c; border:0.5px solid rgba(255,255,255,0.08); border-left:3px solid #f0b429; border-radius:12px; padding:16px 18px;">
-                    <p style="font-size:12px; color:#888; font-style:italic;">💡 Focus on Database concepts — you're 20pts behind TCS requirement</p>
-                </div>
-
-                <button onclick="getAIPlacementPlan()" style="width:100%; margin-top:16px; background:#4a8ff7; color:#fff; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer; font-size:12px;">Get Improvement Plan</button>
-            </div>
-        </div>
-    `;
-}
-
-function calculateCareerMetrics() {
-    const apt = JSON.parse(localStorage.getItem('cc_aptitude') || '{}');
-    const db = JSON.parse(localStorage.getItem('cc_database') || '{}');
-    const docs = JSON.parse(localStorage.getItem('cc_documents') || '{}');
-
-    const readiness = Math.floor((
-        (apt.quant?.avgScore || 0) * 0.15 +
-        (apt.logical?.avgScore || 0) * 0.15 +
-        (apt.verbal?.avgScore || 0) * 0.15 +
-        (db.sql?.topicScores || 0) * 0.20 +
-        (db.oop?.topicScores || 0) * 0.15 +
-        (docs.resume?.score || 0) * 0.20
-    ) / 100 * 100);
-
-    return {
-        readiness: Math.max(10, Math.min(100, readiness)),
-        sectors: {
-            'Aptitude': (apt.quant?.avgScore || 0 + apt.logical?.avgScore || 0 + apt.verbal?.avgScore || 0) / 3,
-            'DSA': 65,
-            'Database': db.sql?.topicScores || 0,
-            'OOP': db.oop?.topicScores || 0,
-            'Communication': 72,
-            'Resume': docs.resume?.score || 0
-        }
-    };
-}
-
-async function genAptitudeQuestions(topic) {
-    showToast(`📚 Generating ${topic} questions...`);
-    try {
-        const prompt = `Generate 5 multiple-choice ${topic} aptitude questions for placement prep. Hard but fair. JSON format: [{question, options: [A,B,C,D], correct: 'A', explanation}]`;
-        const json = await callGemini("You are testing aptitude skills for placement.", prompt, 1500, false);
-        if (!json) throw new Error("Generation failed");
-        const qs = JSON.parse(json);
-
-        const container = document.getElementById('career-tab-content');
-        container.innerHTML = `<div style="padding:40px; text-align:center;"><h2>${topic} Practice</h2><p>AI-generated questions loaded. (UI integration in progress)</p></div>`;
-        showToast('✅ Questions ready!');
-        updateXP(30);
-    } catch (e) {
-        console.error(e);
-        showAIError("Failed to generate questions", () => genAptitudeQuestions(topic));
-    }
-}
-
-async function genFundamentalQuestions(topic) {
-    showToast(`📖 Generating ${topic} fundamentals...`);
-    try {
-        const prompt = `Generate 5 deep-dive ${topic} interview Q&A for systems engineers. JSON: [{question, answer, keyPoints: [...]}]`;
-        const json = await callGemini("You are a CS fundamentals interviewer.", prompt, 1500, false);
-        if (!json) throw new Error("Generation failed");
-        const qs = JSON.parse(json);
-        showToast('✅ Fundamentals loaded!');
-        updateXP(25);
-    } catch (e) {
-        console.error(e);
-        showAIError("Failed to generate", () => genFundamentalQuestions(topic));
-    }
-}
-
-async function practiceHRQuestion(question) {
-    showToast('🎤 Recording your practice answer...');
-    const answer = prompt(`Your answer to: "${question}"`);
-    if (!answer) return;
-
-    try {
-        const evalPrompt = `Evaluate this HR interview answer: Q: "${question}" A: "${answer}". Score 0-100. JSON: {score, feedback, tips: [...]}`;
-        const eval_result = await callGemini("You are an HR coach.", evalPrompt, 1000, false);
-        if (!eval_result) throw new Error("Evaluation failed");
-
-        const result = JSON.parse(eval_result);
-        alert(`Score: ${result.score}/100\n\n${result.feedback}`);
-        updateXP(20);
-    } catch (e) {
-        console.error(e);
-        showAIError("Evaluation failed", () => practiceHRQuestion(question));
-    }
-}
-
-async function analyzeResume() {
-    showToast('🔍 Analyzing your resume...');
-    try {
-        const prompt = "Analyze a resume for tech placement. Check keywords, formatting, impact. JSON: {score, issues: [...], improvements: [...]}";
-        const analysis = await callGemini("You are a resume expert for tech roles.", prompt, 1200, false);
-        if (!analysis) throw new Error("Analysis failed");
-
-        const result = JSON.parse(analysis);
-        alert(`Resume Score: ${result.score}/100\nIssues: ${result.issues.join(', ')}`);
-
-        const docs = JSON.parse(localStorage.getItem('cc_documents') || '{}');
-        docs.resume = { score: result.score, versions: {} };
-        localStorage.setItem('cc_documents', JSON.stringify(docs));
-
-        updateXP(35);
-        renderDocumentsHub();
-    } catch (e) {
-        console.error(e);
-        showAIError("Analysis failed", analyzeResume);
-    }
-}
-
-async function generateResume() {
-    showToast('📝 Generating improved resume...');
-    updateXP(50);
-}
-
-function selectCoverLetterCompany(co) {
-    state.covLetterCompany = co;
-    renderDocumentsHub();
-}
-
-async function generateCoverLetter() {
-    showToast('✉️ Generating cover letter...');
-    updateXP(30);
-}
-
-async function optimizeLinkedIn() {
-    showToast('💼 Optimizing your LinkedIn profile...');
-    updateXP(25);
-}
-
-async function startGDSimulation() {
-    showToast('🎬 Starting GD simulation with AI participants...');
-    updateXP(40);
-}
-
-async function nextVocabularyWord() {
-    await loadDailyVocab();
-}
-
-async function getAIPlacementPlan() {
-    showToast('🎯 Creating personalized improvement plan...');
-    try {
-        const metrics = calculateCareerMetrics();
-        const prompt = `Create a 4-week placement prep plan for a student with readiness ${metrics.readiness}%. Focus on weakest areas. JSON: {week1, week2, week3, week4, dailyGoal}`;
-        const plan = await callGemini("You are a placement coach.", prompt, 1200, false);
-        if (!plan) throw new Error("Plan generation failed");
-
-        const result = JSON.parse(plan);
-        alert(`4-Week Plan:\n${result.week1}\n\nDaily Goal: ${result.dailyGoal}`);
-        updateXP(50);
-    } catch (e) {
-        console.error(e);
-        showAIError("Plan generation failed", getAIPlacementPlan);
-    }
-}
-
-async function callGemini(systemPrompt, userPrompt, maxTokens = 1500, showSpinner = true) {
-    if (!window.__GEMINI_API_KEY__) {
-        showToast('❌ Please configure Gemini API Key in Profile settings');
-        return null;
-    }
-
-    if (!geminiCallTracker.canCall()) {
-        const wait = geminiCallTracker.waitTime();
-        showToast(`⏳ Rate limited. Try again in ${wait}s`);
-        return null;
-    }
-
-    if (showSpinner) showToast('🤖 AI is thinking...');
-
-    try {
-        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + window.__GEMINI_API_KEY__, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                system: { parts: [{ text: systemPrompt }] },
-                contents: { parts: [{ text: userPrompt }] },
-                generationConfig: { maxOutputTokens: maxTokens }
-            })
-        });
-
-        if (!response.ok) throw new Error(`API returned ${response.status}`);
-
-        const data = await response.json();
-        geminiCallTracker.trackCall();
-
-        const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!content) throw new Error("No content in response");
-
-        return content;
-    } catch (e) {
-        console.error('Gemini API Error:', e);
-        showToast('❌ API error. Try again.');
-        return null;
-    }
-}
-
-function showAIError(message, retryFn) {
-    const container = document.getElementById('career-tab-content');
-    container.innerHTML = `
-        <div style="text-align:center; padding:40px;">
-            <div style="font-size:48px; margin-bottom:16px;">⚠️</div>
-            <h2>${message}</h2>
-            <button onclick="retryFunction()" style="margin-top:20px; background:#4a8ff7; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Retry</button>
-        </div>
-    `;
-    window.retryFunction = retryFn;
-}
-
-// End of Logic

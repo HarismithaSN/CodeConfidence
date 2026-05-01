@@ -50,7 +50,7 @@
             --shadow: rgba(0, 0, 0, 0.4);
         }
 
-        :root.light {
+        body.light-theme {
             /* ── LIGHT MODE ── */
             --bg: #f7f6f2;
             --bg2: #ffffff;
@@ -230,116 +230,24 @@
         }
 
         /* ── LIGHT MODE SPECIFIC OVERRIDES ── */
-        :root.light .sidebar,
-        :root.light .sb {
-            background: #1a1916 !important;
-            border-right-color: rgba(255, 255, 255, 0.08) !important;
-        }
 
-        :root.light .sidebar *,
-        :root.light .sb * {
-            --text: #f2f2f8;
-            --text2: rgba(242, 242, 248, 0.6);
-            --text3: rgba(242, 242, 248, 0.3);
-        }
 
-        :root.light .editor-wrap,
-        :root.light .code-area,
-        :root.light .code-ta,
-        :root.light .terminal,
-        :root.light .code-preview {
+        body.light-theme .editor-wrap,
+        body.light-theme .code-area,
+        body.light-theme .code-ta,
+        body.light-theme .terminal,
+        body.light-theme .code-preview {
             background: #1a1916 !important;
             color: #e2e8f0 !important;
         }
 
-        :root.light .term-stdout {
-            color: #a6e3a1 !important;
+        body.light-theme .modal-overlay {
+            background: rgba(0, 0, 0, 0.4);
         }
 
-        :root.light .term-stderr {
-            color: #f38ba8 !important;
-        }
-
-        :root.light .modal-overlay {
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        :root.light .card,
-        :root.light .mc,
-        :root.light .company-card,
-        :root.light .glass-card {
-            box-shadow: 0 1px 3px var(--shadow);
-        }
-
-        :root.light input,
-        :root.light textarea,
-        :root.light select {
-            background: var(--input-bg);
-            color: var(--text);
-            border-color: var(--border2);
-        }
-
-        :root.light input:focus,
-        :root.light textarea:focus {
-            border-color: var(--gold);
-            background: #fff;
-        }
-
-        :root.light .toast {
-            background: #ffffff;
-            border-color: rgba(212, 146, 10, 0.3);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-        }
-
-        :root.light .tb-xp {
-            background: var(--bg3);
-            border-color: var(--border2);
-        }
-
-        :root.light .lb-table tr.me td {
-            background: rgba(212, 146, 10, 0.08);
-        }
-
-        :root.light .match-bar-bg,
-        :root.light .xw-bar,
-        :root.light .progress-bg,
-        :root.light .skb {
-            background: var(--bg4);
-        }
-
-        :root.light .badge-card {
-            background: var(--bg3);
-        }
-
-        :root.light .badge-card.earned {
-            background: var(--bg2);
-            border-color: rgba(212, 146, 10, 0.25);
-        }
-
-        :root.light .ai-panel,
-        :root.light .ai-box {
-            background: var(--card-bg);
-            border-color: var(--border2);
-        }
-
-        :root.light .score-block {
-            background: var(--bg3);
-        }
-
-        :root.light .issue-bug {
-            background: rgba(220, 38, 38, 0.08);
-        }
-
-        :root.light .issue-style {
-            background: rgba(37, 99, 235, 0.08);
-        }
-
-        :root.light .issue-efficiency {
-            background: rgba(217, 119, 6, 0.08);
-        }
-
-        :root.light .issue-logic {
-            background: rgba(124, 58, 237, 0.08);
+        body.light-theme .card,
+        body.light-theme .glass-card {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
     </style>
 
@@ -501,7 +409,8 @@
                         3</div>
                     <div style="font-size: 14px; color: var(--primary); font-weight: 700; margin-bottom: 4px;"><span
                             id="dash-xp">450</span> XP</div>
-                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Top 15% of VIT Students
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Top 15% of Dayananda Sagar
+                        Students
                     </div>
                 </div>
             </div>
@@ -982,8 +891,8 @@
                             style="padding:24px; border:1px solid var(--border); border-radius:20px; background:rgba(212,175,55,0.02); margin-top:16px;">
                             <div style="font-size:18px; font-weight:700; color:#fff; margin-bottom:4px;"
                                 id="preview-name">Harismitha</div>
-                            <div style="font-size:12px; color:var(--text-muted);" id="preview-tagline">B.Tech in
-                                Computer Science • VIT University</div>
+                            <div style="font-size:12px; color:var(--text-muted);" id="preview-tagline">MCA • Dayananda
+                                Sagar College of Engineering</div>
                             <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;"
                                 id="preview-skills-tags">
                                 <!-- Dynamic Skills -->
@@ -1243,10 +1152,17 @@
                 <div style="flex:1; display:flex; gap:1px; background:var(--border);">
                     <!-- Main Question Area -->
                     <div style="flex:1.5; background:var(--bg); padding:40px; display:flex; flex-direction:column;">
-                        <div style="font-size:12px; color:var(--primary); font-weight:800; letter-spacing:2px; margin-bottom:16px;"
-                            id="int-q-num">QUESTION 1 OF 6</div>
-                        <h2 style="font-size:28px; line-height:1.4; margin-bottom:40px;" id="int-q-text">Loading
-                            question...</h2>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                            <div>
+                                <div style="font-size:12px; color:var(--primary); font-weight:800; letter-spacing:2px; margin-bottom:16px;"
+                                    id="int-q-num">QUESTION 1 OF 6</div>
+                                <h2 style="font-size:28px; line-height:1.4; margin-bottom:40px;" id="int-q-text">Loading
+                                    question...</h2>
+                            </div>
+                            <video id="interview-webcam" autoplay muted
+                                style="width:200px; height:150px; border-radius:12px; object-fit:cover; border:2px solid var(--border); display:none; background:#000;"></video>
+                        </div>
+
 
                         <div style="flex:1; display:flex; flex-direction:column;">
                             <label style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">WRITE YOUR
@@ -1313,6 +1229,8 @@
         })();
     </script>
     <script src="data.js"></script>
+    <script src="aptitude_bank.js"></script>
+    <script src="communication_bank.js"></script>
     <script src="logic.js"></script>
     <script>
         // Start the app

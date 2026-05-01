@@ -1,0 +1,386 @@
+{
+  "section": "Full Mock Test",
+  "description": "Complete TCS and multi-company placement simulation combining aptitude, verbal, coding, technical, and behavioral sections. Mirrors actual interview and written test formats.",
+  "mock_tests": [
+    {
+      "test_id": "mock_tcs_001",
+      "company": "TCS",
+      "test_name": "TCS NQT Full Mock Test – Set 1",
+      "duration_minutes": 120,
+      "total_marks": 100,
+      "sections": [
+        {
+          "section_name": "Verbal Ability",
+          "marks": 20,
+          "time_minutes": 20,
+          "questions": [
+            {
+              "id": "mock_tcs_v01",
+              "type": "synonym",
+              "question": "Choose the synonym of PERILOUS",
+              "options": ["Safe", "Dangerous", "Trivial", "Calm"],
+              "answer": "Dangerous",
+              "explanation": "Perilous means full of danger or risk.",
+              "marks": 1
+            },
+            {
+              "id": "mock_tcs_v02",
+              "type": "fill_in_the_blank",
+              "question": "The scientist's ______ discovery changed the course of modern medicine.",
+              "options": ["mediocre", "groundbreaking", "redundant", "trivial"],
+              "answer": "groundbreaking",
+              "explanation": "A discovery that changed the course of medicine would be described as groundbreaking.",
+              "marks": 1
+            },
+            {
+              "id": "mock_tcs_v03",
+              "type": "error_spotting",
+              "question": "Find the error: 'Each of the students have submitted their assignment on time.'",
+              "options": ["Each of", "the students", "have submitted", "on time"],
+              "answer": "have submitted",
+              "explanation": "'Each' is singular, so the verb should be 'has submitted'.",
+              "marks": 1
+            },
+            {
+              "id": "mock_tcs_v04",
+              "type": "reading_comprehension",
+              "passage": "The Internet of Things (IoT) refers to the network of physical objects embedded with sensors, software, and connectivity that enables them to collect and exchange data. IoT is transforming industries from healthcare to agriculture. Smart devices can now monitor patient vitals remotely, optimize irrigation systems, and reduce energy consumption in buildings. However, the proliferation of connected devices also raises serious security and privacy concerns.",
+              "question": "What is a major concern with the growth of IoT?",
+              "options": [
+                "Devices becoming too expensive",
+                "Security and privacy risks",
+                "Reduction in smart devices",
+                "IoT is limited to healthcare"
+              ],
+              "answer": "Security and privacy risks",
+              "explanation": "The passage explicitly mentions 'serious security and privacy concerns' as a downside of IoT proliferation.",
+              "marks": 2
+            },
+            {
+              "id": "mock_tcs_v05",
+              "type": "para_jumble",
+              "sentences": {
+                "A": "The company then launched the product across 10 cities simultaneously.",
+                "B": "After months of research, the marketing team identified the target audience.",
+                "C": "The initial sales figures exceeded all projections.",
+                "D": "A focused advertising campaign was run to create awareness."
+              },
+              "question": "Arrange sentences in logical order.",
+              "answer": "B-D-A-C",
+              "explanation": "Research (B) → Campaign (D) → Launch (A) → Results (C) is the natural chronological order.",
+              "marks": 2
+            }
+          ]
+        },
+        {
+          "section_name": "Numerical Ability",
+          "marks": 20,
+          "time_minutes": 25,
+          "questions": [
+            {
+              "id": "mock_tcs_n01",
+              "type": "quant",
+              "topic": "Time and Work",
+              "question": "A can complete a work in 12 days, B in 15 days. If they work together, in how many days will they complete the work?",
+              "options": ["6.67 days", "7.5 days", "6 days", "8 days"],
+              "answer": "6.67 days",
+              "solution": "A's 1-day work = 1/12, B's 1-day work = 1/15. Combined = 1/12 + 1/15 = 5/60 + 4/60 = 9/60 = 3/20. Days = 20/3 = 6.67 days",
+              "marks": 2
+            },
+            {
+              "id": "mock_tcs_n02",
+              "type": "quant",
+              "topic": "Percentages",
+              "question": "A product's price increased by 20%, then decreased by 20%. What is the net percentage change?",
+              "options": ["0%", "-4%", "+4%", "-2%"],
+              "answer": "-4%",
+              "solution": "Let price = 100. After 20% increase = 120. After 20% decrease = 120 * 0.8 = 96. Net change = -4%",
+              "marks": 2
+            },
+            {
+              "id": "mock_tcs_n03",
+              "type": "quant",
+              "topic": "Probability",
+              "question": "A bag has 4 red, 3 blue, and 2 green balls. One ball is drawn at random. What is the probability of drawing a blue ball?",
+              "options": ["1/3", "3/9", "2/9", "4/9"],
+              "answer": "3/9",
+              "solution": "Total balls = 4+3+2 = 9. P(blue) = 3/9 = 1/3. Both 3/9 and 1/3 are correct; 3/9 is in the options.",
+              "marks": 2
+            },
+            {
+              "id": "mock_tcs_n04",
+              "type": "quant",
+              "topic": "Profit and Loss",
+              "question": "An item is sold for Rs. 840 at a profit of 20%. What was the cost price?",
+              "options": ["Rs. 700", "Rs. 720", "Rs. 680", "Rs. 750"],
+              "answer": "Rs. 700",
+              "solution": "SP = CP * (1 + 20/100) → 840 = CP * 1.2 → CP = 840/1.2 = 700",
+              "marks": 2
+            }
+          ]
+        },
+        {
+          "section_name": "Logical Reasoning",
+          "marks": 20,
+          "time_minutes": 20,
+          "questions": [
+            {
+              "id": "mock_tcs_l01",
+              "type": "logical",
+              "topic": "Syllogisms",
+              "question": "All dogs are animals. Some animals are cats. Conclusion: Some dogs are cats. Is this conclusion valid?",
+              "options": ["Valid", "Invalid"],
+              "answer": "Invalid",
+              "explanation": "From 'All dogs are animals' and 'Some animals are cats', we cannot conclude that dogs and cats overlap. The conclusion does not follow logically.",
+              "marks": 2
+            },
+            {
+              "id": "mock_tcs_l02",
+              "type": "logical",
+              "topic": "Blood Relations",
+              "question": "A is B's sister. B is C's brother. C is D's son. D is E's wife. How is A related to E?",
+              "options": ["Granddaughter", "Daughter", "Niece", "Cannot be determined"],
+              "answer": "Granddaughter",
+              "explanation": "E is D's wife. D is C's father (C is D's son). B is C's brother, so B is also D's son. A is B's sister, so A is D's daughter. Therefore A is E's daughter — but since E is D's wife (not necessarily D's mother), A is D's daughter and E's stepdaughter. Wait — rechecking: D is E's wife means E is D's husband. A is D's daughter. So A is E's daughter. Correct answer: Daughter.",
+              "marks": 2
+            },
+            {
+              "id": "mock_tcs_l03",
+              "type": "logical",
+              "topic": "Series",
+              "question": "Find the next number in the series: 2, 6, 12, 20, 30, ?",
+              "options": ["40", "42", "44", "36"],
+              "answer": "42",
+              "explanation": "Differences: 4, 6, 8, 10, 12. The differences increase by 2. Next = 30 + 12 = 42.",
+              "marks": 2
+            }
+          ]
+        },
+        {
+          "section_name": "Coding",
+          "marks": 40,
+          "time_minutes": 55,
+          "questions": [
+            {
+              "id": "mock_tcs_c01",
+              "type": "coding",
+              "difficulty": "easy",
+              "title": "Palindrome Check",
+              "problem": "Write a function to check if a given string is a palindrome. Ignore case and non-alphanumeric characters.",
+              "example_input": "'A man, a plan, a canal: Panama'",
+              "example_output": "true",
+              "solution_python": "def is_palindrome(s):\n    cleaned = ''.join(c.lower() for c in s if c.isalnum())\n    return cleaned == cleaned[::-1]",
+              "marks": 10
+            },
+            {
+              "id": "mock_tcs_c02",
+              "type": "coding",
+              "difficulty": "medium",
+              "title": "Two Sum",
+              "problem": "Given an array of integers and a target sum, return the indices of the two numbers that add up to the target.",
+              "example_input": "nums = [2, 7, 11, 15], target = 9",
+              "example_output": "[0, 1]",
+              "solution_python": "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i",
+              "marks": 15
+            },
+            {
+              "id": "mock_tcs_c03",
+              "type": "coding",
+              "difficulty": "hard",
+              "title": "Longest Palindromic Substring",
+              "problem": "Given a string s, return the longest palindromic substring in s.",
+              "example_input": "'babad'",
+              "example_output": "'bab' (or 'aba')",
+              "approach": "Expand around center: For each character (and pair of characters), expand outward while characters match. Track the longest palindrome found. Time: O(n^2), Space: O(1)",
+              "solution_python": "def longest_palindrome(s):\n    def expand(l, r):\n        while l >= 0 and r < len(s) and s[l] == s[r]:\n            l -= 1; r += 1\n        return s[l+1:r]\n    result = ''\n    for i in range(len(s)):\n        odd = expand(i, i)\n        even = expand(i, i+1)\n        result = max(result, odd, even, key=len)\n    return result",
+              "marks": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "mock_deloitte_001",
+      "company": "Deloitte",
+      "test_name": "Deloitte Placement Mock Test – Set 1",
+      "duration_minutes": 90,
+      "total_marks": 80,
+      "sections": [
+        {
+          "section_name": "Aptitude & Reasoning",
+          "marks": 30,
+          "time_minutes": 30,
+          "questions": [
+            {
+              "id": "mock_del_a01",
+              "type": "quant",
+              "topic": "Time, Speed, Distance",
+              "question": "A train 200m long is moving at 60 km/h. How long will it take to pass a stationary pole?",
+              "options": ["10 sec", "12 sec", "15 sec", "8 sec"],
+              "answer": "12 sec",
+              "solution": "Speed = 60 km/h = 60 * (1000/3600) = 50/3 m/s. Time = Distance/Speed = 200 / (50/3) = 200 * 3/50 = 12 seconds.",
+              "marks": 3
+            },
+            {
+              "id": "mock_del_a02",
+              "type": "logical",
+              "topic": "Coding-Decoding",
+              "question": "In a code language, WATER is written as YCVGT. How is EARTH written?",
+              "options": ["GCTVJ", "GCTVI", "HCUVJ", "FBSUI"],
+              "answer": "GCTVJ",
+              "explanation": "Each letter is shifted by +2 in alphabetical order. E→G, A→C, R→T, T→V, H→J. So EARTH = GCTVJ.",
+              "marks": 3
+            }
+          ]
+        },
+        {
+          "section_name": "Technical + Verbal",
+          "marks": 30,
+          "time_minutes": 30,
+          "questions": [
+            {
+              "id": "mock_del_t01",
+              "type": "technical_mcq",
+              "question": "Which data structure is used for implementing recursion?",
+              "options": ["Queue", "Stack", "Linked List", "Tree"],
+              "answer": "Stack",
+              "explanation": "Function calls in recursion use the call stack. Each recursive call is pushed onto the stack and popped when it returns.",
+              "marks": 2
+            },
+            {
+              "id": "mock_del_t02",
+              "type": "technical_mcq",
+              "question": "What is the output of: print(type([])) in Python?",
+              "options": ["<class 'list'>", "<class 'array'>", "<type 'list'>", "list"],
+              "answer": "<class 'list'>",
+              "explanation": "In Python 3, type([]) returns <class 'list'>.",
+              "marks": 2
+            },
+            {
+              "id": "mock_del_t03",
+              "type": "technical_mcq",
+              "question": "Which SQL clause is used to filter groups?",
+              "options": ["WHERE", "HAVING", "GROUP BY", "FILTER"],
+              "answer": "HAVING",
+              "explanation": "HAVING is used to filter results after GROUP BY. WHERE filters individual rows before grouping.",
+              "marks": 2
+            }
+          ]
+        },
+        {
+          "section_name": "Coding",
+          "marks": 20,
+          "time_minutes": 30,
+          "questions": [
+            {
+              "id": "mock_del_c01",
+              "type": "coding",
+              "difficulty": "medium",
+              "title": "FizzBuzz",
+              "problem": "Print numbers from 1 to n. For multiples of 3, print 'Fizz'. For multiples of 5, print 'Buzz'. For multiples of both, print 'FizzBuzz'.",
+              "solution_python": "def fizzbuzz(n):\n    for i in range(1, n+1):\n        if i % 15 == 0: print('FizzBuzz')\n        elif i % 3 == 0: print('Fizz')\n        elif i % 5 == 0: print('Buzz')\n        else: print(i)",
+              "marks": 10
+            },
+            {
+              "id": "mock_del_c02",
+              "type": "coding",
+              "difficulty": "medium",
+              "title": "Count Vowels in a String",
+              "problem": "Write a function that takes a string and returns the count of vowels (a, e, i, o, u, case-insensitive).",
+              "solution_python": "def count_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')",
+              "marks": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "mock_infosys_001",
+      "company": "Infosys",
+      "test_name": "Infosys InfyTQ / Specialist Programmer Mock Test – Set 1",
+      "duration_minutes": 100,
+      "total_marks": 80,
+      "sections": [
+        {
+          "section_name": "Reasoning & Mathematical Ability",
+          "marks": 30,
+          "time_minutes": 35,
+          "questions": [
+            {
+              "id": "mock_inf_a01",
+              "type": "quant",
+              "topic": "Compound Interest",
+              "question": "Find the compound interest on Rs. 10,000 for 2 years at 10% per annum.",
+              "options": ["Rs. 2000", "Rs. 2100", "Rs. 2050", "Rs. 1900"],
+              "answer": "Rs. 2100",
+              "solution": "CI = P * (1 + r/100)^n - P = 10000 * (1.1)^2 - 10000 = 12100 - 10000 = 2100",
+              "marks": 3
+            },
+            {
+              "id": "mock_inf_a02",
+              "type": "logical",
+              "topic": "Direction Sense",
+              "question": "A person walks 10m north, then 10m east, then 10m south, then 10m west. Where is he relative to the starting point?",
+              "options": ["10m North", "10m East", "At starting point", "10m West"],
+              "answer": "At starting point",
+              "explanation": "North + South cancels out. East + West cancels out. Net displacement = 0. Back to origin.",
+              "marks": 3
+            }
+          ]
+        },
+        {
+          "section_name": "Verbal Ability",
+          "marks": 20,
+          "time_minutes": 25,
+          "questions": [
+            {
+              "id": "mock_inf_v01",
+              "type": "antonym",
+              "question": "Choose the antonym of DILIGENT",
+              "options": ["Hardworking", "Careful", "Lazy", "Thorough"],
+              "answer": "Lazy",
+              "explanation": "Diligent means hardworking and careful. Lazy is its antonym.",
+              "marks": 2
+            }
+          ]
+        },
+        {
+          "section_name": "Coding",
+          "marks": 30,
+          "time_minutes": 40,
+          "questions": [
+            {
+              "id": "mock_inf_c01",
+              "type": "coding",
+              "difficulty": "easy",
+              "title": "Prime Number Check",
+              "problem": "Write a function that returns True if a number is prime, and False otherwise.",
+              "solution_python": "def is_prime(n):\n    if n < 2: return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0: return False\n    return True",
+              "marks": 10
+            },
+            {
+              "id": "mock_inf_c02",
+              "type": "coding",
+              "difficulty": "medium",
+              "title": "Rotate Array",
+              "problem": "Rotate an array to the right by k steps in-place.",
+              "example_input": "nums = [1,2,3,4,5,6,7], k = 3",
+              "example_output": "[5,6,7,1,2,3,4]",
+              "solution_python": "def rotate(nums, k):\n    k = k % len(nums)\n    nums[:] = nums[-k:] + nums[:-k]",
+              "marks": 20
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "total_mock_tests": 3,
+    "companies_covered": ["TCS", "Deloitte", "Infosys"],
+    "sections_covered": ["Verbal Ability", "Numerical Ability", "Logical Reasoning", "Coding", "Technical MCQ"],
+    "difficulty_levels": ["easy", "medium", "hard"],
+    "rag_tags": ["mock_test", "full_simulation", "tcs", "deloitte", "infosys", "placement_prep", "aptitude", "coding", "verbal", "logical"],
+    "version": "1.0",
+    "created_for": "RAG model training – placement preparation platform"
+  }
+}

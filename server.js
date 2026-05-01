@@ -43,10 +43,18 @@ app.post('/api/signup', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, instId, rollNo } = req.body;
   const db = readDB();
-  const lowerEmail = email?.toLowerCase().trim();
-  const user = db[lowerEmail];
+  let user = null;
+
+  if (instId && rollNo) {
+    const cleanInst = instId.trim().toLowerCase();
+    const cleanRoll = rollNo.trim().toLowerCase();
+    user = Object.values(db).find(u => u.instId?.toLowerCase() === cleanInst && u.rollNo?.toLowerCase() === cleanRoll);
+  } else if (email) {
+    const lowerEmail = email.toLowerCase().trim();
+    user = db[lowerEmail];
+  }
 
   if (!user || user.password !== password) return res.status(401).json({ error: 'Invalid creds.' });
 
@@ -69,6 +77,42 @@ app.post('/api/login', (req, res) => {
   }
 
   res.json({ ...user, password: undefined });
+});
+
+app.post('/api/institution/students', (req, res) => {
+  const { instId, students, passwordSetIds } = req.body;
+  if (!instId || !students || !Array.isArray(students)) {
+    return res.status(400).json({ error: 'Invalid data' });
+  }
+
+  const db = readDB();
+  let added = 0;
+
+  for (const s of students) {
+    // Generate an internal email identifier for students in users.json
+    const lowerEmail = s.email ? s.email.toLowerCase().trim() : `${s.rollNo.toLowerCase()}@${instId.toLowerCase()}.edu`;
+    const userExists = db[lowerEmail];
+
+    db[lowerEmail] = {
+      ...userExists, // retain existing fields (like submissions, scores)
+      ...s,
+      email: lowerEmail,
+      instId: instId,
+      college: s.college || instId,
+      password: s.passwordSet ? s.password : (userExists && userExists.passwordSet ? userExists.password : s.password),
+      passwordSet: s.passwordSet || (userExists && userExists.passwordSet ? true : false),
+      xp: userExists ? userExists.xp : (s.xp || 0),
+      level: userExists ? userExists.level : (s.level || 1),
+      streak: userExists ? userExists.streak : (s.streak || 1),
+      submissions: userExists ? userExists.submissions : [],
+      scores: userExists ? userExists.scores : [],
+      createdAt: userExists ? userExists.createdAt : new Date().toISOString()
+    };
+    if (!userExists) added++;
+  }
+
+  writeDB(db);
+  res.json({ message: `Synced ${students.length} students successfully. Added ${added} new.` });
 });
 
 app.get('/api/community/:college', (req, res) => {

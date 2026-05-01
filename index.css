@@ -28,20 +28,58 @@
     --surface: #ffffff;
     --surface-light: #f1f5f9;
     --border: rgba(0, 0, 0, 0.08);
-    --primary: #b8860b;
-    --primary-glow: rgba(184, 134, 11, 0.15);
-    --secondary: #4f46e5;
-    --accent: #7c3aed;
-    --success: #059669;
-    --warning: #d97706;
-    --error: #dc2626;
+    --border2: rgba(0, 0, 0, 0.12);
+    --primary: #b45309;
+    /* Darker Gold for contrast */
+    --primary-glow: rgba(180, 83, 9, 0.15);
+    --secondary: #4338ca;
+    --accent: #6d28d9;
+    --success: #047857;
+    --warning: #b45309;
+    --error: #be123c;
     --text: #0f172a;
-    --text-muted: #475569;
-    --glass: rgba(0, 0, 0, 0.02);
-    --glass-border: rgba(0, 0, 0, 0.08);
-    --career-blue: #2563eb;
-    --career-teal: #0d9488;
+    --text2: #334155;
+    --text-muted: #64748b;
+    --glass: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --chart-grid: rgba(0, 0, 0, 0.03);
+    --career-blue: #1d4ed8;
+    --career-teal: #0f766e;
     --career-purple: #7c3aed;
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #334155;
+}
+
+body.light-theme {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+.light-theme .sidebar {
+    background: var(--sidebar-bg) !important;
+    border-right-color: var(--border) !important;
+}
+
+.light-theme .nav-link {
+    color: var(--sidebar-text) !important;
+}
+
+.light-theme .nav-link:hover {
+    background: var(--surface-light) !important;
+    color: var(--primary) !important;
+}
+
+.light-theme .nav-link.active {
+    background: var(--primary-glow) !important;
+    color: var(--primary) !important;
+}
+
+.light-theme .nav-link i {
+    color: var(--primary);
+}
+
+.light-theme .logo-text {
+    color: var(--text) !important;
 }
 
 .light-theme .logo-text,

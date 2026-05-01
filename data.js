@@ -1,7 +1,8 @@
 const APP_DATA = {
     user: {
         name: "Harismitha",
-        college: "VIT University",
+        college: "Dayananda Sagar College of Engineering",
+        branch: "MCA",
         level: 3,
         xp: 450,
         nextLevelXp: 1000,

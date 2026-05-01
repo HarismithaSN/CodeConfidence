@@ -1,0 +1,428 @@
+{
+  "section": "Technical",
+  "description": "Domain knowledge, system design, OS, DBMS, CN, OOP, and company-specific technical interview questions for placement preparation across TCS, Infosys, Wipro, Deloitte, Accenture, Cognizant, and other top companies.",
+  "categories": [
+    {
+      "category": "Object-Oriented Programming (OOP)",
+      "questions": [
+        {
+          "id": "tech_oop_001",
+          "type": "concept",
+          "question": "What are the four pillars of Object-Oriented Programming?",
+          "answer": "The four pillars of OOP are: (1) Encapsulation – bundling data and methods that operate on the data within a single unit (class), and restricting direct access to some components using access modifiers. (2) Abstraction – hiding complex implementation details and exposing only the necessary features. (3) Inheritance – a class (child) can inherit properties and methods from another class (parent), enabling code reuse. (4) Polymorphism – the ability of a variable, function, or object to take on multiple forms. It can be achieved through method overloading (compile-time) and method overriding (runtime).",
+          "example": {
+            "encapsulation": "A BankAccount class with private balance and public deposit/withdraw methods.",
+            "abstraction": "A abstract Vehicle class with a method move() that subclasses implement differently.",
+            "inheritance": "class Dog extends Animal",
+            "polymorphism": "Animal a = new Dog(); a.speak(); // calls Dog's speak method"
+          },
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL"]
+        },
+        {
+          "id": "tech_oop_002",
+          "type": "concept",
+          "question": "What is the difference between abstract class and interface in Java?",
+          "answer": {
+            "abstract_class": {
+              "definition": "A class that cannot be instantiated and may contain both abstract and concrete methods.",
+              "when_to_use": "When classes share a common base and some default behavior.",
+              "features": [
+                "Can have constructors",
+                "Can have instance variables",
+                "Supports single inheritance",
+                "Methods can have any access modifier"
+              ]
+            },
+            "interface": {
+              "definition": "A contract that classes must implement. All methods are abstract by default (Java 7 and before). Java 8+ supports default and static methods.",
+              "when_to_use": "To define a contract for unrelated classes, and to achieve multiple inheritance.",
+              "features": [
+                "Cannot have constructors",
+                "Variables are public static final by default",
+                "A class can implement multiple interfaces",
+                "Methods are public by default"
+              ]
+            }
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Cognizant"]
+        },
+        {
+          "id": "tech_oop_003",
+          "type": "concept",
+          "question": "Explain method overloading vs method overriding.",
+          "answer": {
+            "overloading": {
+              "definition": "Same method name, different parameters (different number, type, or order). Resolved at compile time.",
+              "example": "int add(int a, int b) vs double add(double a, double b)"
+            },
+            "overriding": {
+              "definition": "A subclass provides a specific implementation of a method that is already defined in its parent class. Resolved at runtime.",
+              "example": "Animal.speak() vs Dog.speak() — Dog overrides the speak method"
+            },
+            "key_difference": "Overloading is compile-time polymorphism. Overriding is runtime polymorphism."
+          },
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "HCL", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Data Structures & Algorithms (Concepts)",
+      "questions": [
+        {
+          "id": "tech_ds_001",
+          "type": "concept",
+          "question": "What is the difference between a stack and a queue?",
+          "answer": {
+            "stack": {
+              "principle": "LIFO – Last In, First Out",
+              "operations": ["push (insert)", "pop (remove)", "peek (top element)"],
+              "use_cases": ["Function call management", "Undo/Redo operations", "Expression evaluation", "Balanced parentheses check"]
+            },
+            "queue": {
+              "principle": "FIFO – First In, First Out",
+              "operations": ["enqueue (insert)", "dequeue (remove)", "front (head element)"],
+              "use_cases": ["BFS traversal", "Print queue", "CPU scheduling", "Message queues"]
+            }
+          },
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Cognizant", "HCL"]
+        },
+        {
+          "id": "tech_ds_002",
+          "type": "concept",
+          "question": "What is a Binary Search Tree (BST)? What are its properties?",
+          "answer": "A Binary Search Tree is a binary tree where: (1) All values in the left subtree of a node are less than the node's value. (2) All values in the right subtree are greater than the node's value. (3) Both left and right subtrees are also BSTs. BST enables efficient search, insertion, and deletion in O(log n) average time. In the worst case (skewed tree), operations are O(n). Balanced BSTs like AVL trees and Red-Black trees maintain O(log n) in all cases.",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys"]
+        },
+        {
+          "id": "tech_ds_003",
+          "type": "concept",
+          "question": "What is time complexity and space complexity? Explain Big O notation.",
+          "answer": {
+            "time_complexity": "Measures how the runtime of an algorithm grows as input size (n) increases.",
+            "space_complexity": "Measures how much memory an algorithm uses relative to input size.",
+            "big_o_notation": "Big O describes the upper bound (worst case) of an algorithm's growth rate.",
+            "common_complexities": {
+              "O(1)": "Constant – array access, hash map lookup",
+              "O(log n)": "Logarithmic – binary search",
+              "O(n)": "Linear – single loop through array",
+              "O(n log n)": "Merge sort, heap sort",
+              "O(n^2)": "Bubble sort, nested loops",
+              "O(2^n)": "Exponential – naive recursion (Fibonacci)",
+              "O(n!)": "Factorial – permutations"
+            }
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Database Management Systems (DBMS)",
+      "questions": [
+        {
+          "id": "tech_dbms_001",
+          "type": "concept",
+          "question": "What are ACID properties in databases?",
+          "answer": {
+            "atomicity": "A transaction is all-or-nothing. If any part fails, the entire transaction is rolled back.",
+            "consistency": "A transaction brings the database from one valid state to another, maintaining all predefined rules and constraints.",
+            "isolation": "Concurrent transactions execute independently without interfering with each other.",
+            "durability": "Once a transaction is committed, it remains committed even in case of system failure.",
+            "example": "Bank transfer: debit from Account A and credit to Account B must both succeed or both fail (Atomicity). The total balance must remain constant (Consistency)."
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "tech_dbms_002",
+          "type": "concept",
+          "question": "Explain the different types of SQL JOINs.",
+          "answer": {
+            "inner_join": "Returns rows where there is a match in BOTH tables.",
+            "left_join": "Returns all rows from the left table and matching rows from the right. Unmatched right rows return NULL.",
+            "right_join": "Returns all rows from the right table and matching rows from the left. Unmatched left rows return NULL.",
+            "full_outer_join": "Returns all rows from both tables, with NULLs where there is no match.",
+            "cross_join": "Returns the Cartesian product — every row of table A combined with every row of table B.",
+            "self_join": "A table is joined with itself, used to compare rows within the same table."
+          },
+          "sql_example": "SELECT e.name, d.dept_name FROM Employee e INNER JOIN Department d ON e.dept_id = d.id;",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL"]
+        },
+        {
+          "id": "tech_dbms_003",
+          "type": "concept",
+          "question": "What is normalization? Explain 1NF, 2NF, and 3NF.",
+          "answer": {
+            "definition": "Normalization is the process of organizing a database to reduce redundancy and improve data integrity.",
+            "1NF": "First Normal Form: Each column must contain atomic (indivisible) values, and each row must be unique. No repeating groups.",
+            "2NF": "Second Normal Form: Must be in 1NF + every non-key attribute must be fully functionally dependent on the entire primary key (no partial dependency).",
+            "3NF": "Third Normal Form: Must be in 2NF + no transitive dependencies (non-key attributes should not depend on other non-key attributes).",
+            "BCNF": "Boyce-Codd Normal Form: A stricter version of 3NF where every determinant is a candidate key."
+          },
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys", "Wipro"]
+        },
+        {
+          "id": "tech_dbms_004",
+          "type": "concept",
+          "question": "What is the difference between SQL and NoSQL databases?",
+          "answer": {
+            "sql": {
+              "structure": "Structured, table-based with predefined schema",
+              "examples": ["MySQL", "PostgreSQL", "Oracle", "SQL Server"],
+              "use_when": "Data is structured, relationships are important, ACID compliance is required",
+              "scaling": "Primarily vertical scaling"
+            },
+            "nosql": {
+              "structure": "Flexible schema — can store documents, key-value pairs, graphs, or wide-column data",
+              "examples": ["MongoDB (document)", "Redis (key-value)", "Cassandra (wide-column)", "Neo4j (graph)"],
+              "use_when": "Unstructured or semi-structured data, high-volume write operations, horizontal scaling needed",
+              "scaling": "Primarily horizontal scaling"
+            }
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Operating Systems (OS)",
+      "questions": [
+        {
+          "id": "tech_os_001",
+          "type": "concept",
+          "question": "What is the difference between a process and a thread?",
+          "answer": {
+            "process": {
+              "definition": "A program in execution. Each process has its own memory space, registers, and resources.",
+              "isolation": "Processes are isolated from each other — one process crashing doesn't directly affect others.",
+              "communication": "Inter-Process Communication (IPC) via pipes, sockets, shared memory"
+            },
+            "thread": {
+              "definition": "A lightweight unit of execution within a process. Threads share the same memory space and resources of their parent process.",
+              "isolation": "Threads are not isolated — a buggy thread can crash the entire process.",
+              "communication": "Threads communicate through shared memory — requires synchronization mechanisms like mutex, semaphore"
+            },
+            "key_difference": "Processes are heavyweight and isolated. Threads are lightweight and share memory."
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "tech_os_002",
+          "type": "concept",
+          "question": "What is deadlock? What are the four conditions for deadlock?",
+          "answer": {
+            "definition": "Deadlock is a situation where two or more processes are waiting for each other to release resources, and none can proceed.",
+            "conditions": {
+              "mutual_exclusion": "At least one resource must be held in a non-shareable mode — only one process can use the resource at a time.",
+              "hold_and_wait": "A process holding at least one resource is waiting to acquire additional resources held by other processes.",
+              "no_preemption": "Resources cannot be forcibly taken away from a process — they must be released voluntarily.",
+              "circular_wait": "There exists a circular chain of processes, each waiting for a resource held by the next."
+            },
+            "prevention": "Eliminate one of the four conditions to prevent deadlock. E.g., use resource ordering to prevent circular wait."
+          },
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys", "Wipro"]
+        },
+        {
+          "id": "tech_os_003",
+          "type": "concept",
+          "question": "What is virtual memory? How does paging work?",
+          "answer": {
+            "virtual_memory": "Virtual memory is a memory management technique that gives each process the illusion of having its own large, contiguous memory space, even if physical RAM is limited. It uses disk space (swap space) as an extension of RAM.",
+            "paging": {
+              "definition": "Paging divides virtual memory into fixed-size blocks called pages, and physical memory into frames of the same size.",
+              "page_table": "A page table maps virtual page numbers to physical frame numbers.",
+              "page_fault": "If a required page is not in physical memory, a page fault occurs. The OS loads the page from disk into memory.",
+              "advantage": "Eliminates external fragmentation."
+            }
+          },
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys"]
+        }
+      ]
+    },
+    {
+      "category": "Computer Networks (CN)",
+      "questions": [
+        {
+          "id": "tech_cn_001",
+          "type": "concept",
+          "question": "What is the OSI model? Explain all 7 layers.",
+          "answer": {
+            "layers": [
+              {"layer": 7, "name": "Application", "function": "User interface and application protocols — HTTP, FTP, SMTP, DNS"},
+              {"layer": 6, "name": "Presentation", "function": "Data translation, encryption, compression — SSL/TLS, JPEG"},
+              {"layer": 5, "name": "Session", "function": "Manages sessions/connections between applications — NetBIOS, RPC"},
+              {"layer": 4, "name": "Transport", "function": "End-to-end communication, flow control, error recovery — TCP, UDP"},
+              {"layer": 3, "name": "Network", "function": "Routing and logical addressing — IP, ICMP, routers"},
+              {"layer": 2, "name": "Data Link", "function": "Frame transmission, MAC addressing, error detection — Ethernet, switches"},
+              {"layer": 1, "name": "Physical", "function": "Raw bit transmission over physical medium — cables, hubs, NIC"}
+            ],
+            "mnemonic": "All People Seem To Need Data Processing (layers 7 to 1)"
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Cognizant", "HCL", "Accenture"]
+        },
+        {
+          "id": "tech_cn_002",
+          "type": "concept",
+          "question": "What is the difference between TCP and UDP?",
+          "answer": {
+            "tcp": {
+              "full_form": "Transmission Control Protocol",
+              "type": "Connection-oriented",
+              "features": ["Reliable delivery", "Error checking", "Flow control", "3-way handshake"],
+              "use_cases": ["HTTP/HTTPS", "Email (SMTP)", "File Transfer (FTP)", "Databases"]
+            },
+            "udp": {
+              "full_form": "User Datagram Protocol",
+              "type": "Connectionless",
+              "features": ["Faster", "No guaranteed delivery", "No handshake", "Lower overhead"],
+              "use_cases": ["Video streaming", "Online gaming", "DNS queries", "VoIP"]
+            },
+            "key_difference": "TCP is reliable but slower. UDP is fast but unreliable. Choose based on whether accuracy or speed matters more."
+          },
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "tech_cn_003",
+          "type": "concept",
+          "question": "What happens when you type www.google.com in a browser?",
+          "answer": [
+            "1. Browser checks its cache for the IP address of www.google.com",
+            "2. If not cached, browser sends a DNS query to the DNS resolver to resolve the domain to an IP address",
+            "3. DNS resolver returns the IP address (e.g., 142.250.190.46)",
+            "4. Browser initiates a TCP connection with the server via 3-way handshake (SYN, SYN-ACK, ACK)",
+            "5. For HTTPS, a TLS handshake occurs to establish an encrypted connection",
+            "6. Browser sends an HTTP GET request for the webpage",
+            "7. Server processes the request and sends back an HTTP response with HTML, CSS, and JS",
+            "8. Browser parses the HTML, loads resources, and renders the webpage"
+          ],
+          "difficulty": "hard",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys"]
+        }
+      ]
+    },
+    {
+      "category": "System Design (Basics)",
+      "questions": [
+        {
+          "id": "tech_sd_001",
+          "type": "system_design",
+          "question": "How would you design a URL shortener like bit.ly?",
+          "approach": {
+            "requirements": {
+              "functional": ["Shorten a long URL", "Redirect short URL to original", "Analytics (click count, location)"],
+              "non_functional": ["High availability", "Low latency", "Scalability to billions of URLs"]
+            },
+            "components": {
+              "api_gateway": "Receives requests and routes to appropriate service",
+              "shortening_service": "Generates a unique 6-character key using base62 encoding or hashing",
+              "database": "Stores mapping of short key → long URL. Use NoSQL (e.g., DynamoDB) for horizontal scaling",
+              "cache": "Use Redis to cache frequently accessed short URLs to reduce DB load",
+              "redirect_service": "Looks up short URL in cache/DB and returns 301/302 redirect"
+            },
+            "key_design_decision": "Use base62 encoding (a-z, A-Z, 0-9) on an auto-incremented ID to generate short keys. This gives 62^6 = ~56 billion unique URLs.",
+            "scalability": "Horizontal scaling of services, database sharding by key range or hash"
+          },
+          "difficulty": "hard",
+          "companies": ["Deloitte", "Accenture", "TCS", "Wipro", "Infosys"]
+        },
+        {
+          "id": "tech_sd_002",
+          "type": "system_design",
+          "question": "How would you design a chat application like WhatsApp?",
+          "approach": {
+            "requirements": {
+              "functional": ["1-1 messaging", "Group chats", "Message delivery status (sent/delivered/read)", "Online/offline status"],
+              "non_functional": ["Real-time delivery", "High availability", "End-to-end encryption"]
+            },
+            "components": {
+              "websocket_servers": "Persistent connection for real-time message push",
+              "message_queue": "Use Kafka to decouple message production from delivery",
+              "message_store": "Cassandra for storing messages (optimized for time-series, high write throughput)",
+              "presence_service": "Redis to track online/offline status with TTL",
+              "push_notification": "FCM/APNs for offline message delivery"
+            },
+            "message_flow": "Sender → WebSocket Server → Kafka → Recipient's WebSocket Server → Recipient. If offline, store in DB and send push notification."
+          },
+          "difficulty": "hard",
+          "companies": ["Deloitte", "Accenture", "TCS"]
+        }
+      ]
+    },
+    {
+      "category": "Cloud & DevOps Basics",
+      "questions": [
+        {
+          "id": "tech_cloud_001",
+          "type": "concept",
+          "question": "What is the difference between IaaS, PaaS, and SaaS?",
+          "answer": {
+            "IaaS": {
+              "definition": "Infrastructure as a Service — provides virtualized computing resources over the internet.",
+              "examples": ["AWS EC2", "Google Compute Engine", "Azure Virtual Machines"],
+              "user_manages": "OS, middleware, runtime, applications",
+              "provider_manages": "Physical hardware, networking, virtualization"
+            },
+            "PaaS": {
+              "definition": "Platform as a Service — provides a platform for developers to build and deploy applications without managing infrastructure.",
+              "examples": ["Google App Engine", "AWS Elastic Beanstalk", "Heroku"],
+              "user_manages": "Application code, data",
+              "provider_manages": "Infrastructure, OS, middleware, runtime"
+            },
+            "SaaS": {
+              "definition": "Software as a Service — provides fully managed software applications over the internet.",
+              "examples": ["Gmail", "Salesforce", "Microsoft 365", "Slack"],
+              "user_manages": "Usage and data only",
+              "provider_manages": "Everything — infrastructure, OS, application"
+            }
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys", "Cognizant"]
+        },
+        {
+          "id": "tech_cloud_002",
+          "type": "concept",
+          "question": "What is Docker and why is it used?",
+          "answer": {
+            "definition": "Docker is an open-source containerization platform that packages applications and their dependencies into lightweight, portable containers.",
+            "why_used": [
+              "Ensures consistency across development, testing, and production environments (eliminates 'works on my machine' problem)",
+              "Lightweight compared to virtual machines — containers share the host OS kernel",
+              "Enables microservices architecture",
+              "Faster deployment and scaling",
+              "Easy version control and rollbacks"
+            ],
+            "key_concepts": {
+              "image": "A read-only template used to create containers",
+              "container": "A running instance of an image",
+              "dockerfile": "A script of instructions to build a Docker image",
+              "docker_compose": "Tool to define and run multi-container Docker applications"
+            }
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "total_questions": 20,
+    "companies_covered": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL", "Capgemini"],
+    "topics_covered": ["OOP", "Data Structures", "DBMS", "OS", "Computer Networks", "System Design", "Cloud & DevOps"],
+    "difficulty_levels": ["easy", "medium", "hard"],
+    "rag_tags": ["technical", "oop", "data_structures", "dbms", "os", "networking", "system_design", "cloud", "devops", "placement_prep"],
+    "version": "1.0",
+    "created_for": "RAG model training – placement preparation platform"
+  }
+}

@@ -60,7 +60,7 @@
       --shadow: rgba(0, 0, 0, 0.4);
     }
 
-    :root.light {
+    body.light-theme {
       /* ── LIGHT MODE ── */
       --bg: #f7f6f2;
       --bg2: #ffffff;
@@ -99,22 +99,24 @@
       transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
     }
 
-    /* Left panel stays dark always */
+    /* Left panel logic */
     .left-panel {
-      --bg: #0f0f20;
-      --text: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.5);
-      --surface-light: #0a0a18;
-      --border: rgba(255, 255, 255, 0.05);
-      background: linear-gradient(135deg, var(--surface-light), var(--bg)) !important;
+      --lp-bg: #0f0f20;
+      --lp-text: #ffffff;
+      --lp-text-muted: rgba(255, 255, 255, 0.5);
+      --lp-surface: #0a0a18;
+      --lp-border: rgba(255, 255, 255, 0.05);
+      background: linear-gradient(135deg, var(--lp-surface), var(--lp-bg)) !important;
+      color: var(--lp-text) !important;
     }
 
-    :root.light .left-panel * {
-      color: #fff !important;
-    }
-
-    :root.light .left-panel .left-sub {
-      color: rgba(255, 255, 255, 0.6) !important;
+    body.light-theme .left-panel {
+      --lp-bg: #f8fafc;
+      --lp-text: #1e293b;
+      --lp-text-muted: #64748b;
+      --lp-surface: #f1f5f9;
+      --lp-border: rgba(0, 0, 0, 0.05);
+      border-right: 1px solid var(--border);
     }
 
     /* LEFT PANEL */
@@ -202,28 +204,24 @@
 
     .left-sub {
       font-size: 15px;
-      color: var(--text-muted, rgba(255, 255, 255, 0.5));
+      color: var(--lp-text-muted);
       line-height: 1.6;
       margin-bottom: 40px;
       transition: color 0.3s ease;
     }
 
-    .light-theme .left-headline {
-      color: var(--text) !important;
-    }
-
-    .light-theme .left-sub {
-      color: var(--text-muted) !important;
+    .left-headline {
+      color: var(--lp-text) !important;
     }
 
     .code-block {
-      background: var(--surface-light, rgba(255, 255, 255, 0.03));
-      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      background: var(--lp-surface);
+      border: 1px solid var(--lp-border);
       border-radius: 16px;
       padding: 20px;
       font-family: 'Courier New', monospace;
       font-size: 12px;
-      color: var(--success, #86efac);
+      color: #86efac;
       position: relative;
       z-index: 1;
     }
@@ -280,7 +278,7 @@
 
     .stat-label {
       font-size: 11px;
-      color: var(--text-muted, rgba(255, 255, 255, 0.4));
+      color: var(--lp-text-muted);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
@@ -301,10 +299,12 @@
     .right-panel {
       flex: 1;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px;
+      padding: 60px 40px;
       overflow-y: auto;
+      height: 100vh;
     }
 
     .form-container {
@@ -431,7 +431,7 @@
       box-shadow: 0 0 0 3px rgba(74, 143, 247, 0.1);
     }
 
-    .student .field-wrap input:focus {
+    .student-field-wrap input:focus {
       border-color: #d4af37;
       background: rgba(212, 175, 55, 0.05);
       box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
@@ -657,15 +657,15 @@
     }
 
     function applyTheme(theme) {
-      const root = document.documentElement
+      const body = document.body
       const btn = document.getElementById('theme-toggle-btn')
 
       if (theme === 'light') {
-        root.classList.add('light')
+        body.classList.add('light-theme')
         if (btn) btn.innerHTML = getMoonIcon()
         if (btn) btn.title = 'Switch to dark mode'
       } else {
-        root.classList.remove('light')
+        body.classList.remove('light-theme')
         if (btn) btn.innerHTML = getSunIcon()
         if (btn) btn.title = 'Switch to light mode'
       }
@@ -736,9 +736,9 @@
         <div class="brand-icon">👑</div>
         <div class="brand-name">CodeConfidence</div>
       </div>
-      <div class="left-headline">The AI Platform<br>Colleges <span>Trust</span></div>
-      <div class="left-sub">From beginner to placement-ready. CodeConfidence brings AI-powered coding mentorship to
-        every student in your institution.</div>
+      <div class="left-headline">The AI Platform<br><span>Dayananda Sagar</span> College</div>
+      <div class="left-sub">Empowering MCA & Engineering students at Dayananda Sagar College of Engineering with
+        AI-powered mentorship and placement readiness.</div>
 
       <div class="code-block">
         <div class="code-line code-comment" style="animation-delay:0.2s">// Student performance analysis</div>
@@ -803,14 +803,14 @@
             <label>Institution ID</label>
             <div class="field-wrap">
               <span class="field-icon">🏫</span>
-              <input type="text" id="inst-id" placeholder="e.g. VIT-BLR-2024" />
+              <input type="text" id="inst-id" placeholder="e.g. DSCE-MCA-2024" />
             </div>
           </div>
           <div class="field">
             <label>Admin Email</label>
             <div class="field-wrap">
               <span class="field-icon">✉️</span>
-              <input type="email" id="inst-email" placeholder="admin@vit.ac.in" />
+              <input type="email" id="inst-email" placeholder="admin@dsce.edu.in" />
             </div>
           </div>
           <div class="field">
@@ -820,19 +820,19 @@
               <input type="password" id="inst-password" placeholder="Enter password" />
             </div>
           </div>
-          <button class="btn-demo institution" onclick="fillDemoInst()">⚡ Use Demo: VIT Bangalore (ID:
-            VIT-BLR-2024)</button>
+          <button class="btn-demo institution" onclick="fillDemoInst()">⚡ Use Demo: Dayananda Sagar (ID:
+            DSCE-MCA-2024)</button>
           <button class="btn-primary btn-institution" onclick="handleInstLogin()">Sign In as Institution</button>
           <span class="form-link" onclick="openRequestDemo()">New Institution? Request Access →</span>
         </div>
 
         <!-- INST REGISTER (simplified UI) -->
-        <div id="inst-form-signup" style="display:none;">
+        <div id="inst-form-signup" style="display:none; padding-bottom: 40px;">
           <div class="info-note">📋 Institution registration requires admin review. Fill in your details and we'll reach
             out within 24 hours.</div>
           <div class="field"><label>Institution Name</label>
             <div class="field-wrap"><span class="field-icon">🏫</span><input type="text" id="reg-inst-name"
-                placeholder="e.g. VIT Bangalore" /></div>
+                placeholder="e.g. Dayananda Sagar College" /></div>
           </div>
           <div class="field"><label>Contact Person</label>
             <div class="field-wrap"><span class="field-icon">👤</span><input type="text" id="reg-contact"
@@ -859,45 +859,47 @@
       <div class="form-section student" id="section-student">
         <div class="form-header">
           <div class="form-title">Student Login</div>
-          <div class="form-sub">Use the credentials provided by your institution</div>
+          <div class="form-sub">Sign in with your institution credentials</div>
         </div>
-        <div class="info-note">🏛️ Your institution provides your login credentials. Contact your admin if you don't
-          have them.</div>
 
+        <!-- INSTITUTION-BASED LOGIN -->
         <div id="student-form-login">
+          <div class="info-note">🏛️ Your institution provides your login credentials. Contact your admin if you don't
+            have them.</div>
           <div class="field">
             <label>Institution ID</label>
-            <div class="field-wrap">
+            <div class="field-wrap student-field-wrap">
               <span class="field-icon">🏫</span>
-              <input type="text" id="stu-inst-id" placeholder="e.g. VIT-BLR-2024" />
+              <input type="text" id="stu-inst-id" placeholder="e.g. DSCE-MCA-2024" />
             </div>
           </div>
           <div class="field">
             <label>Student ID / Roll Number</label>
-            <div class="field-wrap">
+            <div class="field-wrap student-field-wrap">
               <span class="field-icon">🎓</span>
-              <input type="text" id="stu-roll" placeholder="e.g. 20BCE1234" />
+              <input type="text" id="stu-roll" placeholder="e.g. 1DS24MC001" />
             </div>
           </div>
           <div class="field">
             <label>Password</label>
-            <div class="field-wrap">
+            <div class="field-wrap student-field-wrap">
               <span class="field-icon">🔑</span>
               <input type="password" id="stu-password" placeholder="Enter your password" />
             </div>
           </div>
-          <button class="btn-demo student" onclick="fillDemoStudent()">⚡ Demo: Harismitha (VIT Bangalore)</button>
+          <button class="btn-demo student" onclick="fillDemoStudent()">⚡ Demo: Harismitha (Dayananda Sagar)</button>
           <button class="btn-primary btn-student" onclick="handleStudentLogin()">Sign In as Student</button>
           <div style="margin-top:16px; font-size:12px; text-align:center; color:#555;">Forgot credentials? <span
               style="color:#d4af37; cursor:pointer;">Contact your institution admin</span></div>
         </div>
 
+        <!-- FIRST LOGIN SET PASSWORD -->
         <div id="student-form-setpass" style="display:none;">
           <div class="info-note" style="border-color:rgba(212,175,55,0.2); color:#d4af37;">👋 First login! Please set
             your password to continue.</div>
           <div class="field"><label>Display Name</label>
             <div class="field-wrap"><span class="field-icon">👤</span><input type="text" id="stu-display-name"
-                placeholder="Your full name" /></div>
+                placeholder="Your full name" readonly style="opacity: 0.7; cursor: not-allowed;" /></div>
           </div>
           <div class="field"><label>New Password</label>
             <div class="field-wrap"><span class="field-icon">🔑</span><input type="password" id="stu-new-pass"
@@ -916,10 +918,10 @@
 
   <!-- REQUEST DEMO MODAL -->
   <div class="modal-overlay" id="demo-modal" onclick="closeDemoModal(event)">
-    <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-box" style="max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeDemoModal()">✕</button>
       <div class="modal-title">🏫 Request Institution Access</div>
-      <div class="modal-sub">We'll set up your portal within 24 hours and send credentials.</div>
+      <div class="modal-sub">Partner with Dayananda Sagar College of Engineering</div>
       <div class="field"><label>Institution Name</label>
         <div class="field-wrap"><span class="field-icon">🏫</span><input type="text" placeholder="VIT Bangalore"
             style="width:100%;padding:12px 12px 12px 40px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;color:#fff;outline:none;font-family:inherit;" />
@@ -944,25 +946,38 @@
   <script>
     // ─── Seed demo data ──────────────────────────────────────
     function seedDemoData() {
+      // Re-seed if institution data is missing (even if flag was set)
+      const instData = localStorage.getItem('cc_institution');
+      const studentsData = localStorage.getItem('cc_institution_students_DSCE-MCA-2024');
+      if (!instData || !studentsData) {
+        // Clear stale flag and re-seed
+        localStorage.removeItem('cc_institution_seeded');
+      }
+
       if (!localStorage.getItem('cc_institution_seeded')) {
-        const inst = { id: 'VIT-BLR-2024', name: 'VIT Bangalore', adminName: 'Dr. Ramesh Kumar', email: 'admin@vit.ac.in', password: 'demo123', type: 'Engineering College', totalStudents: 156, createdAt: '2024-08-01' };
+        const inst = { id: 'DSCE-MCA-2024', name: 'Dayananda Sagar College', adminName: 'Dr. Ramesh Kumar', email: 'admin@dsce.edu.in', password: 'demo123', type: 'Engineering College', totalStudents: 156, createdAt: '2024-08-01' };
         localStorage.setItem('cc_institution', JSON.stringify(inst));
 
         const students = [
-          { rollNo: '20BCE1234', name: 'Harismitha N', email: 'harismitha@vit.ac.in', branch: 'CSE', year: '3rd', password: 'haris1234', xp: 620, level: 3, confidenceScore: 72, streak: 12, lastActive: new Date().toISOString().split('T')[0], status: 'active', submissions: 34, skills: { loops: 85, functions: 72, arrays: 60, oop: 48, recursion: 32, algorithms: 18 } },
-          { rollNo: '20BCE1001', name: 'Rohan K', email: 'rohan@vit.ac.in', branch: 'CSE', year: '3rd', password: 'roha1001', xp: 890, level: 4, confidenceScore: 84, streak: 18, lastActive: new Date().toISOString().split('T')[0], status: 'active', submissions: 47, skills: { loops: 90, functions: 82, arrays: 78, oop: 65, recursion: 55, algorithms: 42 } },
-          { rollNo: '20BCE1002', name: 'Lakshmi V', email: 'lakshmi@vit.ac.in', branch: 'CSE', year: '3rd', password: 'laks1002', xp: 680, level: 3, confidenceScore: 65, streak: 5, lastActive: new Date().toISOString().split('T')[0], status: 'active', submissions: 41, skills: { loops: 78, functions: 80, arrays: 88, oop: 55, recursion: 72, algorithms: 48 } },
-          { rollNo: '20ECE2001', name: 'Preethi A', email: 'preethi@vit.ac.in', branch: 'ECE', year: '2nd', password: 'pree2001', xp: 540, level: 2, confidenceScore: 55, streak: 3, lastActive: '2025-04-02', status: 'inactive', submissions: 22, skills: { loops: 65, functions: 58, arrays: 50, oop: 30, recursion: 25, algorithms: 15 } },
-          { rollNo: '20ECE2002', name: 'Suresh M', email: 'suresh@vit.ac.in', branch: 'ECE', year: '2nd', password: 'sure2002', xp: 410, level: 2, confidenceScore: 42, streak: 0, lastActive: '2025-03-28', status: 'at-risk', submissions: 17, skills: { loops: 50, functions: 45, arrays: 38, oop: 22, recursion: 18, algorithms: 10 } },
-          { rollNo: '20CSE3001', name: 'Arjun S', email: 'arjun@vit.ac.in', branch: 'CSE', year: '2nd', password: 'aruj3001', xp: 750, level: 3, confidenceScore: 78, streak: 9, lastActive: new Date().toISOString().split('T')[0], status: 'active', submissions: 38, skills: { loops: 82, functions: 75, arrays: 70, oop: 60, recursion: 50, algorithms: 35 } },
-          { rollNo: '20CSE3002', name: 'Divya P', email: 'divya@vit.ac.in', branch: 'CSE', year: '4th', password: 'divy3002', xp: 920, level: 4, confidenceScore: 88, streak: 22, lastActive: new Date().toISOString().split('T')[0], status: 'active', submissions: 52, skills: { loops: 92, functions: 88, arrays: 84, oop: 76, recursion: 68, algorithms: 55 } },
-          { rollNo: '20ME4001', name: 'Kiran B', email: 'kiran@vit.ac.in', branch: 'ME', year: '1st', password: 'kira4001', xp: 180, level: 1, confidenceScore: 35, streak: 0, lastActive: '2025-03-20', status: 'at-risk', submissions: 8, skills: { loops: 40, functions: 35, arrays: 28, oop: 15, recursion: 10, algorithms: 5 } },
+          { rollNo: '1DS24MC001', name: 'Harismitha SN', email: 'harismitha@dsce.edu.in', branch: 'MCA', year: '1st', password: 'haric001', xp: 620, level: 3, confidenceScore: 72, streak: 12, lastActive: new Date().toISOString().split('T')[0], status: 'active', submissions: 34, skills: { loops: 85, functions: 72, arrays: 60, oop: 48, recursion: 32, algorithms: 18 } },
+          { rollNo: '1DS24MC002', name: 'Rohan K', email: 'rohan@dsce.edu.in', branch: 'MCA', year: '1st', password: 'rohak002', xp: 890, level: 4, confidenceScore: 84, streak: 18, lastActive: new Date().toISOString().split('T')[0], status: 'active', submissions: 47, skills: { loops: 90, functions: 82, arrays: 78, oop: 65, recursion: 55, algorithms: 42 } },
+          { rollNo: '1DS24MC003', name: 'Lakshmi V', email: 'lakshmi@dsce.edu.in', branch: 'MCA', year: '1st', password: 'laksv003', xp: 680, level: 3, confidenceScore: 65, streak: 5, lastActive: new Date().toISOString().split('T')[0], status: 'active', submissions: 41, skills: { loops: 78, functions: 80, arrays: 88, oop: 55, recursion: 72, algorithms: 48 } },
+          { rollNo: '1DS24MC004', name: 'Preethi A', email: 'preethi@dsce.edu.in', branch: 'MCA', year: '1st', password: 'preea004', xp: 540, level: 2, confidenceScore: 55, streak: 3, lastActive: '2025-04-02', status: 'inactive', submissions: 22, skills: { loops: 65, functions: 58, arrays: 50, oop: 30, recursion: 25, algorithms: 15 } },
+          { rollNo: '1DS24MC005', name: 'Suresh M', email: 'suresh@dsce.edu.in', branch: 'MCA', year: '1st', password: 'surem005', xp: 410, level: 2, confidenceScore: 42, streak: 0, lastActive: '2025-03-28', status: 'at-risk', submissions: 17, skills: { loops: 50, functions: 45, arrays: 38, oop: 22, recursion: 18, algorithms: 10 } },
         ];
 
-        localStorage.setItem('cc_institution_students_VIT-BLR-2024', JSON.stringify(students));
+        localStorage.setItem('cc_institution_students_DSCE-MCA-2024', JSON.stringify(students));
         localStorage.setItem('cc_institution_seeded', '1');
+
+        // Sync demo students to backend
+        fetch('/api/institution/students', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ instId: 'DSCE-MCA-2024', students: students })
+        }).catch(e => console.error(e));
       }
     }
+    // Only call naturally if not explicitly waiting on load, but we can just call it
     seedDemoData();
 
     // ─── Portal Switch ────────────────────────────────────────
@@ -982,6 +997,8 @@
       document.getElementById('inst-form-signup').style.display = tab === 'signup' ? 'block' : 'none';
     }
 
+    // ─── Tabs removed ──────────────────────────
+
     // ─── Alert ────────────────────────────────────────────────
     function showAlert(msg, type = 'error') {
       const a = document.getElementById('alert-box');
@@ -991,15 +1008,15 @@
 
     // ─── Demo Fill ────────────────────────────────────────────
     function fillDemoInst() {
-      document.getElementById('inst-id').value = 'VIT-BLR-2024';
-      document.getElementById('inst-email').value = 'admin@vit.ac.in';
+      document.getElementById('inst-id').value = 'DSCE-MCA-2024';
+      document.getElementById('inst-email').value = 'admin@dsce.edu.in';
       document.getElementById('inst-password').value = 'demo123';
       showAlert('✅ Demo credentials filled. Click Sign In!', 'success');
     }
     function fillDemoStudent() {
-      document.getElementById('stu-inst-id').value = 'VIT-BLR-2024';
-      document.getElementById('stu-roll').value = '20BCE1234';
-      document.getElementById('stu-password').value = 'haris1234';
+      document.getElementById('stu-inst-id').value = 'DSCE-MCA-2024';
+      document.getElementById('stu-roll').value = '1DS24MC001';
+      document.getElementById('stu-password').value = 'haric001';
       showAlert('✅ Demo student credentials filled. Click Sign In!', 'success');
     }
 
@@ -1020,53 +1037,73 @@
       }
     }
 
-    // ─── Student Login ────────────────────────────────────────
+    // ─── Student Institution Login (Backend API) ────
     let pendingStudentData = null;
-    function handleStudentLogin() {
+    async function handleStudentLogin() {
       clearAlert();
       const instId = document.getElementById('stu-inst-id').value.trim();
       const rollNo = document.getElementById('stu-roll').value.trim();
-      const pass = document.getElementById('stu-password').value;
-      if (!instId || !rollNo || !pass) { showAlert('Please fill all fields.'); return; }
-      const students = JSON.parse(localStorage.getItem('cc_institution_students_' + instId) || 'null');
-      if (!students) { showAlert('Institution ID not found.'); return; }
-      const student = students.find(s => s.rollNo === rollNo);
-      if (!student) { showAlert('Student ID not found in this institution.'); return; }
-      if (student.password !== pass) { showAlert('Incorrect password.'); return; }
+      const password = document.getElementById('stu-password').value;
+      if (!instId || !rollNo || !password) { showAlert('Please fill all fields.'); return; }
 
-      // First login check: password still matches default pattern
-      const defaultPass = student.name.slice(0, 4).toLowerCase() + rollNo.slice(-4);
-      if (student.password === defaultPass && !student.passwordSet) {
-        pendingStudentData = { ...student, instId };
-        document.getElementById('student-form-login').style.display = 'none';
-        document.getElementById('student-form-setpass').style.display = 'block';
-        document.getElementById('stu-display-name').value = student.name;
-        return;
+      try {
+        showAlert('Signing in...', 'success');
+        const resp = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ instId, rollNo, password })
+        });
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          showAlert(data.error || 'Invalid credentials.');
+          return;
+        }
+
+        // Check if first login (passwordSet flag)
+        if (data.passwordSet === false) {
+          pendingStudentData = { ...data, password: password };
+          document.getElementById('student-form-login').style.display = 'none';
+          document.getElementById('student-form-setpass').style.display = 'block';
+          document.getElementById('stu-display-name').value = data.name;
+          return;
+        }
+
+        loginStudent(data);
+      } catch (e) {
+        showAlert('Connection error. Server not running?');
       }
-
-      loginStudent({ ...student, instId });
     }
 
-    function handleSetPassword() {
+    async function handleSetPassword() {
       const newPass = document.getElementById('stu-new-pass').value;
       const confirm = document.getElementById('stu-confirm-pass').value;
       if (newPass.length < 6) { showAlert('Password must be at least 6 characters.'); return; }
       if (newPass !== confirm) { showAlert('Passwords do not match.'); return; }
-      // Update in storage
-      const instId = pendingStudentData.instId;
-      const students = JSON.parse(localStorage.getItem('cc_institution_students_' + instId));
-      const idx = students.findIndex(s => s.rollNo === pendingStudentData.rollNo);
-      if (idx >= 0) { students[idx].password = newPass; students[idx].passwordSet = true; }
-      localStorage.setItem('cc_institution_students_' + instId, JSON.stringify(students));
-      loginStudent({ ...pendingStudentData, password: newPass, passwordSet: true });
+
+      try {
+        const resp = await fetch('/api/profile/' + encodeURIComponent(pendingStudentData.email), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: newPass, passwordSet: true })
+        });
+
+        if (!resp.ok) { showAlert('Error setting password'); return; }
+        const updatedData = await resp.json();
+        loginStudent(updatedData);
+      } catch (e) {
+        showAlert('Error connecting to server.');
+      }
     }
 
     function loginStudent(student) {
       const sessionData = {
         name: student.name, rollNo: student.rollNo, institutionId: student.instId,
-        college: 'VIT Bangalore', email: student.email, xp: student.xp,
-        level: student.level, streak: student.streak, skills: student.skills
+        college: student.college || 'Unknown', email: student.email, xp: student.xp,
+        level: student.level, streak: student.streak, skills: student.skills,
+        submissions: student.submissions || [], scores: student.scores || []
       };
+      // For backwards compatibility and dashboard, use cc_session:
       localStorage.setItem('cc_session', student.email);
       localStorage.setItem('cc_profile_' + student.email, JSON.stringify(sessionData));
       showAlert('✅ Welcome, ' + student.name + '! Loading your dashboard…', 'success');
@@ -1094,8 +1131,18 @@
     // ─── Enter key support ────────────────────────────────────
     document.addEventListener('keydown', e => {
       if (e.key !== 'Enter') return;
-      if (document.getElementById('section-institution').classList.contains('active')) handleInstLogin();
-      else handleStudentLogin();
+      if (document.getElementById('section-institution').classList.contains('active')) {
+        handleInstLogin();
+      } else {
+        // Check which student form is visible
+        if (document.getElementById('student-form-personal').style.display !== 'none') {
+          handleStudentEmailLogin();
+        } else if (document.getElementById('student-form-signup').style.display !== 'none') {
+          handleStudentSignup();
+        } else {
+          handleStudentLogin();
+        }
+      }
     });
 
     // ─── Theme Support ────────────────────────────────────────

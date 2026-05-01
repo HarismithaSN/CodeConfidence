@@ -1,0 +1,459 @@
+{
+  "section": "Communication",
+  "description": "Verbal ability, GD prep, email writing, presentation skills, and group discussion topics for placement preparation across TCS, Infosys, Wipro, Deloitte, Accenture, Cognizant, and other top companies.",
+  "categories": [
+    {
+      "category": "Verbal Ability - Synonyms & Antonyms",
+      "questions": [
+        {
+          "id": "comm_001",
+          "type": "synonym",
+          "question": "Choose the synonym of EPHEMERAL",
+          "options": ["Permanent", "Transient", "Eternal", "Robust"],
+          "answer": "Transient",
+          "explanation": "Ephemeral means lasting for a very short time. Transient also means passing quickly, making it the correct synonym.",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Cognizant"]
+        },
+        {
+          "id": "comm_002",
+          "type": "synonym",
+          "question": "Choose the synonym of LOQUACIOUS",
+          "options": ["Silent", "Talkative", "Aggressive", "Timid"],
+          "answer": "Talkative",
+          "explanation": "Loquacious means tending to talk a great deal. Talkative is its closest synonym.",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte"]
+        },
+        {
+          "id": "comm_003",
+          "type": "antonym",
+          "question": "Choose the antonym of BENEVOLENT",
+          "options": ["Kind", "Generous", "Malevolent", "Helpful"],
+          "answer": "Malevolent",
+          "explanation": "Benevolent means well-meaning and kindly. Malevolent means having or showing a wish to do evil to others — its direct antonym.",
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "HCL"]
+        },
+        {
+          "id": "comm_004",
+          "type": "antonym",
+          "question": "Choose the antonym of VERBOSE",
+          "options": ["Wordy", "Concise", "Lengthy", "Elaborate"],
+          "answer": "Concise",
+          "explanation": "Verbose means using more words than needed. Concise means giving information clearly with few words — its antonym.",
+          "difficulty": "medium",
+          "companies": ["Wipro", "Capgemini", "Deloitte"]
+        },
+        {
+          "id": "comm_005",
+          "type": "synonym",
+          "question": "Choose the synonym of AMELIORATE",
+          "options": ["Worsen", "Improve", "Ignore", "Demolish"],
+          "answer": "Improve",
+          "explanation": "Ameliorate means to make something bad or unsatisfactory better. Improve is its synonym.",
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture"]
+        },
+        {
+          "id": "comm_006",
+          "type": "synonym",
+          "question": "Choose the synonym of OBSTINATE",
+          "options": ["Flexible", "Stubborn", "Obedient", "Gentle"],
+          "answer": "Stubborn",
+          "explanation": "Obstinate means stubbornly refusing to change one's opinion or chosen course of action.",
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro"]
+        },
+        {
+          "id": "comm_007",
+          "type": "antonym",
+          "question": "Choose the antonym of FRUGAL",
+          "options": ["Thrifty", "Economical", "Extravagant", "Careful"],
+          "answer": "Extravagant",
+          "explanation": "Frugal means sparing or economical with money. Extravagant means lacking restraint in spending — its antonym.",
+          "difficulty": "easy",
+          "companies": ["Cognizant", "HCL", "Capgemini"]
+        },
+        {
+          "id": "comm_008",
+          "type": "synonym",
+          "question": "Choose the synonym of CANDID",
+          "options": ["Deceptive", "Frank", "Reserved", "Shy"],
+          "answer": "Frank",
+          "explanation": "Candid means truthful and straightforward. Frank means direct and outspoken — its synonym.",
+          "difficulty": "easy",
+          "companies": ["TCS", "Wipro", "Accenture"]
+        }
+      ]
+    },
+    {
+      "category": "Verbal Ability - Reading Comprehension",
+      "questions": [
+        {
+          "id": "comm_rc_001",
+          "type": "reading_comprehension",
+          "passage": "Artificial Intelligence (AI) is transforming the way businesses operate. From automating mundane tasks to enabling complex decision-making, AI has become indispensable across industries. However, with this transformation comes the challenge of reskilling the workforce. Companies that invest in upskilling their employees are more likely to thrive in an AI-driven world. The key is not to replace humans with machines, but to augment human capabilities using technology.",
+          "questions": [
+            {
+              "sub_id": "comm_rc_001a",
+              "question": "What is the main idea of the passage?",
+              "options": [
+                "AI will replace all human jobs",
+                "AI transforms business and requires workforce reskilling",
+                "Companies should avoid AI adoption",
+                "AI only benefits large corporations"
+              ],
+              "answer": "AI transforms business and requires workforce reskilling",
+              "explanation": "The passage discusses how AI is transforming businesses and emphasizes the need for reskilling employees to complement AI capabilities."
+            },
+            {
+              "sub_id": "comm_rc_001b",
+              "question": "According to the passage, what should companies focus on?",
+              "options": [
+                "Replacing employees with AI",
+                "Avoiding AI investments",
+                "Augmenting human capabilities with technology",
+                "Reducing technology budgets"
+              ],
+              "answer": "Augmenting human capabilities with technology",
+              "explanation": "The passage explicitly states 'the key is not to replace humans with machines, but to augment human capabilities using technology.'"
+            }
+          ],
+          "difficulty": "medium",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys"]
+        },
+        {
+          "id": "comm_rc_002",
+          "type": "reading_comprehension",
+          "passage": "Climate change poses one of the greatest threats to global biodiversity. Rising temperatures, melting glaciers, and shifting weather patterns are forcing many species to migrate or face extinction. Conservation efforts must be scaled up dramatically. International cooperation is essential, as environmental issues do not respect national borders. Governments, NGOs, and individuals must all play their part in safeguarding the planet for future generations.",
+          "questions": [
+            {
+              "sub_id": "comm_rc_002a",
+              "question": "What does the author suggest as essential for conservation?",
+              "options": [
+                "Individual action alone",
+                "Government regulation only",
+                "International cooperation",
+                "Reducing NGO funding"
+              ],
+              "answer": "International cooperation",
+              "explanation": "The author states 'International cooperation is essential, as environmental issues do not respect national borders.'"
+            }
+          ],
+          "difficulty": "medium",
+          "companies": ["TCS", "Wipro", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Verbal Ability - Fill in the Blanks",
+      "questions": [
+        {
+          "id": "comm_fib_001",
+          "type": "fill_in_the_blank",
+          "question": "Despite his ______ nature, he managed to deliver a compelling speech.",
+          "options": ["gregarious", "introverted", "eloquent", "assertive"],
+          "answer": "introverted",
+          "explanation": "The word 'despite' signals a contrast. An introverted person delivering a compelling speech creates the contrast needed.",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Capgemini"]
+        },
+        {
+          "id": "comm_fib_002",
+          "type": "fill_in_the_blank",
+          "question": "The manager was ______ in her praise, rarely acknowledging the team's hard work.",
+          "options": ["generous", "lavish", "sparing", "effusive"],
+          "answer": "sparing",
+          "explanation": "Sparing means moderate; not generous. The second clause supports this meaning — rarely acknowledging work.",
+          "difficulty": "medium",
+          "companies": ["Wipro", "Accenture", "Deloitte"]
+        },
+        {
+          "id": "comm_fib_003",
+          "type": "fill_in_the_blank",
+          "question": "The new policy ______ significant changes to the way employees report their expenses.",
+          "options": ["neglects", "mandates", "hinders", "conceals"],
+          "answer": "mandates",
+          "explanation": "Mandates means to require authoritatively, which fits the context of a new policy introducing changes.",
+          "difficulty": "easy",
+          "companies": ["TCS", "HCL", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Verbal Ability - Para Jumbles",
+      "questions": [
+        {
+          "id": "comm_pj_001",
+          "type": "para_jumble",
+          "sentences": {
+            "A": "This has led to a massive increase in internet penetration across rural areas.",
+            "B": "The government launched several digital literacy programs in 2015.",
+            "C": "As a result, millions of citizens can now access government services online.",
+            "D": "These programs focused on training people to use smartphones and the internet."
+          },
+          "question": "Arrange the sentences A, B, C, D in the correct logical order.",
+          "answer": "B-D-A-C",
+          "explanation": "B introduces the programs, D explains what they focused on, A shows the outcome (internet penetration), and C gives the final result (citizens accessing services).",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture"]
+        },
+        {
+          "id": "comm_pj_002",
+          "type": "para_jumble",
+          "sentences": {
+            "A": "Eventually, the startup became one of the most valued companies in the country.",
+            "B": "In the beginning, the founders had only a small idea and limited funds.",
+            "C": "They persisted through challenges, iterating their product based on user feedback.",
+            "D": "Investors began to take notice as the product gained traction."
+          },
+          "question": "Arrange the sentences A, B, C, D in the correct logical order.",
+          "answer": "B-C-D-A",
+          "explanation": "B sets the humble beginning, C shows perseverance, D shows investor interest, A shows the final success.",
+          "difficulty": "medium",
+          "companies": ["Deloitte", "Cognizant", "Capgemini"]
+        }
+      ]
+    },
+    {
+      "category": "Group Discussion Topics",
+      "questions": [
+        {
+          "id": "comm_gd_001",
+          "type": "group_discussion",
+          "topic": "Is remote work the future of employment?",
+          "key_points_for": [
+            "Increases productivity by reducing commute stress",
+            "Enables global talent hiring regardless of geography",
+            "Reduces operational costs for companies",
+            "Promotes work-life balance"
+          ],
+          "key_points_against": [
+            "Reduces collaboration and team cohesion",
+            "Blurs the boundary between personal and professional life",
+            "Not feasible for all industries (manufacturing, healthcare)",
+            "Can lead to feelings of isolation and mental health issues"
+          ],
+          "conclusion_tip": "A hybrid model balancing remote and in-office work is the most pragmatic approach.",
+          "difficulty": "medium",
+          "companies": ["TCS", "Deloitte", "Accenture", "Wipro", "Infosys"]
+        },
+        {
+          "id": "comm_gd_002",
+          "type": "group_discussion",
+          "topic": "Should social media platforms be regulated by the government?",
+          "key_points_for": [
+            "Prevents spread of misinformation and fake news",
+            "Protects users from cyberbullying and harassment",
+            "Ensures data privacy and security",
+            "Holds platforms accountable for harmful content"
+          ],
+          "key_points_against": [
+            "May infringe on freedom of speech",
+            "Risk of government misuse for political censorship",
+            "Self-regulation by platforms may be more effective",
+            "Different countries have different standards — regulation is complex"
+          ],
+          "conclusion_tip": "Regulation is necessary but must be transparent, unbiased, and protect free speech.",
+          "difficulty": "medium",
+          "companies": ["TCS", "Deloitte", "Cognizant", "HCL"]
+        },
+        {
+          "id": "comm_gd_003",
+          "type": "group_discussion",
+          "topic": "Electric vehicles: Are they a sustainable solution to pollution?",
+          "key_points_for": [
+            "Zero tailpipe emissions reduce air pollution in cities",
+            "Lower operational and maintenance costs in the long run",
+            "Renewables integration can make EVs truly green",
+            "Government incentives are accelerating adoption"
+          ],
+          "key_points_against": [
+            "Battery production generates significant carbon emissions",
+            "Charging infrastructure is still underdeveloped",
+            "High upfront costs remain a barrier for many consumers",
+            "Electricity generation itself may rely on fossil fuels"
+          ],
+          "conclusion_tip": "EVs are a crucial part of the solution but must be paired with clean energy generation and responsible battery recycling.",
+          "difficulty": "hard",
+          "companies": ["Deloitte", "Accenture", "TCS", "Infosys"]
+        },
+        {
+          "id": "comm_gd_004",
+          "type": "group_discussion",
+          "topic": "Brain drain: Is it a loss or gain for developing countries?",
+          "key_points_for_loss": [
+            "Country loses skilled professionals it invested in educating",
+            "Reduces innovation and entrepreneurship at home",
+            "Widens the gap between developed and developing nations",
+            "Healthcare and education sectors suffer most"
+          ],
+          "key_points_for_gain": [
+            "Remittances sent back contribute to the home economy",
+            "Professionals gain world-class experience and may return",
+            "Builds a global diaspora network benefiting the home country",
+            "Encourages better conditions at home to retain talent"
+          ],
+          "conclusion_tip": "Brain drain is a challenge that calls for better opportunities, compensation, and work environments in developing nations.",
+          "difficulty": "hard",
+          "companies": ["TCS", "Wipro", "Infosys", "Cognizant"]
+        },
+        {
+          "id": "comm_gd_005",
+          "type": "group_discussion",
+          "topic": "Artificial Intelligence will do more harm than good",
+          "key_points_for": [
+            "Leads to large-scale unemployment due to automation",
+            "Raises serious ethical concerns around bias and privacy",
+            "AI systems can malfunction with critical consequences",
+            "Concentration of AI power in few corporations is dangerous"
+          ],
+          "key_points_against": [
+            "AI automates repetitive tasks, freeing humans for creative work",
+            "Enables faster medical diagnosis and drug discovery",
+            "Improves efficiency in logistics, agriculture, and energy",
+            "Creates new job categories and opportunities"
+          ],
+          "conclusion_tip": "AI is a tool — its impact depends on how responsibly it is developed and governed.",
+          "difficulty": "hard",
+          "companies": ["Deloitte", "Accenture", "TCS", "Wipro", "HCL"]
+        }
+      ]
+    },
+    {
+      "category": "Email & Business Writing",
+      "questions": [
+        {
+          "id": "comm_bw_001",
+          "type": "email_writing",
+          "scenario": "Write a professional email to your manager requesting approval for attending an external training program on cloud computing.",
+          "sample_answer": {
+            "subject": "Request for Approval – Cloud Computing Training Program",
+            "body": "Dear [Manager's Name],\n\nI hope this email finds you well. I am writing to request your approval to attend a three-day Cloud Computing Training Program scheduled from [Date] at [Venue/Online Platform].\n\nThis program covers AWS, Azure, and GCP fundamentals, which are directly aligned with our current project requirements. Attending this training will help me contribute more effectively to the team's cloud migration initiatives.\n\nThe program fee is [Amount], and I will ensure my current responsibilities are managed without disruption during this period.\n\nI have attached the program brochure for your reference. Please let me know if you need any additional information.\n\nThank you for considering my request.\n\nBest regards,\n[Your Name]\n[Designation] | [Team]"
+          },
+          "tips": [
+            "Use a clear, specific subject line",
+            "Justify the business value of the training",
+            "Mention cost and minimal disruption to reassure the manager",
+            "Keep the tone professional and respectful"
+          ],
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte"]
+        },
+        {
+          "id": "comm_bw_002",
+          "type": "email_writing",
+          "scenario": "Write a professional email apologizing to a client for a delayed project delivery.",
+          "sample_answer": {
+            "subject": "Apology and Update – [Project Name] Delivery Delay",
+            "body": "Dear [Client Name],\n\nI sincerely apologize for the delay in delivering [Project Name]. We understand the impact this may have on your timeline and we take full responsibility.\n\nThe delay was caused by [brief reason – e.g., unforeseen technical challenges], but we have taken immediate corrective steps. Our revised delivery date is [New Date].\n\nWe have allocated additional resources to ensure the quality and timeline of this delivery. We value our partnership and are committed to regaining your trust.\n\nThank you for your patience. Please feel free to reach out to me directly with any concerns.\n\nWarm regards,\n[Your Name]\n[Designation] | [Company]"
+          },
+          "tips": [
+            "Acknowledge the issue promptly and sincerely",
+            "Give a clear revised timeline",
+            "Show accountability — avoid making excuses",
+            "Reassure with concrete corrective actions"
+          ],
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Presentation Skills",
+      "questions": [
+        {
+          "id": "comm_ps_001",
+          "type": "presentation_tip",
+          "topic": "Structure of a good presentation",
+          "content": {
+            "opening": "Start with a hook — a surprising fact, question, or story. State your agenda clearly.",
+            "body": "Cover 3–5 key points. Use the 'Point–Reason–Example–Point' (PREP) structure for each.",
+            "closing": "Summarize key takeaways. End with a clear call to action or memorable statement.",
+            "tips": [
+              "Maintain eye contact with the audience",
+              "Use visuals sparingly — avoid text-heavy slides",
+              "Speak at a measured pace; don't rush",
+              "Pause for emphasis on key points",
+              "Anticipate and prepare for questions"
+            ]
+          },
+          "companies": ["Deloitte", "Accenture", "TCS", "Infosys"]
+        },
+        {
+          "id": "comm_ps_002",
+          "type": "presentation_scenario",
+          "question": "You are given 2 minutes to present on 'The importance of digital literacy in today's world'. What would your structure be?",
+          "sample_answer": {
+            "opening": "Did you know that over 3 billion people still lack basic digital skills? In today's world, that's not just an inconvenience — it's a barrier to opportunity.",
+            "point_1": "Digital literacy enables access to education, healthcare, and government services.",
+            "point_2": "It is a prerequisite for most modern jobs, from data entry to software development.",
+            "point_3": "Governments and organizations must invest in digital literacy programs to ensure inclusive growth.",
+            "closing": "In conclusion, digital literacy is not a luxury — it's a right. Let's make sure everyone has it."
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Wipro", "Deloitte", "Accenture"]
+        }
+      ]
+    },
+    {
+      "category": "Error Spotting & Grammar",
+      "questions": [
+        {
+          "id": "comm_gr_001",
+          "type": "error_spotting",
+          "question": "Identify the grammatical error: 'The team have completed their project on time and submitted the report to the manager.'",
+          "options": [
+            "team have",
+            "completed their",
+            "submitted the report",
+            "to the manager"
+          ],
+          "answer": "team have",
+          "explanation": "In formal American/Indian corporate English, 'team' is treated as a singular collective noun. The correct form is 'The team has completed...'",
+          "difficulty": "medium",
+          "companies": ["TCS", "Wipro", "Infosys", "HCL"]
+        },
+        {
+          "id": "comm_gr_002",
+          "type": "error_spotting",
+          "question": "Identify the error: 'Neither the manager nor the employees was present at the meeting.'",
+          "options": [
+            "Neither the manager",
+            "nor the employees",
+            "was present",
+            "at the meeting"
+          ],
+          "answer": "was present",
+          "explanation": "With 'neither...nor', the verb agrees with the subject closest to it. Since 'employees' is plural, the verb should be 'were present'.",
+          "difficulty": "hard",
+          "companies": ["TCS", "Accenture", "Deloitte"]
+        },
+        {
+          "id": "comm_gr_003",
+          "type": "error_spotting",
+          "question": "Identify the error: 'He is one of the candidates who has performed well in the interview.'",
+          "options": [
+            "He is one of",
+            "the candidates who",
+            "has performed well",
+            "in the interview"
+          ],
+          "answer": "has performed well",
+          "explanation": "The relative clause 'who has performed' refers to 'candidates' (plural), so it should be 'who have performed well'.",
+          "difficulty": "hard",
+          "companies": ["TCS", "Infosys", "Cognizant"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "total_questions": 28,
+    "companies_covered": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "Capgemini", "HCL"],
+    "difficulty_levels": ["easy", "medium", "hard"],
+    "rag_tags": ["verbal_ability", "reading_comprehension", "group_discussion", "email_writing", "grammar", "presentation", "placement_prep"],
+    "version": "1.0",
+    "created_for": "RAG model training – placement preparation platform"
+  }
+}

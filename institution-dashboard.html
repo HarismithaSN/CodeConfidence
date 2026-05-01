@@ -41,6 +41,9 @@
             --red: #ff6b6b;
             --red-bg: rgba(255, 107, 107, 0.12);
             --sidebar-bg: #13131a;
+            --sidebar-text: #64748b;
+            --sidebar-text-active: #ffffff;
+            --surface: #16161c;
             --card-bg: #16161c;
             --input-bg: #1e1e26;
             --hover-bg: #1e1e26;
@@ -49,7 +52,7 @@
             --shadow: rgba(0, 0, 0, 0.4);
         }
 
-        :root.light {
+        body.light-theme {
             /* ── LIGHT MODE ── */
             --bg: #f7f6f2;
             --bg2: #ffffff;
@@ -75,12 +78,11 @@
             --purple-bg: rgba(124, 58, 237, 0.1);
             --red: #dc2626;
             --red-bg: rgba(220, 38, 38, 0.1);
-            --sidebar-bg: #1a1916;
+            --sidebar-bg: #ffffff;
+            --sidebar-text: #475569;
+            --sidebar-text-active: #0f172a;
+            --surface: #ffffff;
             --card-bg: #ffffff;
-            --input-bg: #f0efe9;
-            --hover-bg: #f0efe9;
-            --code-bg: #1a1916;
-            --code-text: #e2e8f0;
             --shadow: rgba(0, 0, 0, 0.12);
         }
 
@@ -105,40 +107,13 @@
             transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
 
-        .light-theme .sb-name,
-        .light-theme .header-left h1 {
-            background: linear-gradient(to right, var(--text), var(--blue)) !important;
-            -webkit-background-clip: text !important;
-            background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-        }
 
-        .light-theme .sidebar,
-        .light-theme .header {
-            background: var(--surface) !important;
-            border-color: var(--border) !important;
-        }
-
-        .light-theme .sb-link:hover {
-            background: rgba(0, 0, 0, 0.03) !important;
-            color: var(--text) !important;
-        }
-
-        .light-theme .sb-link.active {
-            background: rgba(37, 99, 235, 0.1) !important;
-        }
-
-        .light-theme .glass-card,
-        .light-theme .kpi-card {
-            background: #ffffff !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
-        }
 
         /* SIDEBAR */
         .sidebar {
             width: 220px;
             flex-shrink: 0;
-            background: var(--surface);
+            background: var(--sidebar-bg);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
@@ -172,7 +147,7 @@
         .sb-name {
             font-size: 13px;
             font-weight: 800;
-            color: #fff;
+            color: var(--text);
         }
 
         .sb-sub {
@@ -207,8 +182,8 @@
         }
 
         .sb-link:hover {
-            background: rgba(255, 255, 255, 0.04);
-            color: #fff;
+            background: var(--gold-bg2);
+            color: var(--text);
         }
 
         .sb-link.active {
@@ -750,7 +725,7 @@
                   " onmouseover="this.style.background='var(--bg4)';this.style.color='var(--text)'"
                     onmouseout="this.style.background='var(--bg3)';this.style.color='var(--text2)'">
                 </button>
-                <div class="inst-badge" id="hdr-inst">🏫 VIT Bangalore</div>
+                <div class="inst-badge" id="hdr-inst">🏫 Dayananda Sagar College</div>
             </div>
         </header>
 
@@ -784,7 +759,8 @@
                         placeholder="🔍 Search by name or roll no..." oninput="filterStudents()">
                     <div style="display:flex;gap:10px;">
                         <select class="form-input" style="width:auto;" id="branch-filter" onchange="filterStudents()">
-                            <option value="">All Branches</option>
+                            <option value="">All Courses</option>
+                            <option>MCA</option>
                             <option>CSE</option>
                             <option>ECE</option>
                             <option>ME</option>
@@ -881,6 +857,7 @@
                         <div class="form-field"><label>Assign To</label>
                             <select class="form-input" id="asgn-target">
                                 <option value="all">All Students</option>
+                                <option value="MCA">MCA Course</option>
                                 <option value="CSE">CSE Branch</option>
                                 <option value="ECE">ECE Branch</option>
                                 <option value="ME">ME Branch</option>
@@ -909,6 +886,7 @@
                                         placeholder="Student Name"></div>
                                 <div class="form-field"><label>Branch</label>
                                     <select class="form-input" id="cred-branch">
+                                        <option>MCA</option>
                                         <option>CSE</option>
                                         <option>ECE</option>
                                         <option>ME</option>
@@ -967,11 +945,11 @@
                     <div class="glass-card">
                         <div class="section-title">🏫 Institution Profile</div>
                         <div class="form-field"><label>Institution Name</label><input class="form-input" id="set-name"
-                                placeholder="VIT Bangalore"></div>
+                                placeholder="Dayananda Sagar College"></div>
                         <div class="form-field"><label>Contact Person</label><input class="form-input" id="set-contact"
                                 placeholder="Dr. Ramesh Kumar"></div>
                         <div class="form-field"><label>Official Email</label><input class="form-input" id="set-email"
-                                type="email" placeholder="admin@vit.ac.in"></div>
+                                type="email" placeholder="admin@dsce.edu.in"></div>
                         <div class="form-field"><label>Phone</label><input class="form-input" id="set-phone"
                                 placeholder="+91 98765 43210"></div>
                         <button class="btn btn-blue" style="width:100%;justify-content:center;"
@@ -1076,6 +1054,12 @@
         }
         function saveStudents(arr) {
             localStorage.setItem('cc_institution_students_' + inst.id, JSON.stringify(arr));
+            // Sync with backend
+            fetch('/api/institution/students', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ instId: inst.id, students: arr })
+            }).catch(e => console.error('Failed to sync students', e));
         }
         function getAssignments() {
             return JSON.parse(localStorage.getItem('cc_assignments_' + inst.id) || '[]');
@@ -1095,6 +1079,16 @@
             document.getElementById('set-contact').value = inst.adminName || '';
             document.getElementById('set-email').value = inst.email || '';
             showPage('overview');
+
+            // Background sync existing students to backend
+            const s = getStudents();
+            if (s.length > 0) {
+                fetch('/api/institution/students', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ instId: inst.id, students: s })
+                }).catch(e => console.error('Failed to sync students to backend', e));
+            }
         };
 
         // ─── NAVIGATION ───────────────────────────────────────
@@ -1448,9 +1442,9 @@
             const name = document.getElementById('cred-name').value.trim();
             const branch = document.getElementById('cred-branch').value;
             const year = document.getElementById('cred-year').value;
-            if (!roll || !name) { showToast('⚠️ Roll No and Name are required.'); return; }
+            if (!roll || !name) { showToast('⚠️ USN and Name are required.'); return; }
             const students = getStudents();
-            if (students.find(s => s.rollNo === roll)) { showToast('⚠️ Roll number already exists!'); return; }
+            if (students.find(s => s.rollNo === roll)) { showToast('⚠️ USN already exists!'); return; }
             processNewStudent(roll, name, branch, year);
             ['cred-roll', 'cred-name'].forEach(id => document.getElementById(id).value = '');
             renderCredentials();
@@ -1460,7 +1454,7 @@
         function processNewStudent(roll, name, branch, year) {
             const students = getStudents();
             const newStudent = {
-                rollNo: roll, name, email: name.toLowerCase().replace(/\s/g, '.') + '@vit.ac.in',
+                rollNo: roll, name, email: name.toLowerCase().replace(/\s/g, '.') + '@dsce.edu.in',
                 branch, year, password: name.slice(0, 4).toLowerCase() + roll.slice(-4),
                 xp: 0, level: 1, confidenceScore: 0, streak: 0,
                 lastActive: new Date().toISOString().split('T')[0],
@@ -1531,7 +1525,7 @@
         function resetData() {
             if (!confirm('Reset all demo data? This cannot be undone.')) return;
             ['cc_institution_seeded', 'cc_institution', 'cc_institution_session',
-                'cc_institution_students_VIT-BLR-2024', 'cc_assignments_VIT-BLR-2024'].forEach(k =>
+                'cc_institution_students_DSCE-MCA-2024', 'cc_assignments_DSCE-MCA-2024'].forEach(k =>
                     localStorage.removeItem(k));
             showToast('🔄 Data reset. Redirecting to login...');
             setTimeout(() => window.location.href = 'login.html', 1500);
@@ -1554,12 +1548,31 @@
         }
         // ─── Theme Support ────────────────────────────────────────
         function initTheme() {
-            const savedTheme = localStorage.getItem('cc_theme') || 'dark';
-            if (savedTheme === 'light') document.body.classList.add('light-theme');
+            const saved = localStorage.getItem('cc_theme') || 'dark'
+            applyTheme(saved)
+        }
+        function applyTheme(theme) {
+            const body = document.body
+            const btn = document.getElementById('theme-toggle-btn')
+            if (theme === 'light') {
+                body.classList.add('light-theme')
+                if (btn) btn.innerHTML = getMoonIcon()
+            } else {
+                body.classList.remove('light-theme')
+                if (btn) btn.innerHTML = getSunIcon()
+            }
+            localStorage.setItem('cc_theme', theme)
         }
         function toggleTheme() {
-            const isLight = document.body.classList.toggle('light-theme');
-            localStorage.setItem('cc_theme', isLight ? 'light' : 'dark');
+            const current = localStorage.getItem('cc_theme') || 'dark'
+            const next = current === 'dark' ? 'light' : 'dark'
+            applyTheme(next)
+        }
+        function getSunIcon() {
+            return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+        }
+        function getMoonIcon() {
+            return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`
         }
         initTheme();
     </script>

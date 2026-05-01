@@ -1,0 +1,269 @@
+{
+  "section": "Behavioral",
+  "description": "HR questions, situational judgment, STAR method answers, and company-specific behavioral questions for placement preparation across TCS, Infosys, Wipro, Deloitte, Accenture, Cognizant, and other top companies.",
+  "categories": [
+    {
+      "category": "Tell Me About Yourself",
+      "questions": [
+        {
+          "id": "beh_001",
+          "type": "hr_question",
+          "question": "Tell me about yourself.",
+          "framework": "Past → Present → Future",
+          "sample_answer": "I am [Name], a final-year Computer Science student at [College], graduating in [Year]. Throughout my academic journey, I have maintained a strong GPA of [X] and developed a solid foundation in data structures, algorithms, and software development. I have interned at [Company], where I worked on [specific project], which helped me understand real-world software delivery processes. I've also led my college's coding club and organized hackathons for 200+ participants. Going forward, I'm excited to join a company like [Company Name] where I can contribute my technical skills, grow in a collaborative environment, and work on meaningful problems at scale.",
+          "tips": [
+            "Keep it to 2 minutes max",
+            "Structure it: past education → current skills/experience → future goals",
+            "Always end by connecting to the company you're interviewing at",
+            "Avoid reading your resume — this is a conversation opener"
+          ],
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL", "Capgemini"]
+        }
+      ]
+    },
+    {
+      "category": "Strengths & Weaknesses",
+      "questions": [
+        {
+          "id": "beh_002",
+          "type": "hr_question",
+          "question": "What is your greatest strength?",
+          "sample_answer": "My greatest strength is problem-solving under pressure. During my internship, our team faced a critical production bug just two days before a major release. I volunteered to debug the issue, systematically traced it to a race condition in our API, and proposed a fix that was reviewed and merged within hours. The release went on time. This experience showed me that I perform well under high-stakes situations and I enjoy the challenge of troubleshooting complex problems.",
+          "tips": [
+            "Pick a strength that is relevant to the job",
+            "Back it up with a specific example (STAR method)",
+            "Don't just say 'I'm a hard worker' — be specific"
+          ],
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "beh_003",
+          "type": "hr_question",
+          "question": "What is your greatest weakness?",
+          "sample_answer": "I used to struggle with delegating tasks because I wanted to ensure everything was done to a high standard. However, I realized during a group project that this was slowing the team down. I began consciously assigning tasks based on each person's strengths and checking in at milestones rather than micromanaging. This helped us deliver the project two days ahead of schedule. I'm still working on this, but I've improved significantly.",
+          "tips": [
+            "Never say you have no weaknesses — it seems dishonest",
+            "Choose a real weakness, but one that's not a core job requirement",
+            "Always show what steps you've taken to improve it",
+            "Avoid cliché answers like 'I work too hard'"
+          ],
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte"]
+        }
+      ]
+    },
+    {
+      "category": "Situational Judgment Questions",
+      "questions": [
+        {
+          "id": "beh_004",
+          "type": "situational",
+          "question": "You are working on a project and realize midway that the approach you chose will not meet the deadline. What do you do?",
+          "sample_answer": {
+            "situation": "This happens when you discover a fundamental flaw in your plan after significant work has been done.",
+            "recommended_action": [
+              "Immediately assess the severity — how far off track are you and by how much time?",
+              "Identify alternative approaches that could close the gap",
+              "Communicate proactively to your manager/team lead — never hide problems",
+              "Present the problem along with your proposed solutions, not just the issue",
+              "Reprioritize tasks to focus on the most critical deliverables first"
+            ],
+            "key_message": "Transparency and proactive communication are more valued than pretending the problem doesn't exist."
+          },
+          "tips": [
+            "Always acknowledge the problem rather than hiding it",
+            "Show initiative by coming with solutions, not just the problem",
+            "Demonstrate time management and adaptability"
+          ],
+          "difficulty": "medium",
+          "companies": ["TCS", "Deloitte", "Accenture", "Wipro"]
+        },
+        {
+          "id": "beh_005",
+          "type": "situational",
+          "question": "A teammate is not contributing equally to the group project. How would you handle it?",
+          "sample_answer": {
+            "recommended_action": [
+              "First, have a private, empathetic conversation with the teammate to understand if there are personal challenges or confusion about responsibilities",
+              "If the issue persists, clarify roles and expectations in a team meeting without singling them out",
+              "If it continues to affect project outcomes, escalate to the team lead with documentation of contributions",
+              "Focus on the team's success rather than blame"
+            ],
+            "key_message": "Handle conflict professionally, empathetically, and through proper channels."
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "beh_006",
+          "type": "situational",
+          "question": "You disagree with your manager's technical decision. What do you do?",
+          "sample_answer": {
+            "recommended_action": [
+              "Request a one-on-one meeting with your manager",
+              "Present your perspective with data and evidence, not just opinion",
+              "Listen to their reasoning — they may have context you don't",
+              "If your concern is valid and they're still not persuaded, document your recommendation",
+              "Ultimately, respect the final decision while ensuring your concern is formally noted"
+            ],
+            "key_message": "Disagreement should be professional, data-driven, and respectful. Once a decision is made, align and execute."
+          },
+          "difficulty": "hard",
+          "companies": ["Deloitte", "Accenture", "TCS", "Infosys"]
+        }
+      ]
+    },
+    {
+      "category": "STAR Method Questions",
+      "questions": [
+        {
+          "id": "beh_007",
+          "type": "star_method",
+          "question": "Tell me about a time you demonstrated leadership.",
+          "star_breakdown": {
+            "situation": "During my third year, our college coding club was disorganized with low participation. Events were poorly planned and attendance had dropped by 40%.",
+            "task": "I took on the role of club president with the goal of reviving engagement and organizing a national-level hackathon.",
+            "action": "I restructured the club with clear roles, introduced weekly coding contests on platforms like HackerRank, established industry mentorship tie-ups, and organized a 36-hour hackathon with 250+ participants and sponsorship from 3 local tech companies.",
+            "result": "Membership grew from 30 to 120 students. The hackathon attracted participants from 8 colleges and received excellent feedback. Two projects from our hackathon were later selected for a state-level startup program."
+          },
+          "tips": [
+            "Keep STAR answers to 2-3 minutes",
+            "Quantify your results whenever possible",
+            "Focus on YOUR actions, not the team's"
+          ],
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Accenture", "Deloitte", "Wipro"]
+        },
+        {
+          "id": "beh_008",
+          "type": "star_method",
+          "question": "Tell me about a time you faced a failure and how you handled it.",
+          "star_breakdown": {
+            "situation": "During my internship, I was assigned to build a data pipeline that would process 1 million records nightly. I underestimated the complexity and my initial design failed performance testing — it took 4 hours instead of the required 30 minutes.",
+            "task": "I had one week to fix the pipeline before the client demo.",
+            "action": "I immediately analyzed the bottleneck, learned about batch processing and indexing strategies, rewrote the pipeline using chunked batch inserts and added database indexes on frequently queried columns. I also scheduled additional load tests.",
+            "result": "The revised pipeline processed 1 million records in 22 minutes — beating the target. My manager appreciated how I identified and resolved the issue independently and presented it as a case study to the broader team."
+          },
+          "tips": [
+            "Don't pick a trivial failure — pick something meaningful",
+            "Show what you learned, not just what went wrong",
+            "Emphasize the positive outcome or growth from the failure"
+          ],
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Wipro", "Infosys"]
+        },
+        {
+          "id": "beh_009",
+          "type": "star_method",
+          "question": "Describe a situation where you had to meet a tight deadline.",
+          "star_breakdown": {
+            "situation": "A week before our college project submission, we discovered that a core feature — real-time notifications — was completely broken due to a WebSocket library version conflict.",
+            "task": "Fix the feature without compromising our other modules, with 5 days to submission.",
+            "action": "I divided the work: I handled the WebSocket fix while teammates focused on documentation and testing. I worked through the weekend, researched alternative libraries, and implemented a polling fallback in parallel as a safety net.",
+            "result": "The WebSocket fix was complete in 3 days. We submitted on time with all features functional and scored 92/100 — one of the highest in our batch."
+          },
+          "difficulty": "medium",
+          "companies": ["TCS", "Wipro", "Infosys", "Cognizant", "HCL"]
+        }
+      ]
+    },
+    {
+      "category": "Company-Specific HR Questions",
+      "questions": [
+        {
+          "id": "beh_tcs_001",
+          "type": "company_specific",
+          "company": "TCS",
+          "question": "Why do you want to join TCS?",
+          "sample_answer": "TCS is one of the most respected IT services companies globally, with a presence in over 46 countries and a strong culture of learning and innovation. What particularly draws me to TCS is its focus on continuous learning through platforms like TCS iON and Fresco Play, which align with my goal of growing technically throughout my career. The scale of projects TCS handles — from digital transformation to AI and cloud — gives freshers exposure that few companies can match. I'm excited to contribute to this environment and grow alongside the best minds in the industry.",
+          "difficulty": "easy",
+          "companies": ["TCS"]
+        },
+        {
+          "id": "beh_deloitte_001",
+          "type": "company_specific",
+          "company": "Deloitte",
+          "question": "Why Deloitte?",
+          "sample_answer": "Deloitte's position as a global leader in consulting, risk advisory, and technology services is deeply appealing to me. What stands out most is Deloitte's commitment to purpose-driven work and its WorldClass initiative to develop skills for 100 million people. I'm particularly drawn to the collaborative culture at Deloitte, where cross-functional teams work together on complex, multi-industry challenges. I believe this environment will push me to develop both technical and consulting skills that will define my career long-term.",
+          "difficulty": "easy",
+          "companies": ["Deloitte"]
+        },
+        {
+          "id": "beh_accenture_001",
+          "type": "company_specific",
+          "company": "Accenture",
+          "question": "Why do you want to work at Accenture?",
+          "sample_answer": "Accenture is at the forefront of digital transformation globally, and its focus on innovation in AI, cloud, and sustainability resonates with my interests. I'm particularly excited about Accenture's 'New Applied Now' approach — applying emerging technology to real business outcomes. The company's commitment to employee development through certifications and rotational programs also appeals to me as someone who values continuous learning. I'm confident that Accenture would be the ideal place for me to grow as a technology consultant.",
+          "difficulty": "easy",
+          "companies": ["Accenture"]
+        },
+        {
+          "id": "beh_infosys_001",
+          "type": "company_specific",
+          "company": "Infosys",
+          "question": "Why do you want to join Infosys?",
+          "sample_answer": "Infosys has a remarkable legacy of building world-class software professionals and has consistently been a leader in digital services and consulting. I'm excited about the InfyTQ platform and the company's focus on building engineers who can think critically and innovate. The collaborative work culture at Infosys, combined with its global footprint and emphasis on ethical business practices, aligns with my values. I'm eager to be part of a team that is building solutions at scale for some of the world's most complex problems.",
+          "difficulty": "easy",
+          "companies": ["Infosys"]
+        }
+      ]
+    },
+    {
+      "category": "Career Goals & Motivation",
+      "questions": [
+        {
+          "id": "beh_010",
+          "type": "hr_question",
+          "question": "Where do you see yourself in 5 years?",
+          "sample_answer": "In five years, I see myself as a proficient software engineer or technology consultant who has developed deep expertise in cloud computing or AI/ML — areas I'm very passionate about. I hope to have led at least one significant project end-to-end by then, growing from an individual contributor to someone who can mentor junior engineers. Long-term, I'd love to work in a role that sits at the intersection of technology and business strategy. Companies like [Company] offer the learning opportunities and project scale that would help me get there.",
+          "tips": [
+            "Be ambitious but realistic",
+            "Connect your goal to what the company offers",
+            "Avoid saying 'I want to start my own company' (unless applying to a startup-friendly firm)"
+          ],
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "beh_011",
+          "type": "hr_question",
+          "question": "Are you willing to relocate?",
+          "sample_answer": "Yes, I'm open to relocation. I understand that large organizations operate across multiple cities and countries, and being flexible with location is part of embracing a broad career opportunity. I'm excited about the possibility of working in different geographies as it broadens both professional and personal growth.",
+          "alternate_if_not_willing": "I do have some constraints around relocation due to family responsibilities, but I'm open to discussing the specifics of the role. If remote or hybrid options are available, I'm fully committed to performing at the highest level. I hope we can find a solution that works for both sides.",
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "Capgemini", "HCL"]
+        },
+        {
+          "id": "beh_012",
+          "type": "hr_question",
+          "question": "Do you have any questions for us?",
+          "sample_answers": [
+            "What does the onboarding process look like for freshers joining [Company]?",
+            "How are freshers typically assigned to projects — is it based on skillset, performance, or preference?",
+            "What does career progression typically look like for someone in this role over the first 2-3 years?",
+            "What technologies or domains are the teams here currently focusing on?",
+            "How does [Company] support continuous learning and upskilling?"
+          ],
+          "tips": [
+            "Always have 2-3 questions ready — saying 'no' looks uninterested",
+            "Avoid asking about salary/benefits in the first round",
+            "Show curiosity about growth, culture, and the role"
+          ],
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "total_questions": 18,
+    "companies_covered": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL", "Capgemini"],
+    "frameworks_used": ["STAR Method", "Past-Present-Future", "Situational Judgment"],
+    "difficulty_levels": ["easy", "medium", "hard"],
+    "rag_tags": ["behavioral", "hr_questions", "situational_judgment", "star_method", "company_specific", "career_goals", "placement_prep"],
+    "version": "1.0",
+    "created_for": "RAG model training – placement preparation platform"
+  }
+}
