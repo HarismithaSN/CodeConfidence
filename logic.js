@@ -124,7 +124,7 @@ function toggleTheme() {
     const current = localStorage.getItem('cc_theme') || 'dark'
     const next = current === 'dark' ? 'light' : 'dark'
     applyTheme(next)
-    showToast(`ðŸŒ“ Switched to ${next === 'light' ? 'Light' : 'Dark'} theme`)
+    showToast(`🌓 Switched to ${next === 'light' ? 'Light' : 'Dark'} theme`)
 }
 
 function getSunIcon() {
@@ -154,11 +154,11 @@ function renderSidebar() {
     const navItems = [
         { id: 'dashboard', icon: 'ðŸ ', label: 'Dashboard' },
         { id: 'roadmap', icon: 'ðŸ—ºï¸', label: 'Roadmap' },
-        { id: 'challenges', icon: 'ðŸŽ¯', label: 'Challenges' },
-        { id: 'submit', icon: 'ðŸš€', label: 'Submit Code' },
-        { id: 'community', icon: 'ðŸ‘¥', label: 'Community' },
-        { id: 'career', icon: 'ðŸŽ“', label: 'Career Prep' },
-        { id: 'profile', icon: 'ðŸ‘¤', label: 'My Profile' }
+        { id: 'challenges', icon: '🎯', label: 'Challenges' },
+        { id: 'submit', icon: '🚀', label: 'Submit Code' },
+        { id: 'community', icon: '👥', label: 'Community' },
+        { id: 'career', icon: '🎓', label: 'Career Prep' },
+        { id: 'profile', icon: '👤', label: 'My Profile' }
     ];
 
     const container = document.getElementById('nav-menu');
@@ -238,7 +238,7 @@ function renderDashboard() {
 }
 
 async function renderCareer() {
-    console.log("ðŸš€ Rendering AI-Driven Career Prep...");
+    console.log("🚀 Rendering AI-Driven Career Prep...");
     const container = document.getElementById('page-career');
     if (!container) return;
 
@@ -478,7 +478,7 @@ async function renderPlacementDashboard() {
                 <h3 style="font-size:20px; margin-bottom:12px;">${data.todays_focus.topic}</h3>
                 <p style="font-size:13px; color:var(--text-muted); line-height:1.7; margin-bottom:20px;">${data.todays_focus.reason}</p>
                 <div style="background:rgba(255,255,255,0.03); padding:16px; border-radius:16px; margin-bottom:22px; font-size:13px;">
-                    ðŸŽ¯ <strong>Action:</strong> ${data.todays_focus.task}
+                    🎯 <strong>Action:</strong> ${data.todays_focus.task}
                 </div>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="navigateFromDashboard('${data.todays_focus.topic}')">Launch Focus Plan</button>
             </div>
@@ -585,7 +585,7 @@ async function showCompanyPrepModal(company) {
              max-width: 600px; width: 90%; border: 1px solid rgba(255,255,255,0.1);
              box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
             <div style="text-align: center; margin-bottom: 32px;">
-                <h2 style="font-size: 28px; margin-bottom: 8px;">ðŸŽ¯ ${company} Preparation</h2>
+                <h2 style="font-size: 28px; margin-bottom: 8px;">🎯 ${company} Preparation</h2>
                 <p style="color: var(--text-muted); font-size: 14px;">
                     Choose your preparation focus for ${company}
                 </p>
@@ -596,7 +596,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(240,180,41,0.1), rgba(240,180,41,0.05));
                     border: 1px solid rgba(240,180,41,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ§®</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">🧮</div>
                     <h3 style="margin-bottom: 8px; color: var(--primary);">Aptitude Test</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         Quant, Logical, Verbal - Company specific patterns
@@ -607,7 +607,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(99,102,241,0.05));
                     border: 1px solid rgba(99,102,241,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ’¬</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
                     <h3 style="margin-bottom: 8px; color: var(--secondary);">Communication</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         Verbal ability, GD prep, Presentation skills
@@ -618,7 +618,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.05));
                     border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ’»</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">💻</div>
                     <h3 style="margin-bottom: 8px; color: #22c55e;">Coding Round</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         DSA problems, ${company} coding patterns
@@ -629,7 +629,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(168,85,247,0.05));
                     border: 1px solid rgba(168,85,247,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ§ </div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">🧠</div>
                     <h3 style="margin-bottom: 8px; color: #a855f7;">Behavioral</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         HR questions, Situational judgment
@@ -640,7 +640,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05));
                     border: 1px solid rgba(239,68,68,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸ”§</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">🔧</div>
                     <h3 style="margin-bottom: 8px; color: #ef4444;">Technical</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         Domain knowledge, System design
@@ -651,7 +651,7 @@ async function showCompanyPrepModal(company) {
                     background: linear-gradient(135deg, rgba(236,72,153,0.1), rgba(236,72,153,0.05));
                     border: 1px solid rgba(236,72,153,0.3); border-radius: 16px; padding: 20px;
                     cursor: pointer; transition: all 0.3s; text-align: center;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">ðŸŽ­</div>
+                    <div style="font-size: 32px; margin-bottom: 12px;">🎬</div>
                     <h3 style="margin-bottom: 8px; color: #ec4899;">Full Mock Test</h3>
                     <p style="font-size: 12px; color: var(--text-muted);">
                         Complete ${company} placement simulation
@@ -691,7 +691,7 @@ async function showCompanyPrepModal(company) {
 }
 
 async function launchCompanyPrep(company, type) {
-    console.log(`ðŸš€ Launching ${type} prep for ${company}`);
+    console.log(`🚀 Launching ${type} prep for ${company}`);
 
     switch (type) {
         case 'aptitude':
@@ -749,12 +749,12 @@ function renderCommunicationPrep(vocab, gd, company) {
     container.innerHTML = `
         <div style="max-width: 800px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 32px;">
-                <h2 style="font-size: 28px;">ðŸ—£ï¸ ${company} Communication Prep</h2>
+                <h2 style="font-size: 28px;">🗣ï¸ ${company} Communication Prep</h2>
                 <p style="color: var(--text-muted);">Master Verbal Ability & Group Discussions required by ${company}</p>
             </div>
 
             <div class="glass-card" style="padding: 32px; margin-bottom: 24px;">
-                <h3 style="font-size: 20px; margin-bottom: 16px;">ðŸ“š Essential Vocabulary</h3>
+                <h3 style="font-size: 20px; margin-bottom: 16px;">📚 Essential Vocabulary</h3>
                 ${vocab.map(v => `
                     <div style="padding: 16px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 12px; display:flex; justify-content:space-between;">
                         <div>
@@ -770,7 +770,7 @@ function renderCommunicationPrep(vocab, gd, company) {
             </div>
 
             <div class="glass-card" style="padding: 32px;">
-                <h3 style="font-size: 20px; margin-bottom: 16px;">ðŸŽ­ Group Discussion Highlight</h3>
+                <h3 style="font-size: 20px; margin-bottom: 16px;">🎬 Group Discussion Highlight</h3>
                 <div style="padding: 16px; background: rgba(74,143,247,0.1); border-left: 3px solid #4a8ff7; border-radius:8px;">
                     <strong style="color:var(--text); font-size:15px;">Topic:</strong> ${gd.topic}
                     <div style="margin-top:12px; font-size:13px;">
@@ -912,7 +912,7 @@ function renderCompanyAptitudeQuiz(questions, company) {
             <div style="max-width: 600px; margin: 0 auto; text-align: center;">
                 <div class="glass-card" style="padding: 40px; margin-bottom: 24px;">
                     <div style="font-size: 48px; margin-bottom: 16px;">
-                        ${percentage >= 70 ? 'ðŸŽ‰' : percentage >= 50 ? 'ðŸ‘' : 'ðŸ’ª'}
+                        ${percentage >= 70 ? '🎉' : percentage >= 50 ? 'ðŸ‘' : '💪'}
                     </div>
                     <h2 style="font-size: 32px; margin-bottom: 8px;">${company} Aptitude Results</h2>
                     <div style="font-size: 24px; color: var(--primary); margin-bottom: 16px;">
@@ -932,38 +932,10 @@ function renderCompanyAptitudeQuiz(questions, company) {
     }
 }
 
-        <div style="max-width: 600px; margin: 0 auto; text-align: center;">
-            <div class="glass-card" style="padding: 40px;">
-                <h2 style="font-size: 28px; margin-bottom: 16px;">ðŸŽ­ ${company} Full Mock Test</h2>
-                <p style="color: var(--text-muted); margin-bottom: 32px;">
-                    Complete placement simulation including aptitude, coding, and interview rounds
-                </p>
-
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <button class="btn-gold" onclick="launchCompanyAptitude('${company}')">
-                        ðŸ§® Start with Aptitude Test
-                    </button>
-                    <button class="btn-gold" onclick="launchCodingPrep('${company}')">
-                        ðŸ’» Coding Round
-                    </button>
-                    <button class="btn-gold" onclick="launchMockInterview('technical')">
-                        ðŸ”§ Technical Interview
-                    </button>
-                    <button class="btn-gold" onclick="launchMockInterview('behavioral')">
-                        ðŸ§  HR Interview
-                    </button>
-                </div>
-
-                <button class="btn-gold" style="margin-top: 24px; opacity: 0.7;" onclick="renderCompanyTracks()">
-                    Back to Companies
-                </button>
-            </div>
-        </div>
-    `;
-}
+        
 
 async function startInterview(company) {
-    console.log(`ðŸŽ¤ Starting Interview for ${company}`);
+    console.log(`🎤 Starting Interview for ${company}`);
 
     // Show preparation type selection modal first
     showCompanyPrepModal(company);
@@ -1034,7 +1006,7 @@ function displayInterviewFeedback(data) {
             <p style="font-size:12px; font-style:italic; color:#aaa;">${data.better_version}</p>
         </div>
         <button class="btn-gold" style="width:100%; justify-content:center;" onclick="nextInterviewStep()">
-            ${interviewState.currentIndex === interviewState.questions.length - 1 ? 'Finish Interview' : 'Next Question â†’'}
+            ${interviewState.currentIndex === interviewState.questions.length - 1 ? 'Finish Interview' : 'Next Question →'}
         </button>
     `;
 }
@@ -1134,7 +1106,7 @@ function renderProfile() {
     if (document.getElementById('profile-skills-input')) document.getElementById('profile-skills-input').value = user.skillsList || 'Python, Java, DSA';
     if (document.getElementById('profile-gemini-key')) document.getElementById('profile-gemini-key').value = localStorage.getItem('cc_gemini_key') || '';
     if (document.getElementById('preview-name')) document.getElementById('preview-name').innerText = user.name || 'Harismitha';
-    if (document.getElementById('preview-tagline')) document.getElementById('preview-tagline').innerText = `${user.branch || 'MCA'} â€¢ ${user.college || 'Dayananda Sagar College'}`;
+    if (document.getElementById('preview-tagline')) document.getElementById('preview-tagline').innerText = `${user.branch || 'MCA'} • ${user.college || 'Dayananda Sagar College'}`;
 
     // Render skill tags
     const tagsEl = document.getElementById('preview-skills-tags');
@@ -1148,10 +1120,10 @@ function renderProfile() {
         const badges = [
             { icon: 'ðŸ”¥', label: '12 Day Streak', color: '#fb923c' },
             { icon: 'âš¡', label: 'First Submit', color: '#f0b429' },
-            { icon: 'ðŸŽ¯', label: '5 Challenges', color: '#0ed97a' },
-            { icon: 'ðŸ‘¥', label: 'Community', color: '#60a5fa' },
-            { icon: 'ðŸ“š', label: 'Roadmap Start', color: '#a78bfa' },
-            { icon: 'ðŸ’»', label: 'Code Master', color: '#f472b6' }
+            { icon: '🎯', label: '5 Challenges', color: '#0ed97a' },
+            { icon: '👥', label: 'Community', color: '#60a5fa' },
+            { icon: '📚', label: 'Roadmap Start', color: '#a78bfa' },
+            { icon: '💻', label: 'Code Master', color: '#f472b6' }
         ];
         badgesContainer.innerHTML = badges.map(b => `
             <div style="padding:16px; text-align:center; background:rgba(255,255,255,0.03); border-radius:16px; border:1px solid rgba(255,255,255,0.06);">
@@ -1208,7 +1180,7 @@ function handleResumeUpload(event) {
         const status = document.getElementById('resume-status');
         status.innerText = `âœ“ ${file.name} uploaded successfully`;
         status.style.display = 'block';
-        showToast(`ðŸ“„ Resume "${file.name}" ready!`);
+        showToast(`📄 Resume "${file.name}" ready!`);
 
         // In a real app, you'd upload this to a server
         state.user.resumeName = file.name;
@@ -1264,7 +1236,7 @@ function renderChallenges(filter = 'All') {
             <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">${c.desc}</p>
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-weight:700; color:var(--primary);">âš¡ ${c.xp} XP</span>
-                <button class="btn-gold" style="padding:8px 16px; font-size:12px;" onclick="showChallenge(${JSON.stringify(c).replace(/"/g, '&quot;')})">Solve â†’</button>
+                <button class="btn-gold" style="padding:8px 16px; font-size:12px;" onclick="showChallenge(${JSON.stringify(c).replace(/"/g, '&quot;')})">Solve →</button>
             </div>
         </div>
     `).join('') || '<div style="grid-column: span 3; color: var(--text-muted); text-align: center; padding: 40px;">No challenges found for this difficulty.</div>';
@@ -1314,7 +1286,7 @@ function showChallenge(challenge) {
         el.style.background = (diffColors[challenge.diff] || '#f0b429') + '18';
     }
     if (document.getElementById('ctx-lang-badge')) document.getElementById('ctx-lang-badge').textContent = challenge.lang;
-    document.getElementById('submit-lab-title').textContent = 'ðŸŽ¯ ' + challenge.title;
+    document.getElementById('submit-lab-title').textContent = '🎯 ' + challenge.title;
 
     // Set language picker to match challenge
     const langPicker = document.getElementById('lang-picker');
@@ -1333,7 +1305,7 @@ function showChallenge(challenge) {
     const discSection = document.getElementById('discussion-section');
     if (discSection) discSection.style.display = 'none';
 
-    showToast(`ðŸŽ¯ Loaded: ${challenge.title}`);
+    showToast(`🎯 Loaded: ${challenge.title}`);
 }
 
 function updateEditorLanguage() {
@@ -1374,18 +1346,18 @@ const DSC_LB = {
     alltime: [
         { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 1840, score: 91, level: 'Journeyman', trend: 'â†‘' },
         { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 1620, score: 87, level: 'Journeyman', trend: 'â†‘' },
-        { rank: 3, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 1340, score: 83, level: 'Apprentice', trend: 'â†’' },
+        { rank: 3, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 1340, score: 83, level: 'Apprentice', trend: '→' },
         { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 1180, score: 80, level: 'Apprentice', trend: 'â†‘' },
         { rank: 5, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 1050, score: 77, level: 'Apprentice', trend: 'â†“' },
-        { rank: 6, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 980, score: 74, level: 'Apprentice', trend: 'â†’' },
+        { rank: 6, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 980, score: 74, level: 'Apprentice', trend: '→' },
         { rank: 7, name: 'Amit P', usn: '1DS24MC031', branch: 'MCA', xp: 890, score: 71, level: 'Apprentice', trend: 'â†‘' },
         { rank: 8, name: 'Meena J', usn: '1DS24MC035', branch: 'MCA', xp: 820, score: 69, level: 'Apprentice', trend: 'â†‘' },
         { rank: 9, name: 'Arun V', usn: '1DS24MC038', branch: 'MCA', xp: 760, score: 68, level: 'Apprentice', trend: 'â†“' },
         { rank: 10, name: 'Lakshmi C', usn: '1DS24MC041', branch: 'MCA', xp: 710, score: 67, level: 'Apprentice', trend: 'â†‘' },
-        { rank: 11, name: 'Preethi A', usn: '1DS24MC042', branch: 'MCA', xp: 680, score: 65, level: 'Apprentice', trend: 'â†’' },
+        { rank: 11, name: 'Preethi A', usn: '1DS24MC042', branch: 'MCA', xp: 680, score: 65, level: 'Apprentice', trend: '→' },
         { rank: 12, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 620, score: 72, level: 'Apprentice', trend: 'â†‘', isYou: true },
         { rank: 13, name: 'Suresh T', usn: '1DS24MC045', branch: 'MCA', xp: 580, score: 63, level: 'Explorer', trend: 'â†“' },
-        { rank: 14, name: 'Asha D', usn: '1DS24MC047', branch: 'MCA', xp: 540, score: 60, level: 'Explorer', trend: 'â†’' },
+        { rank: 14, name: 'Asha D', usn: '1DS24MC047', branch: 'MCA', xp: 540, score: 60, level: 'Explorer', trend: '→' },
         { rank: 15, name: 'Rahul G', usn: '1DS24MC048', branch: 'MCA', xp: 490, score: 58, level: 'Explorer', trend: 'â†‘' }
     ],
     week: [
@@ -1393,14 +1365,14 @@ const DSC_LB = {
         { rank: 2, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 280, score: 80, level: 'Apprentice', trend: 'â†‘', label: '+280 XP' },
         { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 210, score: 72, level: 'Apprentice', trend: 'â†‘', label: '+210 XP', isYou: true },
         { rank: 4, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 190, score: 77, level: 'Apprentice', trend: 'â†‘', label: '+190 XP' },
-        { rank: 5, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 160, score: 74, level: 'Apprentice', trend: 'â†’', label: '+160 XP' }
+        { rank: 5, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 160, score: 74, level: 'Apprentice', trend: '→', label: '+160 XP' }
     ],
     month: [
         { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 780, score: 91, level: 'Journeyman', trend: 'â†‘', label: '+780 XP' },
         { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 640, score: 87, level: 'Journeyman', trend: 'â†‘', label: '+640 XP' },
         { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 410, score: 72, level: 'Apprentice', trend: 'â†‘', label: '+410 XP', isYou: true },
         { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 360, score: 80, level: 'Apprentice', trend: 'â†‘', label: '+360 XP' },
-        { rank: 5, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 290, score: 83, level: 'Apprentice', trend: 'â†’', label: '+290 XP' }
+        { rank: 5, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 290, score: 83, level: 'Apprentice', trend: '→', label: '+290 XP' }
     ],
     branch: [] // filled from alltime (MCA)
 };
@@ -1427,8 +1399,8 @@ const DSC_REVIEW_ITEMS = [
 
 const DSC_STUDY_GROUPS = [
     { id: 'dsg1', name: 'Python Beginners', members: 14, status: 'Active', emoji: 'ðŸ', joined: false },
-    { id: 'dsg2', name: 'DSA Prep 2026', members: 11, status: 'Active', emoji: 'ðŸ§ ', joined: false },
-    { id: 'dsg3', name: 'MCA Placement', members: 18, status: 'Active', emoji: 'ðŸŽ“', joined: false }
+    { id: 'dsg2', name: 'DSA Prep 2026', members: 11, status: 'Active', emoji: '🧠', joined: false },
+    { id: 'dsg3', name: 'MCA Placement', members: 18, status: 'Active', emoji: '🎓', joined: false }
 ];
 
 let activeReviewItem = null;
@@ -1456,7 +1428,7 @@ function updateCommunityBanner() {
     const collegeName = document.getElementById('community-college-name');
     const collegeSubtitle = document.getElementById('community-college-subtitle');
     if (collegeName) collegeName.textContent = state.user.college || 'Dayananda Sagar College';
-    if (collegeSubtitle) collegeSubtitle.textContent = `${state.user.branch || 'MCA'} Department â€¢ Batch ${state.user.year || '2026'}`;
+    if (collegeSubtitle) collegeSubtitle.textContent = `${state.user.branch || 'MCA'} Department • Batch ${state.user.year || '2026'}`;
 }
 
 // â”€â”€ XP HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -1648,7 +1620,7 @@ function renderRankPlan(plan) {
         <div class="glass-card" style="padding:28px;border-color:rgba(240,180,41,0.3);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                 <h3 style="color:var(--primary);font-size:18px;">âš¡ Your 7-Day Rank Boost Plan</h3>
-                <div style="font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:6px 12px;border-radius:8px;">#12 â†’ #11 in ${plan.days_to_target}</div>
+                <div style="font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:6px 12px;border-radius:8px;">#12 → #11 in ${plan.days_to_target}</div>
             </div>
             <div style="overflow-x:auto;padding-bottom:12px;">
                 <div style="display:flex;gap:12px;min-width:max-content;">
@@ -1672,10 +1644,10 @@ function renderRankPlan(plan) {
                 </div>
             </div>
             <div style="margin-top:24px;padding:16px;background:rgba(240,180,41,0.06);border-radius:12px;border:1px solid rgba(240,180,41,0.15);">
-                <div style="font-size:12px;color:var(--primary);font-weight:700;margin-bottom:6px;">ðŸ’¬ Message from your AI Mentor</div>
+                <div style="font-size:12px;color:var(--primary);font-weight:700;margin-bottom:6px;">💬 Message from your AI Mentor</div>
                 <div style="font-size:13px;line-height:1.6;font-style:italic;">${plan.motivational_message}</div>
             </div>
-            <button class="btn-gold" style="margin-top:20px;background:#26d9c7;color:#000;" onclick="showPage('challenges')">ðŸš€ Start Day 1 â€” Go to Challenges</button>
+            <button class="btn-gold" style="margin-top:20px;background:#26d9c7;color:#000;" onclick="showPage('challenges')">🚀 Start Day 1 â€” Go to Challenges</button>
         </div>`;
 }
 
@@ -1695,7 +1667,7 @@ function renderReviewQueue() {
     if (!container) return;
     if (badge) badge.textContent = reviewItems.length + ' waiting';
     if (!reviewItems.length) {
-        container.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);">No pending reviews ðŸŽ‰ Check back later!</div>`;
+        container.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);">No pending reviews 🎉 Check back later!</div>`;
         return;
     }
     const diffColors = { Beginner: '#0ed97a', Intermediate: '#f0b429', Hard: '#ff6b6b' };
@@ -1712,7 +1684,7 @@ function renderReviewQueue() {
             </div>
             <div style="text-align:right;flex-shrink:0;">
                 <div style="color:var(--primary);font-weight:700;font-size:14px;margin-bottom:8px;">+${item.xp} XP</div>
-                <button class="btn-gold" style="padding:8px 16px;font-size:12px;" onclick="openReviewModal('${item.id}')">Review Now â†’</button>
+                <button class="btn-gold" style="padding:8px 16px;font-size:12px;" onclick="openReviewModal('${item.id}')">Review Now →</button>
             </div>
         </div>`).join('');
 }
@@ -1761,7 +1733,7 @@ function openReviewModal(itemId) {
                 <textarea id="rv-improve" style="width:100%;min-height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px;color:#fff;font-size:13px;resize:none;outline:none;font-family:inherit;" placeholder="e.g. The loop can be simplified..."></textarea>
             </div>
             <div style="margin-bottom:20px;">
-                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px;">ðŸŽ¯ How hard was this code?</label>
+                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px;">🎯 How hard was this code?</label>
                 <div style="display:flex;gap:8px;">
                     <button class="difficulty-toggle" onclick="setDiff(this,'Easy')">Easy</button>
                     <button class="difficulty-toggle active" onclick="setDiff(this,'Medium')">Medium</button>
@@ -1890,7 +1862,7 @@ const SEED_POSTS = {
     'Capgemini': [
         { id: 's1', author: 'Anon Coder', avatar: 'A', tab: 'tips', text: 'Focus on time complexity â€” Capgemeni rounds always have at least one O(N log N) problem. Practice sorting variants!', likes: 14, liked: false, spoiler: false, ts: Date.now() - 3600000 },
         { id: 's2', author: 'DSA Ninja', avatar: 'D', tab: 'discussion', text: 'Anyone else struggling with the string manipulation tasks? The edge case for empty string was tricky.', likes: 7, liked: false, spoiler: false, ts: Date.now() - 7200000 },
-        { id: 's3', author: 'Harismitha', avatar: 'H', tab: 'solutions', text: 'Two Sum pattern â†’ use a HashMap. O(N) time, O(N) space. Works for all Capgemini variants. Here\'s the key insight: store complement, not current value.', likes: 22, liked: false, spoiler: true, ts: Date.now() - 1800000 }
+        { id: 's3', author: 'Harismitha', avatar: 'H', tab: 'solutions', text: 'Two Sum pattern → use a HashMap. O(N) time, O(N) space. Works for all Capgemini variants. Here\'s the key insight: store complement, not current value.', likes: 22, liked: false, spoiler: true, ts: Date.now() - 1800000 }
     ],
     'LTIMindtree': [
         { id: 's4', author: 'Code Wizard', avatar: 'C', tab: 'tips', text: 'LTIMindtree loves graph problems in rounds 2+. Make sure you\'re comfortable with BFS/DFS.', likes: 9, liked: false, spoiler: false, ts: Date.now() - 5400000 },
@@ -1901,7 +1873,7 @@ const SEED_POSTS = {
     ],
     'general': [
         { id: 'g1', author: 'Arjun S', avatar: 'A', tab: 'discussion', text: 'Great challenge! The tricky part was handling negative numbers in the array. Make sure to add that edge case.', likes: 8, liked: false, spoiler: false, ts: Date.now() - 1200000 },
-        { id: 'g2', author: 'Priya R', avatar: 'P', tab: 'tips', text: 'ðŸ’¡ Tip: Try solving this in O(n) first using a HashMap before going for brute force â€” it\'ll help you understand the optimal approach.', likes: 15, liked: false, spoiler: false, ts: Date.now() - 6000000 },
+        { id: 'g2', author: 'Priya R', avatar: 'P', tab: 'tips', text: '💡 Tip: Try solving this in O(n) first using a HashMap before going for brute force â€” it\'ll help you understand the optimal approach.', likes: 15, liked: false, spoiler: false, ts: Date.now() - 6000000 },
         { id: 'g3', author: 'Anon Coder', avatar: '?', tab: 'solutions', text: 'Here\'s my approach: iterate through the array once, store seen values in a set, and check if the complement exists.', likes: 5, liked: false, spoiler: true, ts: Date.now() - 9000000 }
     ]
 };
@@ -1960,7 +1932,7 @@ function refreshDiscFeed() {
     container.innerHTML = filtered.map(p => {
         const timeAgo = getTimeAgo(p.ts);
         const tabColors = { tips: '#0ed97a', solutions: '#60a5fa', discussion: '#f0b429' };
-        const tabLabels = { tips: 'ðŸ’¡ Tip', solutions: 'âœ… Solution', discussion: 'ðŸ’¬ Discussion' };
+        const tabLabels = { tips: '💡 Tip', solutions: 'âœ… Solution', discussion: '💬 Discussion' };
         const avatarColors = ['#f0b429', '#0ed97a', '#60a5fa', '#f472b6', '#a78bfa'];
         const avatarBg = avatarColors[p.avatar.charCodeAt(0) % avatarColors.length];
         return `
@@ -1988,7 +1960,7 @@ function refreshDiscFeed() {
                     </button>
                     <button onclick="replyToPost('${p.id}')"
                         style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--text-muted);">
-                        ðŸ’¬ Reply
+                        💬 Reply
                     </button>
                 </div>
             </div>
@@ -2377,7 +2349,7 @@ function renderFeedback(data) {
                         ${data.issues.map(issue => `
                             <div class="glass" style="padding:16px; border-radius:12px; border-left:4px solid ${issue.type === 'bug' ? 'var(--error)' : 'var(--warning)'}">
                                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                    <span style="font-size:12px; font-weight:700; color:${issue.type === 'bug' ? 'var(--error)' : 'var(--warning)'}">${issue.type.toUpperCase()} ${issue.line ? `â€¢ Line ${issue.line}` : ''}</span>
+                                    <span style="font-size:12px; font-weight:700; color:${issue.type === 'bug' ? 'var(--error)' : 'var(--warning)'}">${issue.type.toUpperCase()} ${issue.line ? `• Line ${issue.line}` : ''}</span>
                                 </div>
                                 <div style="font-size:13px; line-height:1.4; margin-bottom:8px;">${issue.message}</div>
                                 <div style="font-size:12px; padding:8px 12px; background:rgba(255,255,255,0.03); border-radius:6px; color:var(--primary);">
@@ -2464,7 +2436,7 @@ function showCompanyPractice(companyName) {
 
     // Load first task
     loadCompanyTask(track.practice[0].id);
-    showToast(`ðŸŽ¯ Loaded ${companyName} Training Module`);
+    showToast(`🎯 Loaded ${companyName} Training Module`);
 
     // Load company-specific discussion thread
     renderDiscussion(companyName);
@@ -2927,7 +2899,7 @@ async function renderAptitudeHub() {
                 </div>
             </div>
             <div class="topic-card">
-                <div style="font-size:32px; margin-bottom:18px;">ðŸ’¬</div>
+                <div style="font-size:32px; margin-bottom:18px;">💬</div>
                 <h3 style="margin-bottom:8px;">Verbal Ability</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Grammar, comprehension, vocabulary and interview-ready expression.</p>
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -3021,7 +2993,7 @@ function renderAptResults(score, total, results, type) {
                 ${results.map((res, i) => `
                     <div class="glass-card" style="padding:16px; margin-bottom:12px; border-left:4px solid ${res.correct ? '#0ed97a' : '#ff6b6b'};">
                         <div style="font-size:14px; font-weight:700;">${res.q.question}</div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">ðŸ’¡ ${res.q.solution_explanation}</div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">💡 ${res.q.solution_explanation}</div>
                     </div>
                 `).join('')}
             </div>
@@ -3072,7 +3044,7 @@ async function renderFundamentalsHub() {
                         <p style="font-size:13px; color:var(--text-muted); line-height:1.7;">${challenge.desc}</p>
                     </div>
                     <button class="btn-gold" style="width:100%; justify-content:center;" onclick="executeSQL()">Run Query</button>
-                    ${state.sqlSuccess ? `<button class="btn-gold" style="width:100%; justify-content:center; background:#0ed97a; border-color:#0ed97a; color:#000; margin-top:12px;" onclick="nextSQLChallenge()">Next Challenge â†’</button>` : ''}
+                    ${state.sqlSuccess ? `<button class="btn-gold" style="width:100%; justify-content:center; background:#0ed97a; border-color:#0ed97a; color:#000; margin-top:12px;" onclick="nextSQLChallenge()">Next Challenge →</button>` : ''}
                 </div>
                 <div style="display:flex; flex-direction:column; gap:18px;">
                     <div class="glass-card" style="padding:24px; min-height:320px; display:flex; flex-direction:column;">
@@ -3145,7 +3117,7 @@ function executeSQL() {
 
         if (isCorrect) {
             state.sqlSuccess = true;
-            showToast("ðŸŽ¯ Challenge Mastered! Click 'Next' to proceed.");
+            showToast("🎯 Challenge Mastered! Click 'Next' to proceed.");
             renderFundamentalsHub(); // Refresh UI to show Next button
         }
     } catch (e) {
@@ -3192,7 +3164,7 @@ function switchFundSubTab(tab) {
             <div class="grid-cols-3" style="gap:24px;">
                 ${['DBMS', 'OS', 'Networking', 'System Design'].map(topic => `
                     <div class="topic-card">
-                        <div style="font-size:24px; margin-bottom:12px;">ðŸ“š</div>
+                        <div style="font-size:24px; margin-bottom:12px;">📚</div>
                         <h3 style="margin-bottom:8px;">${topic}</h3>
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">AI-generated interview questions and flashcards for ${topic}.</p>
                         <button class="btn-gold" style="width:100%; justify-content:center; font-size:12px;" onclick="startCSReview('${topic}')">Start Review</button>
@@ -3237,7 +3209,7 @@ async function startCSReview(topic) {
                 <div style="padding:40px; text-align:center;">
                     <p style="color:var(--text-muted); margin-bottom:20px;">AI Service temporarily unavailable or rate limited.</p>
                     <div style="display:flex; gap:12px; justify-content:center;">
-                        <button class="btn-gold" onclick="startCSReview('${topic}')">ðŸ”„ Retry</button>
+                        <button class="btn-gold" onclick="startCSReview('${topic}')">🔄 Retry</button>
                         <button class="glass" style="padding:10px 24px; border-radius:12px; cursor:pointer;" onclick="switchFundSubTab('review')">Back</button>
                     </div>
                 </div>
@@ -3360,7 +3332,7 @@ async function renderCompanyTracks() {
                             <div style="font-weight:800; font-size:16px;">${c.name}</div>
                             <div style="font-size:10px; background:rgba(212,175,55,0.1); color:var(--primary); padding:2px 8px; border-radius:4px;">${comp}% Match</div>
                         </div>
-                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px;">${c.sector} â€¢ ${c.level}</div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px;">${c.sector} • ${c.level}</div>
                         <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:20px;">
                             ${c.tech.map(t => `<span style="font-size:9px; background:rgba(255,255,255,0.03); padding:2px 6px; border-radius:4px;">${t}</span>`).join('')}
                         </div>
@@ -3390,7 +3362,7 @@ async function renderInterviewHub() {
 
         <div class="grid-cols-3" style="gap:24px;">
             <div class="topic-card" style="border-color:var(--primary);">
-                <div style="font-size:32px; margin-bottom:16px;">ðŸ”§</div>
+                <div style="font-size:32px; margin-bottom:16px;">🔧</div>
                 <h3 style="margin-bottom:8px;">Technical Interview</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Get a technical question set with instant Gemini evaluation.</p>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="launchMockInterview('technical')">Start Technical</button>
@@ -3562,7 +3534,7 @@ async function evaluateGDPoint() {
                 <div style="font-size:11px; font-weight:700; color:var(--text); margin-bottom:8px;">REFINED VERSION</div>
                 <div style="font-size:13px; font-style:italic; color:#0ed97a; margin-bottom:16px;">"${data.refined_version || '...'}"</div>
                 <div style="display:flex; flex-direction:column; gap:8px;">
-                    ${(data.tips || []).map(tip => `<div style="font-size:11px; color:var(--text-muted);">ðŸŽ¯ ${tip}</div>`).join('')}
+                    ${(data.tips || []).map(tip => `<div style="font-size:11px; color:var(--text-muted);">🎯 ${tip}</div>`).join('')}
                 </div>
             </div>
         `;
@@ -3584,7 +3556,7 @@ async function renderSoftSkillsHub() {
         <div class="grid-cols-2" style="gap:24px;">
             <!-- HR Question Bank -->
             <div class="glass-card" style="padding:28px;">
-                <h3 style="margin-bottom:16px;">ðŸ’¡ HR Answer Evaluator</h3>
+                <h3 style="margin-bottom:16px;">💡 HR Answer Evaluator</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Submit your answers to common HR questions for AI scoring and refinement.</p>
                 <div style="margin-bottom:16px;">
                     <select id="hr-q-select" style="width:100%; border-radius:8px; padding:8px; font-size:12px; background:var(--surface-light); color:var(--text); border:1px solid var(--border); outline:none;">
@@ -3600,7 +3572,7 @@ async function renderSoftSkillsHub() {
 
             <!-- Email Practice -->
             <div class="glass-card" style="padding:28px;">
-                <h3 style="margin-bottom:16px;">ðŸ“§ Professional Email Grader</h3>
+                <h3 style="margin-bottom:16px;">📧 Professional Email Grader</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Write a follow-up or cold email. AI will score it on tone and clarity.</p>
                 <div style="font-size:11px; color:var(--primary); margin-bottom:12px;">Scenario: Follow-up after interview</div>
                 <textarea id="email-input" style="width:100%; height:150px; background:var(--surface-light); border:1px solid var(--border); border-radius:12px; color:var(--text); padding:12px; font-size:13px; margin-bottom:16px; outline:none; font-family:inherit;" placeholder="Subject: ...\n\nDear Hiring Manager..."></textarea>
@@ -3683,7 +3655,7 @@ async function renderDocumentsHub() {
         </div>
         <div class="grid-cols-2" style="gap:24px;">
             <div class="glass-card" style="padding:28px;">
-                <h3 style="margin-bottom:16px;">ðŸ“„ AI Resume Builder</h3>
+                <h3 style="margin-bottom:16px;">📄 AI Resume Builder</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Generates a high-impact resume using your CodeConfidence profile.</p>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="generateAIResume()">Generate Resume</button>
             </div>
@@ -3741,13 +3713,13 @@ async function generateAIResume() {
             </div>
         `;
         updateXP(50);
-        showToast("ðŸŽ“ AI Resume Generated!");
+        showToast("🎓 AI Resume Generated!");
     } catch (e) {
         console.error(e);
         showAIError("AI Resume generation failed due to rate limits or connection issue.", () => {
             area.innerHTML = `
                 <div style="padding:40px; text-align:center;">
-                    <button class="btn-gold" style="margin:0 auto;" onclick="generateAIResume()">ðŸ”„ Retry Resume Build</button>
+                    <button class="btn-gold" style="margin:0 auto;" onclick="generateAIResume()">🔄 Retry Resume Build</button>
                 </div>
             `;
         });
@@ -3787,10 +3759,130 @@ async function generateCoverLetter() {
             </div>
         `;
         updateXP(30);
-        showToast("ðŸ“§ AI Cover Letter Created!");
+        showToast("📧 AI Cover Letter Created!");
     } catch (e) {
         console.error(e);
         showAIError("Failed to generate cover letter.", renderDocumentsHub);
     }
+}
+
+
+async function launchCodingPrep(company) {
+    // Redirect to challenges page with company filter
+    showPage('challenges');
+    // Could add company-specific filtering here
+}
+
+function launchBehavioralPrep(company) {
+    const container = document.getElementById('career-tab-content');
+    container.innerHTML = `
+        <div style="text-align:center; padding:60px;">
+            <div class="spinner"></div>
+            <p style="margin-top:24px; color:var(--text-muted); font-size:14px;">Loading ${company} behavioral questions...</p>
+        </div>
+    `;
+
+    setTimeout(() => {
+        try {
+            const data = {
+                questions: getBehavioralQuestions(company, 5),
+                tips: [
+                    "Use the S.T.A.R. Method (Situation, Task, Action, Result).",
+                    "Keep your examples relevant and concise.",
+                    "Highlight team collaboration and leadership."
+                ]
+            };
+            renderBehavioralPrep(data, company);
+        } catch (e) {
+            console.error('Behavioral prep failed:', e);
+            renderBehavioralPrep({
+                questions: [
+                    'Tell me about a time you faced a challenge and how you overcame it.',
+                    'Describe a situation where you worked in a team.',
+                    'How do you handle pressure and deadlines?'
+                ],
+                tips: ['Use STAR method', 'Be specific', 'Show self-awareness']
+            }, company);
+        }
+    }, 300);
+}
+
+function practiceAnswer(question) {
+    openInterviewSession("Behavioral Practice", [question], "behavioral");
+}
+
+function renderBehavioralPrep(data, company) {
+    const container = document.getElementById('career-tab-content');
+
+    container.innerHTML = `
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h2 style="font-size: 28px;">🧠 ${company} Behavioral Interview</h2>
+                <p style="color: var(--text-muted);">Practice HR round questions</p>
+            </div>
+
+            <div class="glass-card" style="padding: 32px; margin-bottom: 24px;">
+                <h3 style="font-size: 20px; margin-bottom: 16px;">Common Questions</h3>
+                ${data.questions.map((q, index) => `
+                    <div style="padding: 16px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 12px;">
+                        <div style="font-weight: 500; margin-bottom: 8px;">${index + 1}. ${q}</div>
+                        <button class="btn-gold" style="font-size: 12px; padding: 6px 12px;" onclick="practiceAnswer('${q.replace(/'/g, "\\'")}')">
+                            Practice Answer
+                        </button>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="glass-card" style="padding: 24px;">
+                <h3 style="font-size: 20px; margin-bottom: 16px;">💡 Interview Tips</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+                    ${data.tips.map(tip => `
+                        <div style="padding: 12px 16px; background: rgba(168,85,247,0.1); border-radius: 8px; border: 1px solid rgba(168,85,247,0.3);">
+                            ${tip}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 32px;">
+                <button class="btn-gold" onclick="renderCompanyTracks()">Back to Companies</button>
+            </div>
+        </div>
+    `;
+}
+
+async function launchFullMockTest(company) {
+    // Launch a comprehensive mock test combining all types
+    const container = document.getElementById('career-tab-content');
+
+    container.innerHTML = `
+        <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+            <div class="glass-card" style="padding: 40px;">
+                <h2 style="font-size: 28px; margin-bottom: 16px;">🎯 ${company} Full Mock Test</h2>
+                <p style="color: var(--text-muted); margin-bottom: 32px;">
+                    Complete placement simulation including aptitude, coding, and interview rounds
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <button class="btn-gold" onclick="launchCompanyAptitude('${company}')">
+                        🧮 Start with Aptitude Test
+                    </button>
+                    <button class="btn-gold" onclick="launchCodingPrep('${company}')">
+                        💻 Coding Round
+                    </button>
+                    <button class="btn-gold" onclick="launchMockInterview('technical')">
+                        🔧 Technical Interview
+                    </button>
+                    <button class="btn-gold" onclick="launchMockInterview('behavioral')">
+                        🧠 HR Interview
+                    </button>
+                </div>
+
+                <button class="btn-gold" style="margin-top: 24px; opacity: 0.7;" onclick="renderCompanyTracks()">
+                    Back to Companies
+                </button>
+            </div>
+        </div>
+    `;
 }
 
