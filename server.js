@@ -20,26 +20,58 @@ const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
 const DB_NAME = process.env.DB_NAME || 'codeconfidence';
+const DATABASE_URL = process.env.DATABASE_URL;
+
 let pool;
 
+// Parse DATABASE_URL if provided (common for cloud deployments)
+function parseDatabaseUrl(url) {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    return {
+      host: parsed.hostname,
+      user: parsed.username,
+      password: parsed.password,
+      database: parsed.pathname.slice(1), // Remove leading slash
+      port: parsed.port || 3306
+    };
+  } catch (e) {
+    console.warn('Invalid DATABASE_URL format:', e.message);
+    return null;
+  }
+}
+
 async function initDatabase() {
-  const rootPool = await mysql.createPool({
+  const dbConfig = DATABASE_URL ? parseDatabaseUrl(DATABASE_URL) : {
     host: DB_HOST,
     user: DB_USER,
     password: DB_PASSWORD,
+    database: DB_NAME
+  };
+
+  if (!dbConfig) {
+    throw new Error('Invalid database configuration. Please check your environment variables.');
+  }
+
+  console.log(`🔌 Connecting to database at ${dbConfig.host}:${dbConfig.port || 3306}/${dbConfig.database}`);
+
+  // First connect without database to create it if needed
+  const rootConfig = { ...dbConfig };
+  delete rootConfig.database;
+
+  const rootPool = await mysql.createPool({
+    ...rootConfig,
     waitForConnections: true,
     connectionLimit: 2,
     queueLimit: 0
   });
 
-  await rootPool.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+  await rootPool.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
   await rootPool.end();
 
   pool = await mysql.createPool({
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASSWORD,
-    database: DB_NAME,
+    ...dbConfig,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -414,7 +446,7 @@ app.post('/api/ai', async (req, res) => {
   }
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 (async () => {
   try {
     await initDatabase();
