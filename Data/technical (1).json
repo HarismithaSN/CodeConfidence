@@ -1,0 +1,594 @@
+{
+  "section": "Technical",
+  "description": "Domain knowledge, system design, OS, DBMS, CN, OOP, algorithms, and company-specific technical interview questions with pseudocode, implementations, and explanations for placement preparation.",
+  "categories": [
+    {
+      "category": "Object-Oriented Programming (OOP)",
+      "questions": [
+        {
+          "id": "tech_oop_001",
+          "type": "concept",
+          "question": "What are the four pillars of Object-Oriented Programming?",
+          "answer": "The four pillars of OOP are: (1) Encapsulation – bundling data and methods within a class and restricting direct access using access modifiers. (2) Abstraction – hiding implementation details and exposing only necessary features. (3) Inheritance – a child class inherits properties and methods from a parent class, enabling code reuse. (4) Polymorphism – the ability of a function or object to take on multiple forms through overloading (compile-time) and overriding (runtime).",
+          "pseudocode": "// Encapsulation\nCLASS BankAccount:\n    PRIVATE balance = 0\n    PUBLIC FUNCTION deposit(amount):\n        balance += amount\n    PUBLIC FUNCTION getBalance():\n        RETURN balance\n\n// Inheritance\nCLASS Animal:\n    FUNCTION speak(): PRINT 'Some sound'\n\nCLASS Dog EXTENDS Animal:\n    FUNCTION speak(): PRINT 'Woof'   // Overriding (Polymorphism)\n\n// Abstraction\nABSTRACT CLASS Shape:\n    ABSTRACT FUNCTION area()\n\nCLASS Circle EXTENDS Shape:\n    FUNCTION area(): RETURN PI * r * r",
+          "example": {
+            "encapsulation": "Private balance + public deposit/withdraw in BankAccount class",
+            "abstraction": "Abstract Vehicle class with move() method implemented differently by Car and Bike",
+            "inheritance": "class Dog extends Animal",
+            "polymorphism": "Animal a = new Dog(); a.speak(); // calls Dog's speak at runtime"
+          },
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL"]
+        },
+        {
+          "id": "tech_oop_002",
+          "type": "concept",
+          "question": "What is the difference between abstract class and interface in Java?",
+          "answer": {
+            "abstract_class": {
+              "definition": "A class that cannot be instantiated and may contain both abstract and concrete methods.",
+              "when_to_use": "When classes share a common base and some default behavior.",
+              "features": ["Can have constructors", "Can have instance variables", "Supports single inheritance", "Methods can have any access modifier"]
+            },
+            "interface": {
+              "definition": "A pure contract. All methods are abstract by default (Java 7). Java 8+ allows default and static methods.",
+              "when_to_use": "To define a contract for unrelated classes and achieve multiple inheritance.",
+              "features": ["No constructors", "Variables are public static final", "A class can implement multiple interfaces", "Methods are public by default"]
+            }
+          },
+          "pseudocode": "// Abstract Class\nABSTRACT CLASS Vehicle:\n    STRING brand\n    FUNCTION start():    // concrete method\n        PRINT 'Starting engine'\n    ABSTRACT FUNCTION fuelType()  // must be implemented\n\nCLASS Car EXTENDS Vehicle:\n    FUNCTION fuelType(): RETURN 'Petrol'\n\n// Interface\nINTERFACE Flyable:\n    FUNCTION fly()   // abstract by default\n\nINTERFACE Swimmable:\n    FUNCTION swim()\n\nCLASS Duck EXTENDS Animal IMPLEMENTS Flyable, Swimmable:\n    FUNCTION fly(): PRINT 'Duck flying'\n    FUNCTION swim(): PRINT 'Duck swimming'",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Cognizant"]
+        },
+        {
+          "id": "tech_oop_003",
+          "type": "concept",
+          "question": "Explain method overloading vs method overriding.",
+          "answer": {
+            "overloading": {
+              "definition": "Same method name, different parameters. Resolved at compile time (static polymorphism).",
+              "example": "int add(int a, int b) vs double add(double a, double b)"
+            },
+            "overriding": {
+              "definition": "Subclass redefines a parent method with the same signature. Resolved at runtime (dynamic polymorphism).",
+              "example": "Animal.speak() overridden by Dog.speak()"
+            },
+            "key_difference": "Overloading = compile-time polymorphism. Overriding = runtime polymorphism."
+          },
+          "pseudocode": "// Overloading (same class, different params)\nCLASS Calculator:\n    FUNCTION add(a, b): RETURN a + b\n    FUNCTION add(a, b, c): RETURN a + b + c   // overloaded\n    FUNCTION add(a: FLOAT, b: FLOAT): RETURN a + b   // overloaded\n\n// Overriding (parent → child, same signature)\nCLASS Animal:\n    FUNCTION speak(): PRINT 'Generic animal sound'\n\nCLASS Cat EXTENDS Animal:\n    FUNCTION speak(): PRINT 'Meow'   // overrides parent\n\nanimal = NEW Cat()\nanimal.speak()   // prints 'Meow' — runtime decision",
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "HCL", "Cognizant"]
+        },
+        {
+          "id": "tech_oop_004",
+          "type": "concept",
+          "question": "What is a constructor? What are the types of constructors?",
+          "answer": "A constructor is a special method invoked automatically when an object is created. It has the same name as the class and no return type. Types: (1) Default constructor – no parameters, provided by compiler if none defined. (2) Parameterized constructor – takes arguments to initialize object with specific values. (3) Copy constructor – creates a new object as a copy of an existing object.",
+          "pseudocode": "CLASS Student:\n    STRING name\n    INT age\n\n    // Default Constructor\n    FUNCTION Student():\n        name = 'Unknown'\n        age = 0\n\n    // Parameterized Constructor\n    FUNCTION Student(n, a):\n        name = n\n        age = a\n\n    // Copy Constructor\n    FUNCTION Student(other: Student):\n        name = other.name\n        age = other.age\n\n// Usage\ns1 = NEW Student()             // default\ns2 = NEW Student('Alice', 20) // parameterized\ns3 = NEW Student(s2)          // copy",
+          "difficulty": "easy",
+          "companies": ["TCS", "Wipro", "Infosys", "Cognizant", "HCL"]
+        },
+        {
+          "id": "tech_oop_005",
+          "type": "concept",
+          "question": "What is the difference between IS-A and HAS-A relationships?",
+          "answer": "IS-A represents inheritance: a Dog IS-A Animal. HAS-A represents composition: a Car HAS-A Engine. IS-A uses 'extends' (Java) or class inheritance. HAS-A uses object composition — an object contains another object as a field. Composition is generally preferred over inheritance for flexibility.",
+          "pseudocode": "// IS-A (Inheritance)\nCLASS Animal:\n    FUNCTION breathe()\n\nCLASS Dog EXTENDS Animal:   // Dog IS-A Animal\n    FUNCTION bark()\n\n// HAS-A (Composition)\nCLASS Engine:\n    FUNCTION start()\n\nCLASS Car:\n    engine = NEW Engine()   // Car HAS-A Engine\n    FUNCTION drive():\n        engine.start()\n        PRINT 'Car moving'",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Infosys"]
+        },
+        {
+          "id": "tech_oop_006",
+          "type": "concept",
+          "question": "What is the difference between shallow copy and deep copy?",
+          "answer": "Shallow copy creates a new object but copies references to the original's nested objects. Deep copy creates a completely independent copy including all nested objects. Shallow copy is faster but both objects share inner state. Deep copy is safe but more expensive.",
+          "pseudocode": "// Shallow Copy\noriginal = { name: 'Alice', scores: [90, 85] }\nshallowCopy = COPY(original)\nshallowCopy.scores.append(70)\n// original.scores is NOW also [90, 85, 70] — shared reference!\n\n// Deep Copy\noriginal = { name: 'Alice', scores: [90, 85] }\ndeepCopy = DEEP_COPY(original)   // recursively copies all nested objects\ndeepCopy.scores.append(70)\n// original.scores is still [90, 85] — fully independent",
+          "difficulty": "medium",
+          "companies": ["TCS", "Deloitte", "Accenture", "Wipro"]
+        }
+      ]
+    },
+    {
+      "category": "Data Structures – Concepts & Pseudocode",
+      "questions": [
+        {
+          "id": "tech_ds_001",
+          "type": "concept",
+          "question": "What is the difference between a stack and a queue?",
+          "answer": {
+            "stack": {
+              "principle": "LIFO – Last In, First Out",
+              "operations": ["push(x) – insert at top", "pop() – remove from top", "peek() – view top without removing"],
+              "use_cases": ["Function call stack", "Undo/Redo", "Expression evaluation", "Balanced parentheses"]
+            },
+            "queue": {
+              "principle": "FIFO – First In, First Out",
+              "operations": ["enqueue(x) – insert at rear", "dequeue() – remove from front", "front() – view front element"],
+              "use_cases": ["BFS traversal", "Print spooler", "CPU scheduling", "Message queues"]
+            }
+          },
+          "pseudocode": "// STACK (using array)\nSTACK:\n    data = []\n    FUNCTION push(x): data.append(x)\n    FUNCTION pop():\n        IF data is EMPTY: ERROR 'Stack underflow'\n        RETURN data.removeLast()\n    FUNCTION peek(): RETURN data[last]\n    FUNCTION isEmpty(): RETURN data.size == 0\n\n// QUEUE (using array)\nQUEUE:\n    data = []\n    FUNCTION enqueue(x): data.append(x)\n    FUNCTION dequeue():\n        IF data is EMPTY: ERROR 'Queue underflow'\n        RETURN data.removeFirst()\n    FUNCTION front(): RETURN data[0]\n    FUNCTION isEmpty(): RETURN data.size == 0",
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Cognizant", "HCL"]
+        },
+        {
+          "id": "tech_ds_002",
+          "type": "concept",
+          "question": "What is a Binary Search Tree (BST) and what are its properties?",
+          "answer": "A BST is a binary tree where for each node: all values in the left subtree are less than the node, and all values in the right subtree are greater. Search, insert, delete are O(log n) average, O(n) worst case for a skewed tree. Balanced variants like AVL and Red-Black trees guarantee O(log n) in all cases.",
+          "pseudocode": "// BST Insert\nFUNCTION insert(root, value):\n    IF root is NULL:\n        RETURN NEW Node(value)\n    IF value < root.data:\n        root.left = insert(root.left, value)\n    ELSE IF value > root.data:\n        root.right = insert(root.right, value)\n    RETURN root\n\n// BST Search\nFUNCTION search(root, target):\n    IF root is NULL: RETURN FALSE\n    IF root.data == target: RETURN TRUE\n    IF target < root.data: RETURN search(root.left, target)\n    RETURN search(root.right, target)\n\n// BST Inorder Traversal (gives sorted output)\nFUNCTION inorder(root):\n    IF root is NULL: RETURN\n    inorder(root.left)\n    PRINT root.data\n    inorder(root.right)",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys"]
+        },
+        {
+          "id": "tech_ds_003",
+          "type": "concept",
+          "question": "Explain Big O notation with common complexities.",
+          "answer": {
+            "definition": "Big O describes the upper bound (worst case) of an algorithm's time or space growth as input size n increases.",
+            "common_complexities": {
+              "O(1)": "Constant – array index access, hash map lookup",
+              "O(log n)": "Logarithmic – binary search",
+              "O(n)": "Linear – single loop",
+              "O(n log n)": "Merge sort, heap sort",
+              "O(n^2)": "Bubble/selection sort, nested loops",
+              "O(2^n)": "Naive recursion (Fibonacci)",
+              "O(n!)": "Brute-force permutation generation"
+            }
+          },
+          "pseudocode": "// O(1) – Constant\nFUNCTION getFirst(arr): RETURN arr[0]\n\n// O(n) – Linear\nFUNCTION findMax(arr):\n    max = arr[0]\n    FOR each x in arr:\n        IF x > max: max = x\n    RETURN max\n\n// O(n^2) – Quadratic\nFUNCTION bubbleSort(arr):\n    FOR i FROM 0 TO n-1:\n        FOR j FROM 0 TO n-i-2:\n            IF arr[j] > arr[j+1]:\n                SWAP arr[j], arr[j+1]\n\n// O(log n) – Binary Search\nFUNCTION binarySearch(arr, target):\n    left = 0, right = n-1\n    WHILE left <= right:\n        mid = (left + right) / 2\n        IF arr[mid] == target: RETURN mid\n        IF arr[mid] < target: left = mid + 1\n        ELSE: right = mid - 1\n    RETURN -1",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "tech_ds_004",
+          "type": "concept",
+          "question": "What is a Hash Map / Hash Table? How does it work?",
+          "answer": "A hash map stores key-value pairs. A hash function maps a key to a bucket index. Ideal time complexity for get/put is O(1). Collisions (two keys mapping to same index) are handled via chaining (linked list at bucket) or open addressing (probing for next empty slot).",
+          "pseudocode": "// Hash Map Structure\nHASHMAP:\n    buckets = ARRAY of size N (each bucket is a list)\n\n    FUNCTION hashFunction(key):\n        RETURN key.hashCode() % N\n\n    FUNCTION put(key, value):\n        index = hashFunction(key)\n        FOR each (k, v) in buckets[index]:\n            IF k == key: UPDATE v; RETURN\n        buckets[index].append((key, value))\n\n    FUNCTION get(key):\n        index = hashFunction(key)\n        FOR each (k, v) in buckets[index]:\n            IF k == key: RETURN v\n        RETURN NULL\n\n// Chaining to handle collision:\n// bucket[3] → [(key1, val1) → (key2, val2)] // both hash to 3",
+          "difficulty": "medium",
+          "companies": ["TCS", "Deloitte", "Accenture", "Wipro", "Cognizant"]
+        },
+        {
+          "id": "tech_ds_005",
+          "type": "concept",
+          "question": "What is a Heap? Explain Min-Heap and Max-Heap.",
+          "answer": "A heap is a complete binary tree satisfying the heap property. In a Min-Heap, every parent is smaller than its children (root = minimum). In a Max-Heap, every parent is greater (root = maximum). Heaps are implemented as arrays and used in priority queues and heap sort. Insert and delete are O(log n), peek is O(1).",
+          "pseudocode": "// Min-Heap Insertion (heapify up)\nFUNCTION insert(heap, value):\n    heap.append(value)\n    i = heap.size - 1\n    WHILE i > 0:\n        parent = (i - 1) / 2\n        IF heap[parent] > heap[i]:\n            SWAP heap[parent], heap[i]\n            i = parent\n        ELSE: BREAK\n\n// Extract Min (heapify down)\nFUNCTION extractMin(heap):\n    min = heap[0]\n    heap[0] = heap[last]\n    heap.removeLast()\n    i = 0\n    WHILE TRUE:\n        left = 2*i + 1, right = 2*i + 2\n        smallest = i\n        IF left < size AND heap[left] < heap[smallest]: smallest = left\n        IF right < size AND heap[right] < heap[smallest]: smallest = right\n        IF smallest == i: BREAK\n        SWAP heap[i], heap[smallest]\n        i = smallest\n    RETURN min",
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys"]
+        },
+        {
+          "id": "tech_ds_006",
+          "type": "concept",
+          "question": "What is a Graph? Explain DFS and BFS traversals.",
+          "answer": "A graph is a collection of nodes (vertices) connected by edges. DFS (Depth-First Search) explores as deep as possible before backtracking — uses a stack/recursion. BFS (Breadth-First Search) explores all neighbors at the current level before going deeper — uses a queue.",
+          "pseudocode": "// DFS (Recursive)\nFUNCTION dfs(graph, node, visited):\n    IF node in visited: RETURN\n    visited.add(node)\n    PRINT node\n    FOR each neighbor in graph[node]:\n        dfs(graph, neighbor, visited)\n\n// BFS (Iterative)\nFUNCTION bfs(graph, start):\n    visited = SET()\n    queue = QUEUE()\n    queue.enqueue(start)\n    visited.add(start)\n    WHILE queue is NOT EMPTY:\n        node = queue.dequeue()\n        PRINT node\n        FOR each neighbor in graph[node]:\n            IF neighbor NOT in visited:\n                visited.add(neighbor)\n                queue.enqueue(neighbor)\n\n// Use DFS for: cycle detection, path finding, topological sort\n// Use BFS for: shortest path (unweighted), level-order traversal",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys", "Cognizant"]
+        },
+        {
+          "id": "tech_ds_007",
+          "type": "concept",
+          "question": "What is Dynamic Programming? Explain with the Fibonacci example.",
+          "answer": "Dynamic Programming (DP) solves problems by breaking them into overlapping subproblems and storing results to avoid recomputation. Two approaches: Memoization (top-down, recursive with cache) and Tabulation (bottom-up, iterative). DP applies when a problem has optimal substructure and overlapping subproblems.",
+          "pseudocode": "// Naive Recursion – O(2^n)\nFUNCTION fib(n):\n    IF n <= 1: RETURN n\n    RETURN fib(n-1) + fib(n-2)\n\n// Memoization (Top-Down DP) – O(n)\nmemo = {}\nFUNCTION fib_memo(n):\n    IF n in memo: RETURN memo[n]\n    IF n <= 1: RETURN n\n    memo[n] = fib_memo(n-1) + fib_memo(n-2)\n    RETURN memo[n]\n\n// Tabulation (Bottom-Up DP) – O(n) time, O(1) space\nFUNCTION fib_dp(n):\n    IF n <= 1: RETURN n\n    prev2 = 0, prev1 = 1\n    FOR i FROM 2 TO n:\n        curr = prev1 + prev2\n        prev2 = prev1\n        prev1 = curr\n    RETURN prev1\n\n// DP Decision Rule:\n// Can the problem be broken into smaller similar subproblems?\n// Do subproblems repeat? → Use DP",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "tech_ds_008",
+          "type": "concept",
+          "question": "Explain Merge Sort and Quick Sort with pseudocode. Compare their complexities.",
+          "answer": {
+            "merge_sort": {
+              "strategy": "Divide and Conquer – split array in half, recursively sort, merge",
+              "time": "O(n log n) always",
+              "space": "O(n) – additional array needed",
+              "stable": true
+            },
+            "quick_sort": {
+              "strategy": "Divide and Conquer – pick pivot, partition array around it, recursively sort",
+              "time": "O(n log n) average, O(n^2) worst (bad pivot)",
+              "space": "O(log n) – in-place",
+              "stable": false
+            }
+          },
+          "pseudocode": "// MERGE SORT\nFUNCTION mergeSort(arr):\n    IF arr.length <= 1: RETURN arr\n    mid = arr.length / 2\n    left = mergeSort(arr[0..mid])\n    right = mergeSort(arr[mid+1..])\n    RETURN merge(left, right)\n\nFUNCTION merge(left, right):\n    result = []\n    i = 0, j = 0\n    WHILE i < left.length AND j < right.length:\n        IF left[i] <= right[j]: result.append(left[i]); i++\n        ELSE: result.append(right[j]); j++\n    APPEND remaining elements\n    RETURN result\n\n// QUICK SORT\nFUNCTION quickSort(arr, low, high):\n    IF low < high:\n        pivotIndex = partition(arr, low, high)\n        quickSort(arr, low, pivotIndex - 1)\n        quickSort(arr, pivotIndex + 1, high)\n\nFUNCTION partition(arr, low, high):\n    pivot = arr[high]\n    i = low - 1\n    FOR j FROM low TO high-1:\n        IF arr[j] <= pivot:\n            i++\n            SWAP arr[i], arr[j]\n    SWAP arr[i+1], arr[high]\n    RETURN i + 1",
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys", "Wipro", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Database Management Systems (DBMS)",
+      "questions": [
+        {
+          "id": "tech_dbms_001",
+          "type": "concept",
+          "question": "What are ACID properties in databases?",
+          "answer": {
+            "atomicity": "All-or-nothing: if any part of a transaction fails, the entire transaction is rolled back.",
+            "consistency": "A transaction brings the database from one valid state to another, maintaining all constraints.",
+            "isolation": "Concurrent transactions execute independently — intermediate states are invisible to others.",
+            "durability": "Once committed, a transaction persists even through system failures."
+          },
+          "pseudocode": "// Bank Transfer – ACID Example\nFUNCTION transfer(fromAcc, toAcc, amount):\n    BEGIN TRANSACTION\n    TRY:\n        // Atomicity: both must succeed or both fail\n        fromAcc.balance -= amount    // Step 1\n        IF fromAcc.balance < 0:\n            RAISE Error('Insufficient funds')\n        toAcc.balance += amount      // Step 2\n\n        // Consistency: total money in system unchanged\n        // Isolation: no other transaction sees partial state\n        COMMIT TRANSACTION\n        // Durability: changes written to disk permanently\n    CATCH error:\n        ROLLBACK TRANSACTION       // Atomicity guaranteed",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "tech_dbms_002",
+          "type": "concept",
+          "question": "Explain all types of SQL JOINs with examples.",
+          "answer": {
+            "inner_join": "Returns rows with matches in BOTH tables.",
+            "left_join": "All rows from left + matching from right; unmatched right = NULL.",
+            "right_join": "All rows from right + matching from left; unmatched left = NULL.",
+            "full_outer_join": "All rows from both; unmatched sides = NULL.",
+            "cross_join": "Cartesian product — every combination of rows from both tables.",
+            "self_join": "A table joined with itself to compare rows within the same table."
+          },
+          "pseudocode": "// INNER JOIN – only matched rows\nSELECT E.name, D.dept_name\nFROM Employee E\nINNER JOIN Department D ON E.dept_id = D.id\n\n// LEFT JOIN – all employees, dept may be NULL\nSELECT E.name, D.dept_name\nFROM Employee E\nLEFT JOIN Department D ON E.dept_id = D.id\n\n// SELF JOIN – find employees with same manager\nSELECT A.name AS Employee, B.name AS Manager\nFROM Employee A\nJOIN Employee B ON A.manager_id = B.id\n\n// FULL OUTER JOIN – all rows from both\nSELECT E.name, D.dept_name\nFROM Employee E\nFULL OUTER JOIN Department D ON E.dept_id = D.id",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL"]
+        },
+        {
+          "id": "tech_dbms_003",
+          "type": "concept",
+          "question": "What is normalization? Explain 1NF, 2NF, 3NF with examples.",
+          "answer": {
+            "definition": "Normalization organizes a database to reduce redundancy and improve integrity.",
+            "1NF": "Atomic values only. No repeating groups. Each row must be unique.",
+            "2NF": "1NF + no partial dependency: non-key attributes must depend on the WHOLE primary key.",
+            "3NF": "2NF + no transitive dependency: non-key attributes must not depend on other non-key attributes.",
+            "BCNF": "Stricter 3NF: every determinant must be a candidate key."
+          },
+          "pseudocode": "// 1NF Violation:\nSTUDENT(StudentID, Name, Courses)\nID=1, 'Alice', 'Math, Science'  ← 'Courses' not atomic\n\n// 1NF Fix:\nSTUDENT(StudentID, Name, Course)\n1, 'Alice', 'Math'\n1, 'Alice', 'Science'\n\n// 2NF Violation (composite key: StudentID + CourseID):\nENROLLMENT(StudentID, CourseID, StudentName, Grade)\n← StudentName depends only on StudentID (partial dependency)\n\n// 2NF Fix: Split tables\nSTUDENT(StudentID, StudentName)\nENROLLMENT(StudentID, CourseID, Grade)\n\n// 3NF Violation:\nEMPLOYEE(EmpID, DeptID, DeptName)\n← DeptName depends on DeptID, not EmpID (transitive)\n\n// 3NF Fix:\nEMPLOYEE(EmpID, DeptID)\nDEPARTMENT(DeptID, DeptName)",
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys", "Wipro"]
+        },
+        {
+          "id": "tech_dbms_004",
+          "type": "concept",
+          "question": "What is the difference between SQL and NoSQL databases?",
+          "answer": {
+            "sql": {
+              "structure": "Structured, table-based, predefined schema",
+              "examples": ["MySQL", "PostgreSQL", "Oracle", "SQL Server"],
+              "use_when": "Structured data, complex relationships, ACID compliance required",
+              "scaling": "Vertical scaling"
+            },
+            "nosql": {
+              "structure": "Flexible schema: document, key-value, wide-column, graph",
+              "examples": ["MongoDB (document)", "Redis (key-value)", "Cassandra (wide-column)", "Neo4j (graph)"],
+              "use_when": "Unstructured/semi-structured data, massive scale, flexible schema",
+              "scaling": "Horizontal scaling"
+            }
+          },
+          "pseudocode": "// SQL – Relational\nCREATE TABLE Users (\n    id INT PRIMARY KEY,\n    name VARCHAR(100),\n    email VARCHAR(100) UNIQUE\n)\nINSERT INTO Users VALUES (1, 'Alice', 'alice@example.com')\nSELECT * FROM Users WHERE name = 'Alice'\n\n// NoSQL – MongoDB Document\n{\n  _id: ObjectId('abc123'),\n  name: 'Alice',\n  email: 'alice@example.com',\n  preferences: { theme: 'dark', lang: 'en' }  ← flexible, nested\n}\ndb.users.find({ name: 'Alice' })",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Cognizant"]
+        },
+        {
+          "id": "tech_dbms_005",
+          "type": "concept",
+          "question": "What are indexes in a database and why are they used?",
+          "answer": "An index is a data structure (usually a B-tree or hash) that allows the database to find rows quickly without scanning the entire table. It speeds up SELECT queries but slows down INSERT/UPDATE/DELETE operations slightly because the index must be maintained. Indexes should be created on columns used frequently in WHERE, JOIN, or ORDER BY clauses.",
+          "pseudocode": "// Without Index: Full Table Scan – O(n)\nSELECT * FROM Employee WHERE email = 'alice@example.com'\n// Checks every row one by one\n\n// With Index: O(log n) via B-tree\nCREATE INDEX idx_email ON Employee(email)\nSELECT * FROM Employee WHERE email = 'alice@example.com'\n// Database uses index to jump directly to the row\n\n// Types of Indexes:\n// 1. Primary Index – on primary key (automatically created)\n// 2. Unique Index – enforces uniqueness\n// 3. Composite Index – on multiple columns\n// 4. Full-Text Index – for text search\n\nCREATE UNIQUE INDEX idx_unique_email ON Employee(email)\nCREATE INDEX idx_dept_salary ON Employee(dept_id, salary)",
+          "difficulty": "medium",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys", "Wipro"]
+        },
+        {
+          "id": "tech_dbms_006",
+          "type": "concept",
+          "question": "What is a stored procedure and how is it different from a function?",
+          "answer": "A stored procedure is a precompiled set of SQL statements stored in the database. It can perform actions (INSERT, UPDATE, DELETE) and may or may not return a value. A function must return a value and cannot perform actions like INSERT/DELETE directly. Stored procedures are called with EXEC/CALL; functions are used in SELECT statements.",
+          "pseudocode": "// Stored Procedure\nCREATE PROCEDURE GetEmployeesByDept(IN dept_id INT)\nBEGIN\n    SELECT * FROM Employee WHERE department_id = dept_id;\nEND\n\n// Call:\nCALL GetEmployeesByDept(3)\n\n// Function\nCREATE FUNCTION GetTotalSalary(dept_id INT)\nRETURNS DECIMAL\nBEGIN\n    DECLARE total DECIMAL;\n    SELECT SUM(salary) INTO total\n    FROM Employee WHERE department_id = dept_id;\n    RETURN total;\nEND\n\n// Use in query:\nSELECT GetTotalSalary(3)",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Operating Systems (OS)",
+      "questions": [
+        {
+          "id": "tech_os_001",
+          "type": "concept",
+          "question": "What is the difference between a process and a thread?",
+          "answer": {
+            "process": {
+              "definition": "A program in execution with its own memory space, registers, and resources.",
+              "isolation": "Fully isolated — one crash doesn't affect others.",
+              "communication": "Via IPC: pipes, sockets, shared memory"
+            },
+            "thread": {
+              "definition": "A lightweight unit of execution within a process, sharing the process's memory.",
+              "isolation": "Not isolated — a buggy thread can crash the whole process.",
+              "communication": "Via shared memory — needs synchronization (mutex, semaphore)"
+            }
+          },
+          "pseudocode": "// Process Creation (fork in Unix)\nPROCESS main:\n    child = fork()     // creates a new process\n    IF child == 0:\n        // child process code\n        PRINT 'I am the child'\n    ELSE:\n        // parent process code\n        PRINT 'I am the parent'\n\n// Thread Creation\nFUNCTION task():\n    PRINT 'Thread running'\n\nthread1 = NEW Thread(task)\nthread2 = NEW Thread(task)\nthread1.start()\nthread2.start()\nthread1.join()   // wait for thread1 to finish\nthread2.join()\n// Both threads share the same process memory",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "tech_os_002",
+          "type": "concept",
+          "question": "What is deadlock? Explain with an example and the four necessary conditions.",
+          "answer": {
+            "definition": "Deadlock is a situation where two or more processes are permanently waiting for resources held by each other — none can proceed.",
+            "conditions": {
+              "mutual_exclusion": "Resources cannot be shared — only one process holds a resource at a time.",
+              "hold_and_wait": "A process holds a resource while waiting to acquire another.",
+              "no_preemption": "Resources cannot be forcibly taken away.",
+              "circular_wait": "A circular chain: P1 waits for P2's resource, P2 waits for P1's resource."
+            }
+          },
+          "pseudocode": "// Deadlock Example\nRESOURCE A, B\n\nPROCESS P1:\n    ACQUIRE(A)        // P1 holds A\n    WAIT(B)           // P1 waits for B — but P2 has B\n\nPROCESS P2:\n    ACQUIRE(B)        // P2 holds B\n    WAIT(A)           // P2 waits for A — but P1 has A\n// → DEADLOCK: P1 and P2 wait forever\n\n// Prevention: Resource Ordering\n// Always acquire resources in same fixed order\nPROCESS P1:\n    ACQUIRE(A) then ACQUIRE(B)\nPROCESS P2:\n    ACQUIRE(A) then ACQUIRE(B)  // same order — no circular wait\n\n// Detection & Recovery:\n// Run deadlock detection algorithm (resource allocation graph)\n// Recovery: terminate one process or preempt a resource",
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys", "Wipro"]
+        },
+        {
+          "id": "tech_os_003",
+          "type": "concept",
+          "question": "What is virtual memory? How does paging work?",
+          "answer": {
+            "virtual_memory": "Gives each process the illusion of a large contiguous memory even when physical RAM is limited, using disk (swap space) as an extension.",
+            "paging": {
+              "definition": "Virtual memory is divided into fixed-size pages, physical memory into frames of the same size.",
+              "page_table": "Maps virtual page numbers to physical frame numbers.",
+              "page_fault": "When a required page is not in RAM, the OS loads it from disk — called a page fault.",
+              "advantage": "Eliminates external fragmentation."
+            }
+          },
+          "pseudocode": "// Virtual Memory Address Translation\nVIRTUAL_ADDRESS = (page_number, offset)\n\nFUNCTION translate(virtual_address):\n    page_number = virtual_address / PAGE_SIZE\n    offset = virtual_address % PAGE_SIZE\n\n    IF page_table[page_number].present == TRUE:\n        frame_number = page_table[page_number].frame\n        physical_address = (frame_number * PAGE_SIZE) + offset\n        RETURN physical_address\n    ELSE:\n        // PAGE FAULT\n        LOAD page from disk into a free frame\n        UPDATE page_table[page_number]\n        RETRY translation\n\n// Page Replacement Algorithms:\n// FIFO: evict oldest page in memory\n// LRU: evict least recently used page\n// Optimal: evict page not needed for longest time (theoretical)",
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys"]
+        },
+        {
+          "id": "tech_os_004",
+          "type": "concept",
+          "question": "What are CPU scheduling algorithms? Explain with examples.",
+          "answer": "CPU scheduling decides which process runs next on the CPU. Common algorithms: FCFS (First-Come First-Served), SJF (Shortest Job First), Round Robin, Priority Scheduling, and Multilevel Queue.",
+          "pseudocode": "// FCFS (First Come First Served)\nQueue: P1(bt=24), P2(bt=3), P3(bt=3)\nExecution: P1 → P2 → P3\nAvg Waiting Time = (0 + 24 + 27) / 3 = 17ms  ← convoy effect\n\n// SJF (Shortest Job First – non-preemptive)\nQueue: P1(bt=6), P2(bt=8), P3(bt=7), P4(bt=3)\nSorted: P4(3) → P1(6) → P3(7) → P2(8)\nAvg WT = (0+3+9+16) / 4 = 7ms  ← optimal avg WT\n\n// Round Robin (quantum = 4ms)\nQueue: P1(bt=10), P2(bt=6), P3(bt=4)\nExecution: P1(4) → P2(4) → P3(4) → P1(4) → P2(2) → P1(2)\n// Each process gets a fixed time slice; fair but more overhead\n\n// Priority Scheduling\nProcess with highest priority runs first\nIf equal priority → use FCFS as tiebreaker\nRisk: Starvation (low priority never runs) → solved by Aging",
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Infosys", "Wipro"]
+        },
+        {
+          "id": "tech_os_005",
+          "type": "concept",
+          "question": "What is the difference between mutex and semaphore?",
+          "answer": {
+            "mutex": {
+              "definition": "A mutual exclusion lock. Only the thread that locked it can unlock it. Binary (locked/unlocked).",
+              "use_case": "Protecting a critical section — only one thread at a time."
+            },
+            "semaphore": {
+              "definition": "A signaling mechanism with a counter. Can be binary (0/1) or counting (0..N).",
+              "use_case": "Controlling access to a pool of resources or producer-consumer synchronization."
+            }
+          },
+          "pseudocode": "// MUTEX – Critical Section\nmutex = NEW Mutex()\n\nFUNCTION incrementCounter():\n    mutex.lock()         // only one thread enters\n    counter = counter + 1\n    mutex.unlock()       // release for others\n\n// SEMAPHORE – Counting\nsemaphore = NEW Semaphore(3)  // max 3 concurrent users\n\nFUNCTION accessDatabase():\n    semaphore.wait()     // decrement count; block if 0\n    // use database connection\n    semaphore.signal()   // increment count; wake a blocked thread\n\n// Producer-Consumer with Semaphore\nempty = Semaphore(N)   // N empty slots\nfull = Semaphore(0)    // 0 filled slots\n\nPRODUCER:\n    empty.wait()         // wait for empty slot\n    ADD item to buffer\n    full.signal()        // signal item available\n\nCONSUMER:\n    full.wait()          // wait for item\n    REMOVE item from buffer\n    empty.signal()       // signal slot freed",
+          "difficulty": "hard",
+          "companies": ["TCS", "Deloitte", "Accenture", "Wipro", "Infosys"]
+        }
+      ]
+    },
+    {
+      "category": "Computer Networks (CN)",
+      "questions": [
+        {
+          "id": "tech_cn_001",
+          "type": "concept",
+          "question": "What is the OSI model? Explain all 7 layers.",
+          "answer": {
+            "layers": [
+              {"layer": 7, "name": "Application", "function": "User-facing protocols: HTTP, FTP, SMTP, DNS"},
+              {"layer": 6, "name": "Presentation", "function": "Data formatting, encryption, compression: SSL/TLS, JPEG"},
+              {"layer": 5, "name": "Session", "function": "Session management between apps: NetBIOS, RPC"},
+              {"layer": 4, "name": "Transport", "function": "End-to-end delivery, error recovery: TCP, UDP"},
+              {"layer": 3, "name": "Network", "function": "Routing and logical addressing: IP, ICMP, routers"},
+              {"layer": 2, "name": "Data Link", "function": "Frame transmission, MAC addressing: Ethernet, switches"},
+              {"layer": 1, "name": "Physical", "function": "Raw bit transmission: cables, hubs, NIC"}
+            ],
+            "mnemonic": "All People Seem To Need Data Processing (7 → 1)"
+          },
+          "pseudocode": "// Data flow through OSI layers (sending side)\nAPPLICATION: HTTP request created\n    ↓ add HTTP header\nPRESENTATION: data encrypted (TLS)\n    ↓ add encryption info\nSESSION: session token added\n    ↓ add session header\nTRANSPORT: data split into segments, port numbers added (TCP)\n    ↓ add TCP header\nNETWORK: segments wrapped in packets, IP addresses added\n    ↓ add IP header\nDATA LINK: packets wrapped in frames, MAC addresses added\n    ↓ add frame header+trailer\nPHYSICAL: frames converted to bits and sent over wire\n\n// Receiving side: reverse (remove headers layer by layer)",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Cognizant", "HCL", "Accenture"]
+        },
+        {
+          "id": "tech_cn_002",
+          "type": "concept",
+          "question": "What is the difference between TCP and UDP?",
+          "answer": {
+            "tcp": {
+              "type": "Connection-oriented",
+              "features": ["Reliable delivery", "Error checking", "Flow & congestion control", "3-way handshake (SYN, SYN-ACK, ACK)"],
+              "use_cases": ["HTTP/HTTPS", "Email (SMTP)", "File Transfer (FTP)"]
+            },
+            "udp": {
+              "type": "Connectionless",
+              "features": ["No guaranteed delivery", "No handshake", "Lower overhead", "Faster"],
+              "use_cases": ["Video streaming", "DNS", "Online gaming", "VoIP"]
+            }
+          },
+          "pseudocode": "// TCP 3-Way Handshake\nCLIENT → SERVER: SYN (seq=x)          // 'I want to connect'\nSERVER → CLIENT: SYN-ACK (seq=y, ack=x+1)  // 'OK, I'm ready'\nCLIENT → SERVER: ACK (ack=y+1)        // 'Connection established'\n\n// TCP Data Transfer\nCLIENT → SERVER: DATA (seq=1)\nSERVER → CLIENT: ACK (ack=2)          // 'Got it, send next'\nCLIENT → SERVER: DATA (seq=2)\n// If no ACK received → CLIENT retransmits\n\n// UDP (no handshake)\nCLIENT → SERVER: SEND packet          // fire and forget\nCLIENT → SERVER: SEND packet          // no guarantee of delivery\n// No ACK, no retransmission\n\n// TCP Teardown: 4-way FIN handshake\nCLIENT → SERVER: FIN\nSERVER → CLIENT: ACK\nSERVER → CLIENT: FIN\nCLIENT → SERVER: ACK",
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant"]
+        },
+        {
+          "id": "tech_cn_003",
+          "type": "concept",
+          "question": "What happens when you type www.google.com in a browser?",
+          "answer": [
+            "1. Browser checks its DNS cache for the IP of google.com",
+            "2. If not found, OS checks /etc/hosts, then queries DNS resolver",
+            "3. DNS resolver recursively queries Root → TLD (.com) → Authoritative nameserver → returns IP",
+            "4. Browser initiates TCP 3-way handshake with the IP",
+            "5. TLS handshake establishes encrypted HTTPS channel",
+            "6. Browser sends HTTP GET request",
+            "7. Server responds with HTML + headers",
+            "8. Browser parses HTML, fetches CSS/JS/images, renders the page"
+          ],
+          "pseudocode": "// Step-by-step browser flow\nFUNCTION loadPage(url):\n    // DNS Resolution\n    ip = checkBrowserCache(url)\n    IF ip is NULL:\n        ip = checkOSCache(url)\n    IF ip is NULL:\n        ip = dnsResolve(url)   // queries DNS servers\n\n    // TCP Connection\n    socket = TCP.connect(ip, port=443)\n    TLS.handshake(socket)     // for HTTPS\n\n    // HTTP Request\n    request = 'GET / HTTP/1.1\\nHost: www.google.com\\n...'\n    socket.send(request)\n\n    // HTTP Response\n    response = socket.receive()\n    html = response.body\n\n    // Rendering\n    dom = parseHTML(html)\n    cssom = parseCSS(fetchCSS())\n    renderTree = combine(dom, cssom)\n    paint(renderTree)         // display on screen",
+          "difficulty": "hard",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys"]
+        },
+        {
+          "id": "tech_cn_004",
+          "type": "concept",
+          "question": "What is the difference between HTTP and HTTPS? What is SSL/TLS?",
+          "answer": "HTTP (HyperText Transfer Protocol) transfers data in plain text — readable by anyone on the network. HTTPS adds a security layer using SSL/TLS, encrypting the data between client and server. TLS (Transport Layer Security) uses asymmetric encryption for handshake (key exchange) and symmetric encryption for data transfer.",
+          "pseudocode": "// HTTP – Plain Text\nGET /login HTTP/1.1\nHost: example.com\nBody: username=alice&password=secret123\n// Anyone on the network can see this!\n\n// HTTPS – Encrypted via TLS\n// TLS Handshake (simplified)\nCLIENT → SERVER: ClientHello (TLS version, cipher suites)\nSERVER → CLIENT: ServerHello + Certificate (public key)\nCLIENT: validates certificate with Certificate Authority (CA)\nCLIENT → SERVER: pre-master secret (encrypted with server's public key)\nBOTH: derive same session key from pre-master secret\n// Now both sides use this symmetric session key to encrypt/decrypt\n\nCLIENT → SERVER: ENCRYPTED(GET /login, username=alice, password=secret)\n// Eavesdropper sees only garbled bytes",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Cognizant"]
+        },
+        {
+          "id": "tech_cn_005",
+          "type": "concept",
+          "question": "What is subnetting and what is a subnet mask?",
+          "answer": "Subnetting divides a large network into smaller sub-networks for efficiency and security. A subnet mask distinguishes the network portion from the host portion of an IP address. CIDR notation like /24 means 24 bits are the network part, leaving 8 bits for hosts (256 addresses).",
+          "pseudocode": "// IP Address breakdown\nIP Address:   192.168.1.100\nSubnet Mask:  255.255.255.0  (or /24 in CIDR)\n\n// Binary:\nIP:   11000000.10101000.00000001.01100100\nMask: 11111111.11111111.11111111.00000000\n\nNetwork Part (AND operation): 192.168.1.0\nHost Part: 0.0.0.100\n\n// /24 subnet:\nNetwork address:   192.168.1.0\nBroadcast address: 192.168.1.255\nUsable hosts:      192.168.1.1 to 192.168.1.254 (254 hosts)\n\n// /26 subnet (64 IPs per subnet):\n192.168.1.0/26  → hosts: .1 to .62\n192.168.1.64/26 → hosts: .65 to .126\n192.168.1.128/26 → hosts: .129 to .190\n192.168.1.192/26 → hosts: .193 to .254",
+          "difficulty": "hard",
+          "companies": ["TCS", "Infosys", "Wipro", "HCL", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "System Design",
+      "questions": [
+        {
+          "id": "tech_sd_001",
+          "type": "system_design",
+          "question": "How would you design a URL shortener like bit.ly?",
+          "approach": {
+            "requirements": {
+              "functional": ["Shorten a long URL", "Redirect short URL to original", "Analytics (click count)"],
+              "non_functional": ["High availability", "Low latency", "Scalable to billions of URLs"]
+            },
+            "components": {
+              "api_gateway": "Routes requests to shortening or redirect service",
+              "shortening_service": "Generates 6-char base62 key from auto-incremented ID",
+              "database": "NoSQL (DynamoDB/Cassandra): key → long URL mapping",
+              "cache": "Redis: cache hot short URLs to reduce DB lookups",
+              "redirect_service": "Looks up key in cache/DB, returns 301/302 redirect"
+            }
+          },
+          "pseudocode": "// URL Shortening\nFUNCTION shortenURL(longURL):\n    id = autoIncrement()                  // get next unique ID\n    shortKey = base62Encode(id)           // e.g. 1000000 → 'b8kJd'\n    DB.store(shortKey, longURL)           // save mapping\n    cache.set(shortKey, longURL, TTL=1hr)\n    RETURN 'https://short.ly/' + shortKey\n\n// base62 encoding uses a-z, A-Z, 0-9 = 62 chars\n// 62^6 = ~56 billion unique short URLs\n\n// URL Redirection\nFUNCTION redirect(shortKey):\n    url = cache.get(shortKey)\n    IF url is NULL:\n        url = DB.get(shortKey)\n        IF url is NULL: RETURN 404\n        cache.set(shortKey, url)\n    analytics.log(shortKey, timestamp, userIP)\n    RETURN HTTP_REDIRECT(302, url)\n\n// Scalability:\n// Shard DB by shortKey hash\n// Multiple redirect service instances behind load balancer\n// CDN for global low-latency redirects",
+          "difficulty": "hard",
+          "companies": ["Deloitte", "Accenture", "TCS", "Wipro", "Infosys"]
+        },
+        {
+          "id": "tech_sd_002",
+          "type": "system_design",
+          "question": "How would you design a Parking Lot System?",
+          "approach": {
+            "requirements": {
+              "functional": ["Support multiple floors and spot sizes", "Check in/check out vehicles", "Charge based on duration", "Display available spots"],
+              "non_functional": ["Concurrent access handled correctly", "Scalable to large lots"]
+            }
+          },
+          "pseudocode": "// Object-Oriented Design\nCLASS ParkingSpot:\n    id: STRING\n    floor: INT\n    size: ENUM [SMALL, MEDIUM, LARGE]\n    isOccupied: BOOLEAN\n    FUNCTION canFitVehicle(vehicle): RETURN vehicle.size <= self.size\n\nCLASS Vehicle:\n    licensePlate: STRING\n    size: ENUM [MOTORCYCLE, CAR, TRUCK]\n\nCLASS Ticket:\n    ticketId: STRING\n    vehicle: Vehicle\n    spot: ParkingSpot\n    entryTime: DATETIME\n    exitTime: DATETIME\n    amount: FLOAT\n\nCLASS ParkingLot:\n    floors: LIST of Floor\n    activeTickets: MAP<licensePlate, Ticket>\n\n    FUNCTION parkVehicle(vehicle):\n        spot = findAvailableSpot(vehicle.size)\n        IF spot is NULL: RETURN 'Lot Full'\n        spot.isOccupied = TRUE\n        ticket = NEW Ticket(vehicle, spot, now())\n        activeTickets[vehicle.licensePlate] = ticket\n        RETURN ticket\n\n    FUNCTION exitVehicle(licensePlate):\n        ticket = activeTickets[licensePlate]\n        ticket.exitTime = now()\n        duration = ticket.exitTime - ticket.entryTime\n        ticket.amount = calculateFee(duration, ticket.spot.size)\n        ticket.spot.isOccupied = FALSE\n        REMOVE from activeTickets\n        RETURN ticket\n\n    FUNCTION calculateFee(duration, spotSize):\n        rate = { SMALL: 10, MEDIUM: 20, LARGE: 30 }  // per hour\n        hours = ceil(duration / 3600)\n        RETURN hours * rate[spotSize]",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte"]
+        },
+        {
+          "id": "tech_sd_003",
+          "type": "system_design",
+          "question": "How would you design a Rate Limiter?",
+          "answer": "A rate limiter restricts the number of requests a client can make in a time window to prevent abuse and ensure fair usage.",
+          "algorithms": {
+            "token_bucket": "Tokens added at fixed rate. Each request consumes a token. Allows bursts.",
+            "leaky_bucket": "Requests processed at a fixed rate. Excess requests are queued or dropped.",
+            "fixed_window": "Count requests in a fixed time window (e.g., 100 req/min).",
+            "sliding_window": "Uses a rolling time window — more accurate than fixed window."
+          },
+          "pseudocode": "// Token Bucket Algorithm\nCLASS TokenBucket:\n    capacity: INT         // max tokens\n    tokens: FLOAT         // current tokens\n    refillRate: FLOAT     // tokens per second\n    lastRefill: TIMESTAMP\n\n    FUNCTION allowRequest():\n        now = currentTime()\n        elapsed = now - lastRefill\n        tokens = MIN(capacity, tokens + elapsed * refillRate)\n        lastRefill = now\n\n        IF tokens >= 1:\n            tokens -= 1\n            RETURN TRUE   // request allowed\n        RETURN FALSE      // rate limit exceeded\n\n// Redis-based Sliding Window (distributed)\nFUNCTION isAllowed(userId, limit, windowSeconds):\n    key = 'ratelimit:' + userId\n    now = currentTimestampMs()\n    windowStart = now - windowSeconds * 1000\n\n    REDIS: ZREMRANGEBYSCORE(key, 0, windowStart)  // remove old requests\n    count = REDIS: ZCARD(key)                     // count current requests\n\n    IF count < limit:\n        REDIS: ZADD(key, now, now)                // add current request\n        REDIS: EXPIRE(key, windowSeconds)\n        RETURN TRUE\n    RETURN FALSE",
+          "difficulty": "hard",
+          "companies": ["Deloitte", "Accenture", "TCS", "Wipro"]
+        }
+      ]
+    },
+    {
+      "category": "Cloud & DevOps",
+      "questions": [
+        {
+          "id": "tech_cloud_001",
+          "type": "concept",
+          "question": "What is the difference between IaaS, PaaS, and SaaS?",
+          "answer": {
+            "IaaS": {"examples": ["AWS EC2", "Azure VM", "Google Compute Engine"], "user_manages": "OS, middleware, runtime, apps", "provider_manages": "Hardware, networking, virtualization"},
+            "PaaS": {"examples": ["Heroku", "AWS Elastic Beanstalk", "Google App Engine"], "user_manages": "App code and data", "provider_manages": "Infrastructure, OS, middleware, runtime"},
+            "SaaS": {"examples": ["Gmail", "Salesforce", "Slack", "Microsoft 365"], "user_manages": "Usage only", "provider_manages": "Everything"}
+          },
+          "pseudocode": "// Analogy: Pizza as a Service\n\n// IaaS = You rent the kitchen & oven (raw infra)\n// You cook the pizza yourself (OS + app)\nEC2_instance = AWS.launch('t2.micro')\nEC2_instance.installOS('Ubuntu')\nEC2_instance.deploy(myApp)\n\n// PaaS = You get a pre-heated oven + ingredients\n// Just write the recipe (app code)\nElasticBeanstalk.deploy(myApp)  // platform handles OS, scaling\n\n// SaaS = Someone delivers the pizza to your door\n// Just consume — no cooking needed\nclient.use('Gmail')   // just log in and use\n\n// Key question when choosing:\n// How much control do you need vs how much do you want managed?",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys", "Cognizant"]
+        },
+        {
+          "id": "tech_cloud_002",
+          "type": "concept",
+          "question": "What is Docker? What is the difference between a Docker image and a container?",
+          "answer": "Docker is a containerization platform that packages applications with their dependencies into portable units called containers. A Docker image is a read-only template (like a class). A container is a running instance of an image (like an object). Images are stored in registries (Docker Hub, ECR). Containers are isolated but share the host OS kernel — lighter than VMs.",
+          "pseudocode": "// Dockerfile – blueprint for an image\nFROM python:3.11\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install -r requirements.txt\nCOPY . .\nEXPOSE 8000\nCMD ['python', 'app.py']\n\n// Build image from Dockerfile\ndocker build -t myapp:v1 .\n\n// Run a container from the image\ndocker run -d -p 8000:8000 myapp:v1\n\n// List running containers\ndocker ps\n\n// Stop and remove container\ndocker stop <container_id>\ndocker rm <container_id>\n\n// Docker Compose – multi-container apps\nservices:\n  web:\n    image: myapp:v1\n    ports: ['8000:8000']\n  db:\n    image: postgres:15\n    environment:\n      POSTGRES_PASSWORD: secret",
+          "difficulty": "medium",
+          "companies": ["TCS", "Accenture", "Deloitte", "Wipro", "Infosys"]
+        },
+        {
+          "id": "tech_cloud_003",
+          "type": "concept",
+          "question": "What is CI/CD? Explain the pipeline.",
+          "answer": "CI (Continuous Integration) automatically builds and tests code when changes are pushed. CD (Continuous Delivery/Deployment) automatically delivers tested code to staging or production. Together they reduce manual errors and release cycles.",
+          "pseudocode": "// Typical CI/CD Pipeline\n\n// 1. DEVELOPER pushes code to GitHub\ngit commit -m 'Add feature X'\ngit push origin main\n\n// 2. CI Pipeline triggers automatically (e.g., GitHub Actions)\nPIPELINE:\n    STAGE 'Build':\n        RUN 'npm install' OR 'pip install -r requirements.txt'\n        RUN 'npm run build'\n\n    STAGE 'Test':\n        RUN 'npm test'        // unit tests\n        RUN 'pytest'          // integration tests\n        IF tests fail → STOP, notify developer\n\n    STAGE 'Code Quality':\n        RUN 'eslint src/'     // linting\n        RUN 'sonarqube scan'  // static analysis\n\n    STAGE 'Docker Build':\n        RUN 'docker build -t myapp:latest .'\n        RUN 'docker push registry/myapp:latest'\n\n    STAGE 'Deploy to Staging':\n        RUN 'kubectl apply -f k8s/staging/'\n        RUN smoke tests\n\n    STAGE 'Deploy to Production' (CD):\n        IF manual_approval: DEPLOY\n        RUN 'kubectl apply -f k8s/prod/'\n        MONITOR metrics → rollback if error rate spikes",
+          "difficulty": "medium",
+          "companies": ["TCS", "Deloitte", "Accenture", "Wipro", "Infosys", "Cognizant"]
+        }
+      ]
+    },
+    {
+      "category": "Programming Concepts",
+      "questions": [
+        {
+          "id": "tech_prog_001",
+          "type": "concept",
+          "question": "What is recursion? Explain with the Tower of Hanoi problem.",
+          "answer": "Recursion is when a function calls itself to solve a smaller version of the same problem. Every recursive function must have a base case (stopping condition) and a recursive case. The Tower of Hanoi moves n disks from source to destination using an auxiliary peg.",
+          "pseudocode": "// RECURSION Template\nFUNCTION solve(problem):\n    IF base_case: RETURN result        // stop condition\n    smaller = reduce(problem)\n    RETURN combine(solve(smaller))     // recursive call\n\n// TOWER OF HANOI\nFUNCTION hanoi(n, source, destination, auxiliary):\n    IF n == 1:\n        PRINT 'Move disk 1 from ' + source + ' to ' + destination\n        RETURN\n    hanoi(n-1, source, auxiliary, destination)   // move n-1 to aux\n    PRINT 'Move disk ' + n + ' from ' + source + ' to ' + destination\n    hanoi(n-1, auxiliary, destination, source)   // move n-1 to dest\n\n// Call: hanoi(3, 'A', 'C', 'B')\n// Time: O(2^n), Space: O(n) call stack\n\n// FACTORIAL (simpler recursion)\nFUNCTION factorial(n):\n    IF n == 0 OR n == 1: RETURN 1       // base case\n    RETURN n * factorial(n - 1)         // recursive case",
+          "difficulty": "medium",
+          "companies": ["TCS", "Infosys", "Wipro", "Cognizant", "Accenture"]
+        },
+        {
+          "id": "tech_prog_002",
+          "type": "concept",
+          "question": "What is the difference between pass by value and pass by reference?",
+          "answer": "Pass by value: a copy of the variable is passed. Changes inside the function do not affect the original. Pass by reference: the memory address of the variable is passed. Changes inside the function affect the original. In Java, primitives are passed by value; objects are passed by reference (the reference is copied, but the object is shared).",
+          "pseudocode": "// PASS BY VALUE (primitives)\nFUNCTION increment(x):   // x is a copy\n    x = x + 1\n    PRINT x    // prints 11\n\na = 10\nincrement(a)\nPRINT a        // still 10 — original unchanged\n\n// PASS BY REFERENCE (objects)\nFUNCTION addItem(list, item):  // list is a reference\n    list.append(item)\n\nmyList = [1, 2, 3]\naddItem(myList, 4)\nPRINT myList   // [1, 2, 3, 4] — original changed!\n\n// POINTER (C/C++)\nFUNCTION swapByRef(a: *INT, b: *INT):\n    temp = *a\n    *a = *b\n    *b = temp\n\nx = 5, y = 10\nswapByRef(&x, &y)\nPRINT x, y   // 10, 5",
+          "difficulty": "easy",
+          "companies": ["TCS", "Infosys", "Wipro", "HCL", "Cognizant"]
+        },
+        {
+          "id": "tech_prog_003",
+          "type": "concept",
+          "question": "What are design patterns? Explain Singleton and Factory patterns.",
+          "answer": "Design patterns are reusable solutions to commonly occurring software design problems. The Singleton pattern ensures only one instance of a class exists. The Factory pattern provides a way to create objects without specifying the exact class.",
+          "pseudocode": "// SINGLETON PATTERN\nCLASS DatabaseConnection:\n    STATIC instance = NULL\n\n    PRIVATE CONSTRUCTOR DatabaseConnection():\n        // connect to DB\n\n    STATIC FUNCTION getInstance():\n        IF instance is NULL:\n            instance = NEW DatabaseConnection()\n        RETURN instance\n\n// Usage:\nconn1 = DatabaseConnection.getInstance()\nconn2 = DatabaseConnection.getInstance()\n// conn1 and conn2 are the SAME object\n\n// FACTORY PATTERN\nINTERFACE Shape:\n    FUNCTION draw()\n\nCLASS Circle IMPLEMENTS Shape:\n    FUNCTION draw(): PRINT 'Drawing Circle'\n\nCLASS Rectangle IMPLEMENTS Shape:\n    FUNCTION draw(): PRINT 'Drawing Rectangle'\n\nCLASS ShapeFactory:\n    STATIC FUNCTION createShape(type: STRING): Shape\n        IF type == 'circle': RETURN NEW Circle()\n        IF type == 'rectangle': RETURN NEW Rectangle()\n        RAISE 'Unknown shape type'\n\n// Usage:\nshape = ShapeFactory.createShape('circle')\nshape.draw()   // 'Drawing Circle'\n// Caller doesn't need to know which class to instantiate",
+          "difficulty": "hard",
+          "companies": ["TCS", "Accenture", "Deloitte", "Infosys", "Wipro"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "total_questions": 36,
+    "companies_covered": ["TCS", "Infosys", "Wipro", "Accenture", "Deloitte", "Cognizant", "HCL", "Capgemini"],
+    "topics_covered": ["OOP", "Data Structures", "Algorithms", "DBMS", "OS", "Computer Networks", "System Design", "Cloud & DevOps", "Programming Concepts"],
+    "pseudocode_added": true,
+    "difficulty_levels": ["easy", "medium", "hard"],
+    "rag_tags": ["technical", "oop", "data_structures", "algorithms", "sorting", "graphs", "trees", "dbms", "os", "networking", "system_design", "cloud", "devops", "ci_cd", "docker", "design_patterns", "recursion", "pseudocode", "placement_prep"],
+    "version": "2.0",
+    "created_for": "RAG model training – placement preparation platform"
+  }
+}

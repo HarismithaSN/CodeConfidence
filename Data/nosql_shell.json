@@ -1,0 +1,164 @@
+{
+  "section": "CS Fundamentals – NoSQL Shell",
+  "description": "Hands-on NoSQL challenges and flashcards covering MongoDB (document store), Redis (key-value), Cassandra (wide-column), and core NoSQL concepts for the CodeConfidence NoSQL Shell section.",
+  "categories": [
+    {
+      "category": "MongoDB – CRUD Operations",
+      "questions": [
+        {
+          "id": "nosql_mg_001",
+          "type": "challenge",
+          "title": "Insert Documents into MongoDB",
+          "prompt": "Insert a collection called 'students'. Add 3 student documents with fields: name, age, department, gpa, skills (array), address (nested object with city and pincode).",
+          "solution": "// Switch to database\nuse codeConfidenceDB\n\n// Insert multiple documents\ndb.students.insertMany([\n  {\n    name: 'Alice',\n    age: 20,\n    department: 'CS',\n    gpa: 9.1,\n    skills: ['Python', 'SQL', 'Machine Learning'],\n    address: { city: 'Bangalore', pincode: '560001' },\n    enrolled_on: new Date('2022-08-01')\n  },\n  {\n    name: 'Bob',\n    age: 21,\n    department: 'IT',\n    gpa: 8.3,\n    skills: ['Java', 'Spring Boot', 'Docker'],\n    address: { city: 'Mysore', pincode: '570001' },\n    enrolled_on: new Date('2022-08-01')\n  },\n  {\n    name: 'Carol',\n    age: 20,\n    department: 'CS',\n    gpa: 9.5,\n    skills: ['JavaScript', 'React', 'Node.js', 'MongoDB'],\n    address: { city: 'Bangalore', pincode: '560002' },\n    enrolled_on: new Date('2022-08-01')\n  }\n])",
+          "concepts_tested": ["insertMany", "nested documents", "arrays in documents", "Date type"],
+          "difficulty": "easy",
+          "tags": ["mongodb", "insert", "nosql", "document_store"]
+        },
+        {
+          "id": "nosql_mg_002",
+          "type": "challenge",
+          "title": "MongoDB Query with Filters",
+          "prompt": "Write MongoDB queries to: (1) Find all CS students with GPA > 9.0, (2) Find students who know 'Python', (3) Find students from Bangalore sorted by GPA descending, (4) Find students with exactly 3 skills.",
+          "solution": "// 1. CS students with GPA > 9.0\ndb.students.find(\n  { department: 'CS', gpa: { $gt: 9.0 } },\n  { name: 1, gpa: 1, _id: 0 }   // projection: show only name and gpa\n)\n\n// 2. Students who know Python (array contains)\ndb.students.find(\n  { skills: 'Python' }  // MongoDB checks if array contains value\n)\n\n// 3. Students from Bangalore, sorted by GPA desc\ndb.students.find(\n  { 'address.city': 'Bangalore' }  // dot notation for nested field\n).sort({ gpa: -1 })\n\n// 4. Students with exactly 3 skills\ndb.students.find(\n  { skills: { $size: 3 } }\n)",
+          "concepts_tested": ["find()", "comparison operators ($gt, $lt, $eq)", "projection", "array query", "dot notation", "$size"],
+          "ai_review_hints": [
+            "Use dot notation ('address.city') to query nested fields.",
+            "MongoDB automatically checks if an array contains a value — no special operator needed for simple array contains."
+          ],
+          "difficulty": "medium",
+          "tags": ["mongodb", "find", "query_operators", "projection"]
+        },
+        {
+          "id": "nosql_mg_003",
+          "type": "challenge",
+          "title": "MongoDB Update Operations",
+          "prompt": "Write queries to: (1) Update Alice's GPA to 9.5, (2) Add 'TensorFlow' to Alice's skills array, (3) Remove 'Docker' from Bob's skills, (4) Increment all CS students' GPA by 0.1 (max 10).",
+          "solution": "// 1. Update single field\ndb.students.updateOne(\n  { name: 'Alice' },\n  { $set: { gpa: 9.5 } }\n)\n\n// 2. Add to array (no duplicates)\ndb.students.updateOne(\n  { name: 'Alice' },\n  { $addToSet: { skills: 'TensorFlow' } }  // $push would allow duplicates\n)\n\n// 3. Remove from array\ndb.students.updateOne(\n  { name: 'Bob' },\n  { $pull: { skills: 'Docker' } }\n)\n\n// 4. Increment all CS students GPA by 0.1\ndb.students.updateMany(\n  { department: 'CS' },\n  { $inc: { gpa: 0.1 } }\n)\n// Note: MongoDB doesn't have built-in MIN/MAX cap in $inc\n// For capping, use aggregation pipeline update:\ndb.students.updateMany(\n  { department: 'CS' },\n  [{ $set: { gpa: { $min: [{ $add: ['$gpa', 0.1] }, 10.0] } } }]\n)",
+          "concepts_tested": ["$set", "$inc", "$addToSet", "$push", "$pull", "updateOne", "updateMany", "aggregation pipeline update"],
+          "difficulty": "medium",
+          "tags": ["mongodb", "update", "array_operators"]
+        },
+        {
+          "id": "nosql_mg_004",
+          "type": "challenge",
+          "title": "MongoDB Aggregation Pipeline",
+          "prompt": "Write an aggregation pipeline to: show each department, count of students, average GPA, and list of all student names — filtered to departments with avg GPA above 8.5, sorted by avg GPA descending.",
+          "solution": "db.students.aggregate([\n  // Stage 1: Group by department\n  {\n    $group: {\n      _id: '$department',\n      total_students: { $sum: 1 },\n      avg_gpa: { $avg: '$gpa' },\n      student_names: { $push: '$name' }\n    }\n  },\n  // Stage 2: Filter departments with avg GPA > 8.5\n  {\n    $match: { avg_gpa: { $gt: 8.5 } }\n  },\n  // Stage 3: Round avg_gpa\n  {\n    $addFields: {\n      avg_gpa: { $round: ['$avg_gpa', 2] }\n    }\n  },\n  // Stage 4: Rename _id to department\n  {\n    $project: {\n      department: '$_id',\n      total_students: 1,\n      avg_gpa: 1,\n      student_names: 1,\n      _id: 0\n    }\n  },\n  // Stage 5: Sort by avg_gpa descending\n  {\n    $sort: { avg_gpa: -1 }\n  }\n])",
+          "concepts_tested": ["$group", "$match", "$project", "$sort", "$addFields", "$push", "$avg", "$sum", "$round"],
+          "ai_review_hints": [
+            "Aggregation pipeline stages execute in order — each stage feeds into the next.",
+            "$match after $group filters groups (like SQL HAVING). $match before $group filters documents (like SQL WHERE).",
+            "Use $push to accumulate values into an array in $group."
+          ],
+          "difficulty": "hard",
+          "tags": ["mongodb", "aggregation", "pipeline", "group", "match"]
+        },
+        {
+          "id": "nosql_mg_005",
+          "type": "challenge",
+          "title": "MongoDB Indexes",
+          "prompt": "Create: (1) a single-field index on department, (2) a compound index on department + gpa (desc), (3) a text index on name for text search. Then query using the text index.",
+          "solution": "// 1. Single field index\ndb.students.createIndex({ department: 1 })  // 1 = ascending\n\n// 2. Compound index\ndb.students.createIndex({ department: 1, gpa: -1 })  // dept asc, gpa desc\n\n// 3. Text index for full-text search\ndb.students.createIndex({ name: 'text', department: 'text' })\n\n// Query using text index\ndb.students.find({ $text: { $search: 'Alice' } })\n\n// View all indexes\ndb.students.getIndexes()\n\n// Drop an index\ndb.students.dropIndex({ department: 1 })",
+          "concepts_tested": ["createIndex", "compound index", "text index", "$text search", "getIndexes"],
+          "difficulty": "medium",
+          "tags": ["mongodb", "index", "text_search", "compound_index"]
+        }
+      ]
+    },
+    {
+      "category": "Redis – Key-Value Operations",
+      "questions": [
+        {
+          "id": "nosql_redis_001",
+          "type": "challenge",
+          "title": "Redis Basic Commands",
+          "prompt": "Write Redis commands to: (1) Set a key 'student:1:name' to 'Alice' with expiry of 1 hour, (2) Get the value, (3) Check TTL, (4) Increment a counter 'visits:homepage', (5) Check if a key exists.",
+          "solution": "# 1. SET with expiry (EX = seconds)\nSET student:1:name \"Alice\" EX 3600\n\n# Or with SETEX\nSETEX student:1:name 3600 \"Alice\"\n\n# 2. GET value\nGET student:1:name\n# → \"Alice\"\n\n# 3. Check TTL (returns seconds remaining, -1 = no expiry, -2 = key gone)\nTTL student:1:name\n\n# 4. Increment counter (atomic)\nINCR visits:homepage\n# → 1\nINCR visits:homepage\n# → 2\nINCRBY visits:homepage 5\n# → 7\n\n# 5. Check if key exists\nEXISTS student:1:name\n# → 1 (exists) or 0 (not found)\n\n# Delete a key\nDEL student:1:name",
+          "concepts_tested": ["SET", "GET", "SETEX", "EX", "TTL", "INCR", "INCRBY", "EXISTS", "DEL"],
+          "difficulty": "easy",
+          "tags": ["redis", "key_value", "ttl", "expiry", "atomic_increment"]
+        },
+        {
+          "id": "nosql_redis_002",
+          "type": "challenge",
+          "title": "Redis Hash – Store Structured Data",
+          "prompt": "Use Redis Hashes to store a student object (id, name, department, gpa). Then update gpa, retrieve a single field, and get all fields.",
+          "solution": "# Store student as hash\nHMSET student:1001 name \"Alice\" department \"CS\" gpa \"9.1\" age \"20\"\n\n# Or one field at a time\nHSET student:1001 email \"alice@college.edu\"\n\n# Get one field\nHGET student:1001 name\n# → \"Alice\"\n\n# Get multiple fields\nHMGET student:1001 name gpa department\n\n# Get all fields and values\nHGETALL student:1001\n\n# Update a field\nHSET student:1001 gpa \"9.5\"\n\n# Increment numeric field\nHINCRBYFLOAT student:1001 gpa 0.2\n\n# Delete a field from hash\nHDEL student:1001 age\n\n# Check if field exists in hash\nHEXISTS student:1001 email\n\n# Count fields in hash\nHLEN student:1001",
+          "concepts_tested": ["HMSET", "HSET", "HGET", "HMGET", "HGETALL", "HINCRBYFLOAT", "HDEL", "HEXISTS", "HLEN"],
+          "difficulty": "medium",
+          "tags": ["redis", "hash", "structured_data"]
+        },
+        {
+          "id": "nosql_redis_003",
+          "type": "challenge",
+          "title": "Redis Lists & Sets – Leaderboard & Unique Tags",
+          "prompt": "(1) Use a Redis List to implement a recent activity log (max 5 items). (2) Use a Sorted Set (ZSET) to build a leaderboard of students by score.",
+          "solution": "# --- LISTS for Recent Activity Log ---\n# Push to front of list\nLPUSH activity:user1 \"Solved DSA problem\"\nLPUSH activity:user1 \"Read DBMS chapter\"\nLPUSH activity:user1 \"Attempted mock test\"\n\n# Keep only last 5 items (trim list)\nLTRIM activity:user1 0 4\n\n# Get all items in list\nLRANGE activity:user1 0 -1\n# → [\"Attempted mock test\", \"Read DBMS chapter\", \"Solved DSA problem\"]\n\n# Length of list\nLLEN activity:user1\n\n# --- SORTED SETS for Leaderboard ---\n# Add members with scores\nZADD leaderboard 920 \"Alice\"\nZADD leaderboard 870 \"Bob\"\nZADD leaderboard 950 \"Carol\"\nZADD leaderboard 810 \"Dave\"\n\n# Get top 3 students (highest score first)\nZREVRANGE leaderboard 0 2 WITHSCORES\n# → [\"Carol\", 950, \"Alice\", 920, \"Bob\", 870]\n\n# Get rank of a student (0-indexed, 0 = highest)\nZREVRANK leaderboard \"Alice\"\n# → 1 (second place)\n\n# Get Alice's score\nZSCORE leaderboard \"Alice\"\n# → 920\n\n# Update score\nZINCRBY leaderboard 30 \"Bob\"  # Bob now has 900\n\n# Count students with score between 800 and 950\nZCOUNT leaderboard 800 950",
+          "concepts_tested": ["LPUSH", "LRANGE", "LTRIM", "LLEN", "ZADD", "ZREVRANGE", "ZREVRANK", "ZSCORE", "ZINCRBY", "ZCOUNT"],
+          "difficulty": "medium",
+          "tags": ["redis", "list", "sorted_set", "leaderboard"]
+        },
+        {
+          "id": "nosql_redis_004",
+          "type": "flashcard",
+          "front": "When should you use Redis vs a relational database?",
+          "back": "Use Redis for: session storage, caching (reduce DB load), rate limiting, leaderboards, pub/sub messaging, real-time counters, job queues. Use RDBMS for: persistent structured data, complex relationships, ACID transactions, reporting.",
+          "tags": ["redis", "use_cases", "caching", "when_to_use"]
+        }
+      ]
+    },
+    {
+      "category": "NoSQL Concepts & Flashcards",
+      "questions": [
+        {
+          "id": "nosql_concept_001",
+          "type": "flashcard",
+          "front": "What is the CAP theorem?",
+          "back": "CAP theorem states that a distributed system can guarantee at most 2 of 3 properties:\n• Consistency (C): All nodes see the same data at the same time\n• Availability (A): Every request gets a response (may be stale)\n• Partition Tolerance (P): System works even when network partitions occur\n\nExamples:\n• CP systems: MongoDB, HBase, Zookeeper (consistent + partition tolerant)\n• AP systems: Cassandra, CouchDB, DynamoDB (available + partition tolerant)\n• CA systems: Traditional RDBMS (not partition tolerant — single node)",
+          "tags": ["cap_theorem", "distributed_systems", "nosql_concepts"]
+        },
+        {
+          "id": "nosql_concept_002",
+          "type": "flashcard",
+          "front": "What is eventual consistency?",
+          "back": "Eventual consistency means that if no new updates are made to a piece of data, all replicas will eventually converge to the same value — but at any given moment, different nodes may return different values. This is favored by AP systems (like DynamoDB, Cassandra) for high availability at the cost of immediate consistency.",
+          "example": "Amazon shopping cart: You add an item on your phone. For a few seconds, your laptop might not show it yet. Eventually both devices sync.",
+          "tags": ["eventual_consistency", "distributed_systems", "replication"]
+        },
+        {
+          "id": "nosql_concept_003",
+          "type": "flashcard",
+          "front": "What are the 4 types of NoSQL databases and when to use each?",
+          "back": "1. Document Store (MongoDB, CouchDB): JSON-like documents. Use for: catalogs, user profiles, content management\n2. Key-Value Store (Redis, DynamoDB): Simple key → value. Use for: caching, sessions, leaderboards, rate limiting\n3. Wide-Column Store (Cassandra, HBase): Rows with dynamic columns. Use for: IoT data, time-series, analytics at massive scale\n4. Graph Database (Neo4j, Amazon Neptune): Nodes and edges. Use for: social networks, recommendation engines, fraud detection",
+          "tags": ["nosql_types", "document_store", "key_value", "wide_column", "graph_db"]
+        },
+        {
+          "id": "nosql_concept_004",
+          "type": "comparison",
+          "title": "SQL vs MongoDB Query Cheat Sheet",
+          "comparisons": [
+            {"sql": "SELECT * FROM students", "mongodb": "db.students.find()"},
+            {"sql": "SELECT name, gpa FROM students", "mongodb": "db.students.find({}, {name:1, gpa:1, _id:0})"},
+            {"sql": "SELECT * FROM students WHERE gpa > 9", "mongodb": "db.students.find({gpa:{$gt:9}})"},
+            {"sql": "SELECT * FROM students ORDER BY gpa DESC", "mongodb": "db.students.find().sort({gpa:-1})"},
+            {"sql": "SELECT * FROM students LIMIT 5", "mongodb": "db.students.find().limit(5)"},
+            {"sql": "SELECT COUNT(*) FROM students", "mongodb": "db.students.countDocuments()"},
+            {"sql": "INSERT INTO students (name) VALUES ('Alice')", "mongodb": "db.students.insertOne({name:'Alice'})"},
+            {"sql": "UPDATE students SET gpa=9.5 WHERE name='Alice'", "mongodb": "db.students.updateOne({name:'Alice'},{$set:{gpa:9.5}})"},
+            {"sql": "DELETE FROM students WHERE gpa < 5", "mongodb": "db.students.deleteMany({gpa:{$lt:5}})"}
+          ],
+          "tags": ["sql_vs_mongodb", "comparison", "cheat_sheet"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "total_questions": 13,
+    "section": "NoSQL Shell",
+    "topics_covered": ["MongoDB CRUD", "MongoDB Aggregation", "MongoDB Indexes", "Redis Strings", "Redis Hashes", "Redis Lists", "Redis Sorted Sets", "CAP Theorem", "Eventual Consistency", "NoSQL Types"],
+    "rag_tags": ["nosql", "mongodb", "redis", "cassandra", "cap_theorem", "aggregation_pipeline", "key_value", "document_store", "cs_fundamentals", "nosql_shell"],
+    "version": "1.0",
+    "created_for": "RAG model training – CodeConfidence CS Fundamentals NoSQL Shell"
+  }
+}

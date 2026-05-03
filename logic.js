@@ -152,8 +152,8 @@ function initRealTimeAnalysis() {
 
 function renderSidebar() {
     const navItems = [
-        { id: 'dashboard', icon: 'ðŸ ', label: 'Dashboard' },
-        { id: 'roadmap', icon: 'ðŸ—ºï¸', label: 'Roadmap' },
+        { id: 'dashboard', icon: '🏠', label: 'Dashboard' },
+        { id: 'roadmap', icon: '🗺️', label: 'Roadmap' },
         { id: 'challenges', icon: '🎯', label: 'Challenges' },
         { id: 'submit', icon: '🚀', label: 'Submit Code' },
         { id: 'community', icon: '👥', label: 'Community' },
@@ -325,9 +325,9 @@ function initPlacementData() {
     }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 // PERSONALIZATION FORMULAS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 
 function calculateCareerMetrics() {
     const user = state.user || {};
@@ -414,7 +414,7 @@ function getPlacementDashboardFallback(m) {
         readiness_breakdown: { coding: m.readiness, aptitude: 45, database: 30, core_cs: 40, communication: 65, resume: 70 },
         todays_focus: { topic: 'SQL Joins', reason: 'High frequency in technical rounds', task: 'Solve 5 Join challenges', estimated_minutes: 30, xp_reward: 50 },
         weekly_targets: [{ target: 'Aptitude Practice', deadline: 'Friday', current: 2, goal: 5, metric: 'Sets' }],
-        placement_prediction: { likely_companies: ['TCS', 'Wipro'], stretch_companies: ['Capgemini', 'Accenture'], dream_companies: ['Amazon', 'Zoho'], salary_range: 'â‚¹3.5-5 LPA' },
+        placement_prediction: { likely_companies: ['TCS', 'Wipro'], stretch_companies: ['Capgemini', 'Accenture'], dream_companies: ['Amazon', 'Zoho'], salary_range: '₹3.5-5 LPA' },
         urgent_alerts: [{ type: 'warning', message: 'Improve your SQL score to unlock Accenture track!' }]
     };
 }
@@ -567,9 +567,9 @@ function navigateFromDashboard(topic) {
     else switchCareerTab('mock');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 // AI INTERVIEW SYSTEM
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 
 async function showCompanyPrepModal(company) {
     const modal = document.createElement('div');
@@ -749,7 +749,7 @@ function renderCommunicationPrep(vocab, gd, company) {
     container.innerHTML = `
         <div style="max-width: 800px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 32px;">
-                <h2 style="font-size: 28px;">🗣ï¸ ${company} Communication Prep</h2>
+                <h2 style="font-size: 28px;">🗣️ ${company} Communication Prep</h2>
                 <p style="color: var(--text-muted);">Master Verbal Ability & Group Discussions required by ${company}</p>
             </div>
 
@@ -808,7 +808,7 @@ function launchCompanyAptitude(company) {
                 container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">No questions found for ${company}.</div>`;
                 return;
             }
-            showToast(`âœ… ${questions.length} ${company} aptitude questions loaded!`);
+            showToast(`✅ ${questions.length} ${company} aptitude questions loaded!`);
             renderCompanyAptitudeQuiz(questions, company);
         } catch (e) {
             console.error(e);
@@ -912,7 +912,7 @@ function renderCompanyAptitudeQuiz(questions, company) {
             <div style="max-width: 600px; margin: 0 auto; text-align: center;">
                 <div class="glass-card" style="padding: 40px; margin-bottom: 24px;">
                     <div style="font-size: 48px; margin-bottom: 16px;">
-                        ${percentage >= 70 ? '🎉' : percentage >= 50 ? 'ðŸ‘' : '💪'}
+                        ${percentage >= 70 ? '🎉' : percentage >= 50 ? '👍' : '💪'}
                     </div>
                     <h2 style="font-size: 32px; margin-bottom: 8px;">${company} Aptitude Results</h2>
                     <div style="font-size: 24px; color: var(--primary); margin-bottom: 16px;">
@@ -932,7 +932,7 @@ function renderCompanyAptitudeQuiz(questions, company) {
     }
 }
 
-        
+
 
 async function startInterview(company) {
     console.log(`🎤 Starting Interview for ${company}`);
@@ -1038,7 +1038,7 @@ async function finishInterview() {
     clearInterval(interviewState.timerInterval);
     document.getElementById('int-eval-area').innerHTML = `
         <div style="text-align:center; padding:40px;">
-            <div style="font-size:60px; margin-bottom:20px;">ðŸ†</div>
+            <div style="font-size:60px; margin-bottom:20px;">🏆</div>
             <h2>Interview Complete!</h2>
             <p style="color:var(--text-muted); margin:12px 0 24px;">Generating your final performance report...</p>
             <div class="skeleton" style="height:100px; border-radius:12px;"></div>
@@ -1053,9 +1053,9 @@ async function finishInterview() {
     }, 2000);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 // RESUME ANALYSIS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 
 async function analyzeResume() {
     const modal = document.getElementById('resume-modal');
@@ -1086,7 +1086,7 @@ async function analyzeResume() {
     } catch (e) {
         content.innerHTML = `
             <div style="padding:40px; text-align:center;">
-                <div style="font-size:40px; margin-bottom:20px;">âš ï¸</div>
+                <div style="font-size:40px; margin-bottom:20px;">⛏ ️</div>
                 <h3 style="color:var(--error);">Analysis Failed</h3>
                 <p style="font-size:14px; color:var(--text-muted); margin:12px 0 24px;">${e.message || "Could not connect to Gemini AI. Please check your API key."}</p>
                 <button class="btn-gold" onclick="analyzeResume()">Retry</button>
@@ -1118,8 +1118,8 @@ function renderProfile() {
     const badgesContainer = document.getElementById('profile-badges');
     if (badgesContainer) {
         const badges = [
-            { icon: 'ðŸ”¥', label: '12 Day Streak', color: '#fb923c' },
-            { icon: 'âš¡', label: 'First Submit', color: '#f0b429' },
+            { icon: '🔥', label: '12 Day Streak', color: '#fb923c' },
+            { icon: '⚡', label: 'First Submit', color: '#f0b429' },
             { icon: '🎯', label: '5 Challenges', color: '#0ed97a' },
             { icon: '👥', label: 'Community', color: '#60a5fa' },
             { icon: '📚', label: 'Roadmap Start', color: '#a78bfa' },
@@ -1156,7 +1156,7 @@ function saveProfile() {
     }
     renderProfile();
     updateCommunityBanner();
-    showToast("âœ… Profile updated successfully!");
+    showToast("✅ Profile updated successfully!");
 }
 
 function renderHeatmap() {
@@ -1178,7 +1178,7 @@ function handleResumeUpload(event) {
     const file = event.target.files[0];
     if (file) {
         const status = document.getElementById('resume-status');
-        status.innerText = `âœ“ ${file.name} uploaded successfully`;
+        status.innerText = `✓ ${file.name} uploaded successfully`;
         status.style.display = 'block';
         showToast(`📄 Resume "${file.name}" ready!`);
 
@@ -1203,7 +1203,7 @@ function renderRoadmap() {
             ${l.status === 'locked' ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:1;"></div>' : ''}
             <div style="font-size:40px; background:var(--surface-light); width:80px; height:80px; border-radius:20px; display:flex; align-items:center; justify-content:center; position:relative; z-index:2;">
                 ${l.icon}
-                ${l.status === 'completed' ? '<div style="position:absolute; bottom:-5px; right:-5px; background:var(--success); width:24px; height:24px; border-radius:50%; font-size:12px; display:flex; align-items:center; justify-content:center;">âœ“</div>' : ''}
+                ${l.status === 'completed' ? '<div style="position:absolute; bottom:-5px; right:-5px; background:var(--success); width:24px; height:24px; border-radius:50%; font-size:12px; display:flex; align-items:center; justify-content:center;">✓</div>' : ''}
             </div>
             <div style="flex:1; position:relative; z-index:2;">
                 <div style="font-size:11px; color:var(--primary); font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Level 0${l.level}</div>
@@ -1213,7 +1213,7 @@ function renderRoadmap() {
                 </div>
             </div>
             <div style="position:relative; z-index:2;">
-                ${l.status === 'current' ? '<button class="btn-gold">Resume</button>' : l.status === 'locked' ? 'ðŸ”’' : ''}
+                ${l.status === 'current' ? '<button class="btn-gold">Resume</button>' : l.status === 'locked' ? '🔒' : ''}
             </div>
         </div>
     `).join('');
@@ -1235,7 +1235,7 @@ function renderChallenges(filter = 'All') {
             <div style="font-size:18px; font-weight:700; margin-bottom:8px;">${c.title}</div>
             <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">${c.desc}</p>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-weight:700; color:var(--primary);">âš¡ ${c.xp} XP</span>
+                <span style="font-weight:700; color:var(--primary);">⚡ ${c.xp} XP</span>
                 <button class="btn-gold" style="padding:8px 16px; font-size:12px;" onclick="showChallenge(${JSON.stringify(c).replace(/"/g, '&quot;')})">Solve →</button>
             </div>
         </div>
@@ -1324,12 +1324,12 @@ function updateEditorLanguage() {
         ta.value = `# ${title}\n# Language: ${lang}\n\n` + ta.value;
     }
 
-    showToast(`ðŸŒ Switched to ${lang}`);
+    showToast(`🌐 Switched to ${lang}`);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// COMMUNITY PAGE â€” DSC College-Based Competition
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════
+// COMMUNITY PAGE — DSC College-Based Competition
+// ══════════════════════════════════════════════
 
 const DSC_USER = {
     name: 'Harismitha', usn: '1DS24MC034', college: 'Dayananda Sagar College',
@@ -1344,34 +1344,34 @@ const TARGET_SKILLS = { Loops: 68, Functions: 62, Arrays: 75, OOP: 55, Recursion
 
 const DSC_LB = {
     alltime: [
-        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 1840, score: 91, level: 'Journeyman', trend: 'â†‘' },
-        { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 1620, score: 87, level: 'Journeyman', trend: 'â†‘' },
+        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 1840, score: 91, level: 'Journeyman', trend: '↑' },
+        { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 1620, score: 87, level: 'Journeyman', trend: '↑' },
         { rank: 3, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 1340, score: 83, level: 'Apprentice', trend: '→' },
-        { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 1180, score: 80, level: 'Apprentice', trend: 'â†‘' },
-        { rank: 5, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 1050, score: 77, level: 'Apprentice', trend: 'â†“' },
+        { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 1180, score: 80, level: 'Apprentice', trend: '↑' },
+        { rank: 5, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 1050, score: 77, level: 'Apprentice', trend: '↓' },
         { rank: 6, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 980, score: 74, level: 'Apprentice', trend: '→' },
-        { rank: 7, name: 'Amit P', usn: '1DS24MC031', branch: 'MCA', xp: 890, score: 71, level: 'Apprentice', trend: 'â†‘' },
-        { rank: 8, name: 'Meena J', usn: '1DS24MC035', branch: 'MCA', xp: 820, score: 69, level: 'Apprentice', trend: 'â†‘' },
-        { rank: 9, name: 'Arun V', usn: '1DS24MC038', branch: 'MCA', xp: 760, score: 68, level: 'Apprentice', trend: 'â†“' },
-        { rank: 10, name: 'Lakshmi C', usn: '1DS24MC041', branch: 'MCA', xp: 710, score: 67, level: 'Apprentice', trend: 'â†‘' },
+        { rank: 7, name: 'Amit P', usn: '1DS24MC031', branch: 'MCA', xp: 890, score: 71, level: 'Apprentice', trend: '↑' },
+        { rank: 8, name: 'Meena J', usn: '1DS24MC035', branch: 'MCA', xp: 820, score: 69, level: 'Apprentice', trend: '↑' },
+        { rank: 9, name: 'Arun V', usn: '1DS24MC038', branch: 'MCA', xp: 760, score: 68, level: 'Apprentice', trend: '↓' },
+        { rank: 10, name: 'Lakshmi C', usn: '1DS24MC041', branch: 'MCA', xp: 710, score: 67, level: 'Apprentice', trend: '↑' },
         { rank: 11, name: 'Preethi A', usn: '1DS24MC042', branch: 'MCA', xp: 680, score: 65, level: 'Apprentice', trend: '→' },
-        { rank: 12, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 620, score: 72, level: 'Apprentice', trend: 'â†‘', isYou: true },
-        { rank: 13, name: 'Suresh T', usn: '1DS24MC045', branch: 'MCA', xp: 580, score: 63, level: 'Explorer', trend: 'â†“' },
+        { rank: 12, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 620, score: 72, level: 'Apprentice', trend: '↑', isYou: true },
+        { rank: 13, name: 'Suresh T', usn: '1DS24MC045', branch: 'MCA', xp: 580, score: 63, level: 'Explorer', trend: '↓' },
         { rank: 14, name: 'Asha D', usn: '1DS24MC047', branch: 'MCA', xp: 540, score: 60, level: 'Explorer', trend: '→' },
-        { rank: 15, name: 'Rahul G', usn: '1DS24MC048', branch: 'MCA', xp: 490, score: 58, level: 'Explorer', trend: 'â†‘' }
+        { rank: 15, name: 'Rahul G', usn: '1DS24MC048', branch: 'MCA', xp: 490, score: 58, level: 'Explorer', trend: '↑' }
     ],
     week: [
-        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 320, score: 91, level: 'Journeyman', trend: 'â†‘', label: '+320 XP' },
-        { rank: 2, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 280, score: 80, level: 'Apprentice', trend: 'â†‘', label: '+280 XP' },
-        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 210, score: 72, level: 'Apprentice', trend: 'â†‘', label: '+210 XP', isYou: true },
-        { rank: 4, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 190, score: 77, level: 'Apprentice', trend: 'â†‘', label: '+190 XP' },
+        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 320, score: 91, level: 'Journeyman', trend: '↑', label: '+320 XP' },
+        { rank: 2, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 280, score: 80, level: 'Apprentice', trend: '↑', label: '+280 XP' },
+        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 210, score: 72, level: 'Apprentice', trend: '↑', label: '+210 XP', isYou: true },
+        { rank: 4, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 190, score: 77, level: 'Apprentice', trend: '↑', label: '+190 XP' },
         { rank: 5, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 160, score: 74, level: 'Apprentice', trend: '→', label: '+160 XP' }
     ],
     month: [
-        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 780, score: 91, level: 'Journeyman', trend: 'â†‘', label: '+780 XP' },
-        { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 640, score: 87, level: 'Journeyman', trend: 'â†‘', label: '+640 XP' },
-        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 410, score: 72, level: 'Apprentice', trend: 'â†‘', label: '+410 XP', isYou: true },
-        { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 360, score: 80, level: 'Apprentice', trend: 'â†‘', label: '+360 XP' },
+        { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 780, score: 91, level: 'Journeyman', trend: '↑', label: '+780 XP' },
+        { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 640, score: 87, level: 'Journeyman', trend: '↑', label: '+640 XP' },
+        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 410, score: 72, level: 'Apprentice', trend: '↑', label: '+410 XP', isYou: true },
+        { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 360, score: 80, level: 'Apprentice', trend: '↑', label: '+360 XP' },
         { rank: 5, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 290, score: 83, level: 'Apprentice', trend: '→', label: '+290 XP' }
     ],
     branch: [] // filled from alltime (MCA)
@@ -1398,7 +1398,7 @@ const DSC_REVIEW_ITEMS = [
 ];
 
 const DSC_STUDY_GROUPS = [
-    { id: 'dsg1', name: 'Python Beginners', members: 14, status: 'Active', emoji: 'ðŸ', joined: false },
+    { id: 'dsg1', name: 'Python Beginners', members: 14, status: 'Active', emoji: '🐍', joined: false },
     { id: 'dsg2', name: 'DSA Prep 2026', members: 11, status: 'Active', emoji: '🧠', joined: false },
     { id: 'dsg3', name: 'MCA Placement', members: 18, status: 'Active', emoji: '🎓', joined: false }
 ];
@@ -1431,13 +1431,13 @@ function updateCommunityBanner() {
     if (collegeSubtitle) collegeSubtitle.textContent = `${state.user.branch || 'MCA'} Department • Batch ${state.user.year || '2026'}`;
 }
 
-// â”€â”€ XP HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── XP HELPERS ────────────────────────────────────────
 function addCommunityXP(amount, reason) {
     const prevXP = currentXP;
     currentXP += amount;
     localStorage.setItem('cc_xp_total', currentXP);
     updateXPDisplays();
-    showToast(`âš¡ +${amount} XP earned! ${reason}`);
+    showToast(`⚡ +${amount} XP earned! ${reason}`);
     // Rank-up check
     if (prevXP < TARGET_XP && currentXP >= TARGET_XP) {
         setTimeout(showRankUpModal, 800);
@@ -1452,7 +1452,7 @@ function updateXPDisplays() {
     if (riXP) riXP.textContent = currentXP;
     if (riGap) {
         const gap = Math.max(0, TARGET_XP - currentXP);
-        riGap.textContent = gap === 0 ? '0 XP âœ“' : gap + ' XP';
+        riGap.textContent = gap === 0 ? '0 XP ✓' : gap + ' XP';
     }
     if (riProgress) {
         const pct = Math.min(100, Math.round((currentXP / TARGET_XP) * 100));
@@ -1470,7 +1470,7 @@ function updateXPDisplays() {
     }
 }
 
-// â”€â”€ LEADERBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── LEADERBOARD ───────────────────────────────────────
 function switchDSCLeaderboard(tab) {
     currentLbTab = tab;
     document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('lb-tab-active'));
@@ -1500,7 +1500,7 @@ function switchDSCLeaderboard(tab) {
                 <span style="font-weight:700; color:${row.isYou ? 'var(--primary)' : 'inherit'}; font-family:monospace;">${isXPGain ? (row.label || '+' + row.xp + ' XP') : row.xp + ' XP'}</span>
                 <span style="color:var(--text-muted); font-size:12px;">${row.score}</span>
                 <span style="font-size:11px; color:var(--text-muted);">${row.level}</span>
-                <span style="font-size:18px; color:${row.trend === 'â†‘' ? '#0ed97a' : row.trend === 'â†“' ? '#ff6b6b' : '#666'};">${row.trend}</span>
+                <span style="font-size:18px; color:${row.trend === '↑' ? '#0ed97a' : row.trend === '↓' ? '#ff6b6b' : '#666'};">${row.trend}</span>
             </div>`).join('')}`;
 }
 
@@ -1512,11 +1512,11 @@ function showDSCProfilePopup(event, user) {
     popup.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <div style="font-weight:800;font-size:15px;">${user.name}</div>
-            <button onclick="document.getElementById('profile-popup').style.display='none'" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">âœ•</button>
+            <button onclick="document.getElementById('profile-popup').style.display='none'" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
         </div>
         <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;font-family:monospace;">${user.usn}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
-            ${[['XP', user.xp, 'var(--primary)'], ['Rank', '#' + user.rank, '#4a8ff7'], ['Streak', '12ðŸ”¥', '#0ed97a']].map(([l, v, c]) =>
+            ${[['XP', user.xp, 'var(--primary)'], ['Rank', '#' + user.rank, '#4a8ff7'], ['Streak', '12🔥', '#0ed97a']].map(([l, v, c]) =>
         `<div style="background:rgba(255,255,255,0.04);padding:8px;border-radius:8px;text-align:center;"><div style="font-size:14px;font-weight:800;color:${c};">${v}</div><div style="font-size:9px;color:var(--text-muted);margin-top:2px;">${l}</div></div>`
     ).join('')}
         </div>
@@ -1534,7 +1534,7 @@ function showDSCProfilePopup(event, user) {
     setTimeout(() => { document.addEventListener('click', () => { popup.style.display = 'none'; }, { once: true }); }, 60);
 }
 
-// â”€â”€ RANK INTELLIGENCE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── RANK INTELLIGENCE ─────────────────────────────────
 function renderGapBars() {
     const mySkills = DSC_USER.skills;
     const theirSkills = TARGET_SKILLS;
@@ -1560,16 +1560,16 @@ function renderGapBars() {
     }).join('');
 }
 
-// â”€â”€ AI RANK PLAN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── AI RANK PLAN ──────────────────────────────────────
 async function getAIRankPlan() {
     const btn = document.getElementById('ai-plan-btn');
     if (!btn) return;
 
-    btn.innerHTML = 'â³ Generating your plan...';
+    btn.innerHTML = '⏳ Generating your plan...';
     btn.disabled = true;
     const section = document.getElementById('rank-plan-section');
     section.style.display = 'block';
-    section.innerHTML = `<div class="glass-card" style="padding:32px;text-align:center;"><div style="font-size:28px;animation:fadeUp 0.5s;">âš¡</div><p style="color:var(--text-muted);margin-top:8px;">AI is crafting your personal rank boost plan...</p></div>`;
+    section.innerHTML = `<div class="glass-card" style="padding:32px;text-align:center;"><div style="font-size:28px;animation:fadeUp 0.5s;">⚡</div><p style="color:var(--text-muted);margin-top:8px;">AI is crafting your personal rank boost plan...</p></div>`;
 
     try {
         const payload = {
@@ -1597,10 +1597,10 @@ async function getAIRankPlan() {
             days_to_target: '5-7 days if consistent',
             daily_plan: [
                 { day: 'Day 1', focus: 'Arrays', task: 'Complete Two Sum + Binary Search challenges', xp_goal: '+80 XP', why: 'Arrays is your biggest gap.' },
-                { day: 'Day 2', focus: 'Recursion', task: 'Solve Factorial + Fibonacci with recursion', xp_goal: '+70 XP', why: 'Recursion is far below target â€” high leverage.' },
-                { day: 'Day 3', focus: 'OOP', task: 'Submit a Class-based solution in Python', xp_goal: '+60 XP', why: 'OOP gap is closing â€” one good submission helps.' },
+                { day: 'Day 2', focus: 'Recursion', task: 'Solve Factorial + Fibonacci with recursion', xp_goal: '+70 XP', why: 'Recursion is far below target — high leverage.' },
+                { day: 'Day 3', focus: 'OOP', task: 'Submit a Class-based solution in Python', xp_goal: '+60 XP', why: 'OOP gap is closing — one good submission helps.' },
                 { day: 'Day 4', focus: 'Arrays', task: 'Try 2 Medium Array problems from Challenges', xp_goal: '+80 XP', why: 'Consistency compounds growth.' },
-                { day: 'Day 5', focus: 'Algorithms', task: 'Start Binary Search â€” submit 1 problem', xp_goal: '+50 XP', why: 'Algorithms needs most improvement.' },
+                { day: 'Day 5', focus: 'Algorithms', task: 'Start Binary Search — submit 1 problem', xp_goal: '+50 XP', why: 'Algorithms needs most improvement.' },
                 { day: 'Day 6', focus: 'Peer Reviews', task: 'Do 3 peer code reviews (+40 XP each)', xp_goal: '+120 XP', why: 'Guaranteed XP gain!' },
                 { day: 'Day 7', focus: 'Full Sprint', task: 'Submit 2 problems + 1 peer review', xp_goal: '+100 XP', why: 'Final push to cross the rank gap!' }
             ],
@@ -1608,7 +1608,7 @@ async function getAIRankPlan() {
             motivational_message: `You are very close to crossing the next rank! Keep going!`
         });
     } finally {
-        btn.innerHTML = 'âš¡ Regenerate Plan';
+        btn.innerHTML = '⚡ Regenerate Plan';
         btn.disabled = false;
     }
 }
@@ -1619,7 +1619,7 @@ function renderRankPlan(plan) {
     section.innerHTML = `
         <div class="glass-card" style="padding:28px;border-color:rgba(240,180,41,0.3);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-                <h3 style="color:var(--primary);font-size:18px;">âš¡ Your 7-Day Rank Boost Plan</h3>
+                <h3 style="color:var(--primary);font-size:18px;">⚡ Your 7-Day Rank Boost Plan</h3>
                 <div style="font-size:12px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:6px 12px;border-radius:8px;">#12 → #11 in ${plan.days_to_target}</div>
             </div>
             <div style="overflow-x:auto;padding-bottom:12px;">
@@ -1634,7 +1634,7 @@ function renderRankPlan(plan) {
                 </div>
             </div>
             <div style="margin-top:24px;">
-                <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;">âš¡ Quick Wins â€” Do These Right Now</div>
+                <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;">⚡ Quick Wins — Do These Right Now</div>
                 <div style="display:flex;flex-direction:column;gap:8px;">
                     ${plan.quick_wins.map((w, i) => `
                         <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;">
@@ -1647,7 +1647,7 @@ function renderRankPlan(plan) {
                 <div style="font-size:12px;color:var(--primary);font-weight:700;margin-bottom:6px;">💬 Message from your AI Mentor</div>
                 <div style="font-size:13px;line-height:1.6;font-style:italic;">${plan.motivational_message}</div>
             </div>
-            <button class="btn-gold" style="margin-top:20px;background:#26d9c7;color:#000;" onclick="showPage('challenges')">🚀 Start Day 1 â€” Go to Challenges</button>
+            <button class="btn-gold" style="margin-top:20px;background:#26d9c7;color:#000;" onclick="showPage('challenges')">🚀 Start Day 1 — Go to Challenges</button>
         </div>`;
 }
 
@@ -1660,7 +1660,7 @@ function handleQuickWin(cb, i) {
     if (cb.checked) addCommunityXP(10, 'Quick win completed!');
 }
 
-// â”€â”€ PEER REVIEW QUEUE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── PEER REVIEW QUEUE ─────────────────────────────────
 function renderReviewQueue() {
     const container = document.getElementById('review-queue');
     const badge = document.getElementById('review-count-badge');
@@ -1699,7 +1699,7 @@ function openReviewModal(itemId) {
         <div style="padding:28px 32px;border-bottom:1px solid rgba(255,255,255,0.07);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
                 <h3 style="font-size:18px;">Review this code anonymously</h3>
-                <button onclick="closeReviewModal()" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;">âœ•</button>
+                <button onclick="closeReviewModal()" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;">✕</button>
             </div>
             <p style="font-size:12px;color:var(--text-muted);">Your identity is hidden. Be kind and constructive.</p>
         </div>
@@ -1707,29 +1707,29 @@ function openReviewModal(itemId) {
             <div style="display:flex;gap:8px;margin-bottom:16px;">
                 <span style="font-size:10px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:${diffColors[item.diff]};font-weight:700;">${item.diff}</span>
                 <span style="font-size:10px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:${langColors[item.lang] || '#888'};font-weight:700;">${item.lang}</span>
-                <span style="font-size:10px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:#888;">${item.title} Â· ${item.lines} lines</span>
+                <span style="font-size:10px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.05);color:#888;">${item.title} · ${item.lines} lines</span>
             </div>
             <div style="background:#020205;border-radius:14px;border:1px solid rgba(255,255,255,0.08);overflow:hidden;margin-bottom:20px;">
                 <div style="background:rgba(255,255,255,0.03);padding:10px 16px;display:flex;gap:6px;border-bottom:1px solid rgba(255,255,255,0.06);">
                     <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
                     <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
                     <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
-                    <span style="font-size:10px;color:#555;margin-left:8px;">${item.lang} Â· Anonymous Submission</span>
+                    <span style="font-size:10px;color:#555;margin-left:8px;">${item.lang} · Anonymous Submission</span>
                 </div>
                 <pre style="padding:18px;font-family:monospace;font-size:13px;color:#86efac;overflow-x:auto;white-space:pre;margin:0;line-height:1.6;">${item.code}</pre>
             </div>
             <div style="margin-bottom:14px;">
-                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">â­ Overall Rating</label>
+                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">⭐ Overall Rating</label>
                 <div style="display:flex;gap:4px;" id="star-row">
-                    ${[1, 2, 3, 4, 5].map(n => `<button class="star-btn" id="star-${n}" onclick="setStars(${n})" style="font-size:22px;color:#444;">â˜†</button>`).join('')}
+                    ${[1, 2, 3, 4, 5].map(n => `<button class="star-btn" id="star-${n}" onclick="setStars(${n})" style="font-size:22px;color:#444;">☆</button>`).join('')}
                 </div>
             </div>
             <div style="margin-bottom:14px;">
-                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">âœ… What did they do well?</label>
+                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">✅ What did they do well?</label>
                 <textarea id="rv-good" style="width:100%;min-height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px;color:#fff;font-size:13px;resize:none;outline:none;font-family:inherit;" placeholder="e.g. Good variable names, clear logic..."></textarea>
             </div>
             <div style="margin-bottom:14px;">
-                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">âš ï¸ What can be improved?</label>
+                <label style="font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;">⛏ ️ What can be improved?</label>
                 <textarea id="rv-improve" style="width:100%;min-height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:12px;color:#fff;font-size:13px;resize:none;outline:none;font-family:inherit;" placeholder="e.g. The loop can be simplified..."></textarea>
             </div>
             <div style="margin-bottom:20px;">
@@ -1745,7 +1745,7 @@ function openReviewModal(itemId) {
             <span style="font-size:12px;color:var(--text-muted);">You'll earn <strong style="color:var(--primary);">+${item.xp} XP</strong> for this review</span>
             <div style="display:flex;gap:10px;">
                 <button onclick="closeReviewModal()" style="padding:10px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-muted);cursor:pointer;font-size:13px;">Cancel</button>
-                <button class="btn-gold" id="submit-review-btn" onclick="submitReview()">Submit Review â€” Earn +${item.xp} XP</button>
+                <button class="btn-gold" id="submit-review-btn" onclick="submitReview()">Submit Review — Earn +${item.xp} XP</button>
             </div>
         </div>`;
     document.getElementById('review-modal').classList.add('open');
@@ -1754,7 +1754,7 @@ function openReviewModal(itemId) {
 function setStars(n) {
     for (let i = 1; i <= 5; i++) {
         const s = document.getElementById('star-' + i);
-        if (s) { s.textContent = i <= n ? 'â˜…' : 'â˜†'; s.style.color = i <= n ? '#f0b429' : '#444'; }
+        if (s) { s.textContent = i <= n ? '★' : '☆'; s.style.color = i <= n ? '#f0b429' : '#444'; }
     }
 }
 
@@ -1772,7 +1772,7 @@ function closeReviewModal(e) {
 function submitReview() {
     const good = document.getElementById('rv-good')?.value?.trim();
     const improve = document.getElementById('rv-improve')?.value?.trim();
-    if (!good || !improve) { showToast('âš ï¸ Please fill both sections before submitting.'); return; }
+    if (!good || !improve) { showToast('⛏ ️ Please fill both sections before submitting.'); return; }
     const item = activeReviewItem;
     const btn = document.getElementById('submit-review-btn');
     if (btn) { btn.textContent = 'Submitting...'; btn.disabled = true; }
@@ -1788,7 +1788,7 @@ function submitReview() {
     }, 1500);
 }
 
-// â”€â”€ RANK UP MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── RANK UP MODAL ─────────────────────────────────────
 function showRankUpModal() {
     const modal = document.getElementById('rankup-modal');
     if (!modal) return;
@@ -1814,7 +1814,7 @@ function spawnConfetti() {
     }
 }
 
-// â”€â”€ STUDY GROUPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── STUDY GROUPS ──────────────────────────────────────
 function renderStudyGroups() {
     const container = document.getElementById('study-groups-grid');
     if (!container) return;
@@ -1828,8 +1828,8 @@ function renderStudyGroups() {
             <div style="display:flex;justify-content:center;gap:4px;margin-bottom:10px;">
                 ${avatarColors.map(c => `<div style="width:22px;height:22px;border-radius:50%;background:${c};border:2px solid var(--surface);"></div>`).join('')}
             </div>
-            <div style="font-size:10px;color:${statusDot[g.status] || '#888'};margin-bottom:14px;">â— ${g.status}</div>
-            <button id="sg-btn-${g.id}" class="btn-gold" style="width:100%;justify-content:center;font-size:12px;" onclick="joinGroup('${g.id}','${g.name}')">${g.joined ? 'Joined âœ“' : 'Join'}</button>
+            <div style="font-size:10px;color:${statusDot[g.status] || '#888'};margin-bottom:14px;">● ${g.status}</div>
+            <button id="sg-btn-${g.id}" class="btn-gold" style="width:100%;justify-content:center;font-size:12px;" onclick="joinGroup('${g.id}','${g.name}')">${g.joined ? 'Joined ✓' : 'Join'}</button>
         </div>`).join(`
         <div style="border:2px dashed rgba(255,255,255,0.1);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'" onclick="showToast('â„¹ï¸ Create Group coming soon!')">
             <div style="font-size:28px;margin-bottom:8px;color:var(--text-muted);">+</div>
@@ -1843,16 +1843,16 @@ function joinGroup(id, name) {
     if (!g || g.joined) return;
     g.joined = true;
     g.members++;
-    if (btn) { btn.textContent = 'Joined âœ“'; btn.style.background = '#0ed97a'; btn.style.color = '#000'; }
+    if (btn) { btn.textContent = 'Joined ✓'; btn.style.background = '#0ed97a'; btn.style.color = '#000'; }
     addCommunityXP(10, `Joined ${name}!`);
 }
 
 
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════
 // PEER DISCUSSION SYSTEM
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════
 
 let currentDiscTab = 'discussion';
 let currentDiscKey = 'general';
@@ -1860,7 +1860,7 @@ let currentDiscKey = 'general';
 // Seed some starter posts for each company/challenge
 const SEED_POSTS = {
     'Capgemini': [
-        { id: 's1', author: 'Anon Coder', avatar: 'A', tab: 'tips', text: 'Focus on time complexity â€” Capgemeni rounds always have at least one O(N log N) problem. Practice sorting variants!', likes: 14, liked: false, spoiler: false, ts: Date.now() - 3600000 },
+        { id: 's1', author: 'Anon Coder', avatar: 'A', tab: 'tips', text: 'Focus on time complexity — Capgemeni rounds always have at least one O(N log N) problem. Practice sorting variants!', likes: 14, liked: false, spoiler: false, ts: Date.now() - 3600000 },
         { id: 's2', author: 'DSA Ninja', avatar: 'D', tab: 'discussion', text: 'Anyone else struggling with the string manipulation tasks? The edge case for empty string was tricky.', likes: 7, liked: false, spoiler: false, ts: Date.now() - 7200000 },
         { id: 's3', author: 'Harismitha', avatar: 'H', tab: 'solutions', text: 'Two Sum pattern → use a HashMap. O(N) time, O(N) space. Works for all Capgemini variants. Here\'s the key insight: store complement, not current value.', likes: 22, liked: false, spoiler: true, ts: Date.now() - 1800000 }
     ],
@@ -1873,7 +1873,7 @@ const SEED_POSTS = {
     ],
     'general': [
         { id: 'g1', author: 'Arjun S', avatar: 'A', tab: 'discussion', text: 'Great challenge! The tricky part was handling negative numbers in the array. Make sure to add that edge case.', likes: 8, liked: false, spoiler: false, ts: Date.now() - 1200000 },
-        { id: 'g2', author: 'Priya R', avatar: 'P', tab: 'tips', text: '💡 Tip: Try solving this in O(n) first using a HashMap before going for brute force â€” it\'ll help you understand the optimal approach.', likes: 15, liked: false, spoiler: false, ts: Date.now() - 6000000 },
+        { id: 'g2', author: 'Priya R', avatar: 'P', tab: 'tips', text: '💡 Tip: Try solving this in O(n) first using a HashMap before going for brute force — it\'ll help you understand the optimal approach.', likes: 15, liked: false, spoiler: false, ts: Date.now() - 6000000 },
         { id: 'g3', author: 'Anon Coder', avatar: '?', tab: 'solutions', text: 'Here\'s my approach: iterate through the array once, store seen values in a set, and check if the complement exists.', likes: 5, liked: false, spoiler: true, ts: Date.now() - 9000000 }
     ]
 };
@@ -1923,7 +1923,7 @@ function refreshDiscFeed() {
 
     if (!filtered.length) {
         container.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);">
-            <div style="font-size:32px;margin-bottom:8px;">ðŸ¤«</div>
+            <div style="font-size:32px;margin-bottom:8px;">🤫</div>
             <div>No posts in this category yet. Be the first!</div>
         </div>`;
         return;
@@ -1932,7 +1932,7 @@ function refreshDiscFeed() {
     container.innerHTML = filtered.map(p => {
         const timeAgo = getTimeAgo(p.ts);
         const tabColors = { tips: '#0ed97a', solutions: '#60a5fa', discussion: '#f0b429' };
-        const tabLabels = { tips: '💡 Tip', solutions: 'âœ… Solution', discussion: '💬 Discussion' };
+        const tabLabels = { tips: '💡 Tip', solutions: '✅ Solution', discussion: '💬 Discussion' };
         const avatarColors = ['#f0b429', '#0ed97a', '#60a5fa', '#f472b6', '#a78bfa'];
         const avatarBg = avatarColors[p.avatar.charCodeAt(0) % avatarColors.length];
         return `
@@ -1943,20 +1943,20 @@ function refreshDiscFeed() {
                     <div style="display:flex;align-items:center;gap:8px;">
                         <span style="font-weight:700;font-size:13px;">${p.author}</span>
                         <span style="font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:${tabColors[p.tab]};font-weight:700;">${tabLabels[p.tab]}</span>
-                        ${p.spoiler ? '<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,107,107,0.1);color:#ff6b6b;font-weight:700;">âš ï¸ Spoiler</span>' : ''}
+                        ${p.spoiler ? '<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,107,107,0.1);color:#ff6b6b;font-weight:700;">⛏ ️ Spoiler</span>' : ''}
                     </div>
                     <span style="font-size:11px;color:var(--text-muted);">${timeAgo}</span>
                 </div>
                 ${p.spoiler
                 ? `<div id="spoiler-${p.id}" style="cursor:pointer;font-size:13px;color:var(--text-muted);background:rgba(255,255,255,0.04);padding:10px;border-radius:8px;text-align:center;" onclick="revealSpoiler('${p.id}')">
-                        ðŸ™ˆ Click to reveal spoiler
+                        🙈 Click to reveal spoiler
                        </div>`
                 : `<p style="font-size:13px;line-height:1.6;color:rgba(255,255,255,0.85);margin:0;" id="spoiler-${p.id}">${p.text}</p>`
             }
                 <div style="display:flex;gap:16px;margin-top:10px;">
                     <button onclick="likeDiscussionPost('${p.id}')" id="like-btn-${p.id}"
                         style="background:none;border:none;cursor:pointer;font-size:12px;color:${p.liked ? 'var(--primary)' : 'var(--text-muted)'};display:flex;align-items:center;gap:4px;transition:color 0.2s;">
-                        ${p.liked ? 'â¤ï¸' : 'ðŸ¤'} <span id="like-count-${p.id}">${p.likes}</span>
+                        ${p.liked ? '❤️' : '🤝'} <span id="like-count-${p.id}">${p.likes}</span>
                     </button>
                     <button onclick="replyToPost('${p.id}')"
                         style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--text-muted);">
@@ -1985,7 +1985,7 @@ function likeDiscussionPost(postId) {
     saveDiscPosts(currentDiscKey, posts);
     const btn = document.getElementById('like-btn-' + postId);
     const cnt = document.getElementById('like-count-' + postId);
-    if (btn) { btn.style.color = post.liked ? 'var(--primary)' : 'var(--text-muted)'; btn.innerHTML = (post.liked ? 'â¤ï¸' : 'ðŸ¤') + ` <span id="like-count-${postId}">${post.likes}</span>`; }
+    if (btn) { btn.style.color = post.liked ? 'var(--primary)' : 'var(--text-muted)'; btn.innerHTML = (post.liked ? '❤️' : '🤝') + ` <span id="like-count-${postId}">${post.likes}</span>`; }
 }
 
 function replyToPost(postId) {
@@ -1996,7 +1996,7 @@ function replyToPost(postId) {
 function postDiscussionMessage() {
     const input = document.getElementById('disc-input');
     const text = input?.value?.trim();
-    if (!text) { showToast('âš ï¸ Please write something before posting!'); return; }
+    if (!text) { showToast('⛏ ️ Please write something before posting!'); return; }
     const isAnon = document.getElementById('disc-anon')?.checked;
     const isSpoiler = document.getElementById('disc-spoiler')?.checked;
     const tab = currentDiscTab === 'discussion' ? 'discussion' : currentDiscTab;
@@ -2015,7 +2015,7 @@ function postDiscussionMessage() {
     input.placeholder = 'Share a hint, ask a question, or post your approach...';
     if (document.getElementById('disc-spoiler')) document.getElementById('disc-spoiler').checked = false;
     refreshDiscFeed();
-    showToast('âœ… Posted! Your message is live.');
+    showToast('✅ Posted! Your message is live.');
 }
 
 function getTimeAgo(ts) {
@@ -2026,9 +2026,9 @@ function getTimeAgo(ts) {
     return Math.floor(diff / 86400) + 'd ago';
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════
 // COMPANY COMPLETION CERTIFICATES
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════
 
 let _certCurrentCompany = null;
 let _certCurrentScore = 0;
@@ -2056,13 +2056,13 @@ function checkAndAwardCertificate(companyName, score) {
 function showCertModal(cert) {
     const modal = document.getElementById('cert-modal');
     if (!modal) return;
-    const companyEmojis = { Capgemini: 'ðŸ”µ', LTIMindtree: 'ðŸŸ¢', Deloitte: 'ðŸ”·' };
-    const emoji = companyEmojis[cert.company] || 'ðŸ…';
+    const companyEmojis = { Capgemini: '🔵', LTIMindtree: '🟢', Deloitte: '🔷' };
+    const emoji = companyEmojis[cert.company] || '🏅';
     document.getElementById('cert-emoji').textContent = emoji;
     document.getElementById('cert-company-title').textContent = cert.company + ' Mock Practice';
     document.getElementById('cert-student-name').textContent = state.user.name || 'Harismitha';
     document.getElementById('cert-track-label').textContent = cert.company + ' Coding Practice Track';
-    document.getElementById('cert-date-score').textContent = 'Issued ' + cert.month + ' Â· Score: ' + cert.score + '/100';
+    document.getElementById('cert-date-score').textContent = 'Issued ' + cert.month + ' · Score: ' + cert.score + '/100';
     document.getElementById('cert-score-bar').style.width = '0%';
     modal.style.display = 'flex';
     spawnCertConfetti();
@@ -2122,7 +2122,7 @@ function downloadCertificate() {
     </style></head><body>
     <div class="page">
         <div class="header">
-            <div class="logo">ðŸ…</div>
+            <div class="logo">🏅</div>
             <div class="cert-label">Certificate of Completion</div>
             <div class="company">${cert.company} Mock Practice Track</div>
         </div>
@@ -2142,7 +2142,7 @@ function downloadCertificate() {
                 <div class="footer-item"><div class="val">${cert.date}</div><div class="lbl">Issue Date</div></div>
                 <div class="footer-item"><div class="val">${cert.id.slice(-8).toUpperCase()}</div><div class="lbl">Certificate ID</div></div>
             </div>
-            <div class="watermark">Verify at: codeconfidence.app/verify Â· This certificate demonstrates proficiency in company-specific coding challenges.</div>
+            <div class="watermark">Verify at: codeconfidence.app/verify · This certificate demonstrates proficiency in company-specific coding challenges.</div>
         </div>
     </div>
     <script>window.onload=()=>{window.print();}<\/script>
@@ -2161,10 +2161,10 @@ function renderCertificates() {
     const existingBadgesHtml = container.innerHTML;
 
     const companyColors = { Capgemini: '#0070f3', LTIMindtree: '#00a650', Deloitte: '#86bc25' };
-    const companyEmojis = { Capgemini: 'ðŸ”µ', LTIMindtree: 'ðŸŸ¢', Deloitte: 'ðŸ”·' };
+    const companyEmojis = { Capgemini: '🔵', LTIMindtree: '🟢', Deloitte: '🔷' };
     const certHtml = certs.map(cert => {
         const color = companyColors[cert.company] || '#d4af37';
-        const emoji = companyEmojis[cert.company] || 'ðŸ…';
+        const emoji = companyEmojis[cert.company] || '🏅';
         return `
         <div class="cert-card" style="grid-column:span 2; padding:20px; border-radius:20px; border:2px solid ${color}40; background:linear-gradient(135deg,${color}0d,transparent); position:relative; overflow:hidden; cursor:pointer;" onclick="downloadCertificate._company='${cert.company}'; _certCurrentCompany='${cert.company}'; downloadCertificate()">
             <div style="position:absolute;inset:0;background:linear-gradient(135deg,${color}08,transparent);pointer-events:none;"></div>
@@ -2176,8 +2176,8 @@ function renderCertificates() {
                 </div>
                 <div style="margin-left:auto;background:${color}18;border:1px solid ${color}40;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;color:${color};">${cert.score}/100</div>
             </div>
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">${cert.company} Coding Practice Track Â· Issued ${cert.date}</div>
-            <button style="background:${color};color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;" onclick="event.stopPropagation();_certCurrentCompany='${cert.company}';downloadCertificate()">â¬‡ Download</button>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">${cert.company} Coding Practice Track · Issued ${cert.date}</div>
+            <button style="background:${color};color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;" onclick="event.stopPropagation();_certCurrentCompany='${cert.company}';downloadCertificate()">⬇ Download</button>
             <div class="cert-shimmer"></div>
         </div>`;
     }).join('');
@@ -2186,7 +2186,7 @@ function renderCertificates() {
         // Prepend certificates at the top of badges
         const header = document.createElement('div');
         header.style.cssText = 'grid-column:span 6;font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;';
-        header.textContent = 'ðŸ… Earned Certificates';
+        header.textContent = '🏅 Earned Certificates';
         container.prepend(header);
         header.insertAdjacentHTML('afterend', certHtml);
     }
@@ -2199,7 +2199,7 @@ function updateXP(add) {
     document.getElementById('xp-text').innerText = `${state.user.xp} / ${state.user.nextLevelXp} XP mastered`;
 
     if (add > 0) {
-        showToast(`âš¡ +${add} XP Earned!`);
+        showToast(`⚡ +${add} XP Earned!`);
     }
 }
 
@@ -2249,7 +2249,7 @@ async function analyzeCode(silent = false) {
         const data = await res.json();
 
         if (!data || !data.score) {
-            if (!silent) showToast("âŒ AI analysis unavailable.");
+            if (!silent) showToast("❌ AI analysis unavailable.");
             return;
         }
 
@@ -2268,7 +2268,7 @@ async function analyzeCode(silent = false) {
                 renderFeedback(data);
                 if (!silent) updateXP(data.xp_earned || 50);
             } else {
-                if (!silent) showAIError('AI analysis unavailable â€” check your API key or server.');
+                if (!silent) showAIError('AI analysis unavailable — check your API key or server.');
             }
         } catch (e2) {
             if (!silent) showAIError('Analysis failed: ' + e2.message);
@@ -2283,7 +2283,7 @@ async function analyzeCode(silent = false) {
 
 async function runCode() {
     const code = document.querySelector('#page-submit textarea').value;
-    if (!code.trim()) return showToast("âš ï¸ No code to run!");
+    if (!code.trim()) return showToast("⛏ ️ No code to run!");
 
     const btn = document.getElementById('btn-run-local');
     const originalText = btn.innerText;
@@ -2309,7 +2309,7 @@ async function runCode() {
             if (!data.error) updateXP(10);
         }
     } catch (e) {
-        showToast("âŒ Connection error to compiler.");
+        showToast("❌ Connection error to compiler.");
     } finally {
         btn.innerText = originalText;
         btn.disabled = false;
@@ -2393,10 +2393,10 @@ function renderFeedback(data) {
         `;
     }
 
-    // â”€â”€ Show discussion section â”€â”€
+    // ── Show discussion section ──
     renderDiscussion(getDiscKey());
 
-    // â”€â”€ Certificate check for company practice â”€â”€
+    // ── Certificate check for company practice ──
     if (state.activeCompany && data.score >= 70) {
         checkAndAwardCertificate(state.activeCompany, data.score);
     }
@@ -2423,9 +2423,9 @@ function showCompanyPractice(companyName) {
     if (chalBar) chalBar.style.display = 'none';
 
     // Populate company banner
-    const companyEmojis = { Capgemini: 'ðŸ”µ', LTIMindtree: 'ðŸŸ¢', Deloitte: 'ðŸ”·' };
+    const companyEmojis = { Capgemini: '🔵', LTIMindtree: '🟢', Deloitte: '🔷' };
     if (document.getElementById('ctx-company-name')) document.getElementById('ctx-company-name').textContent = companyName;
-    if (document.getElementById('ctx-company-emoji')) document.getElementById('ctx-company-emoji').textContent = companyEmojis[companyName] || 'ðŸ¢';
+    if (document.getElementById('ctx-company-emoji')) document.getElementById('ctx-company-emoji').textContent = companyEmojis[companyName] || '🏢';
     document.getElementById('submit-lab-title').textContent = companyEmojis[companyName] + ' ' + companyName + ' Practice';
 
     // Populate Task Picker in the company banner
@@ -2450,14 +2450,14 @@ function loadCompanyTask(taskId) {
 
     const textarea = document.querySelector('#page-submit textarea');
     textarea.value = task.code;
-    showToast(`ðŸ“ Task Switched: ${task.title}`);
+    showToast(`📜 Task Switched: ${task.title}`);
 }
 
 // Init call happens at bottom of app.html
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 // AI CONFIGURATION & HELPERS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 
 function getAIKey() {
     const key = localStorage.getItem('cc_gemini_key');
@@ -2487,8 +2487,8 @@ function showAIConfigModal() {
     modal.innerHTML = `
         <div class="glass-card" style="width:100%; max-width:480px; padding:32px; border:1px solid var(--primary); box-shadow:0 0 40px rgba(240,180,41,0.15); animation: fadeUp 0.3s ease-out;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-                <h3 style="display:flex; align-items:center; gap:10px;">âš™ï¸ Configure Gemini AI</h3>
-                <button onclick="document.getElementById('ai-config-modal').remove()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:20px;">âœ•</button>
+                <h3 style="display:flex; align-items:center; gap:10px;">⚙️ Configure Gemini AI</h3>
+                <button onclick="document.getElementById('ai-config-modal').remove()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:20px;">✕</button>
             </div>
 
             <div style="display:flex; flex-direction:column; gap:24px;">
@@ -2497,7 +2497,7 @@ function showAIConfigModal() {
                     <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Step 1: Get your free Gemini API key</div>
                     <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">Visit Google AI Studio to get your free API key.</p>
                     <button class="glass" style="width:100%; padding:10px; border-radius:10px; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="window.open('https://aistudio.google.com/apikey', '_blank')">
-                        Open aistudio.google.com <span style="font-size:14px;">â†—</span>
+                        Open aistudio.google.com <span style="font-size:14px;">↗</span>
                     </button>
                 </div>
 
@@ -2546,7 +2546,7 @@ async function testGeminiConnection() {
 
     if (!key) {
         resultEl.style.color = '#ff6b6b';
-        resultEl.innerText = "âŒ Please enter a key";
+        resultEl.innerText = "❌ Please enter a key";
         return;
     }
 
@@ -2572,15 +2572,15 @@ async function testGeminiConnection() {
 
         if (res.ok) {
             resultEl.style.color = '#0ed97a';
-            resultEl.innerText = "âœ… Connected! Gemini ready.";
+            resultEl.innerText = "✅ Connected! Gemini ready.";
         } else {
             const err = await res.json();
             resultEl.style.color = '#ff6b6b';
-            resultEl.innerText = `âŒ Error: ${err.error?.message || 'Invalid key'}`;
+            resultEl.innerText = `❌ Error: ${err.error?.message || 'Invalid key'}`;
         }
     } catch (err) {
         resultEl.style.color = '#ff6b6b';
-        resultEl.innerText = "âŒ Connection failed";
+        resultEl.innerText = "❌ Connection failed";
     } finally {
         btn.disabled = false;
         btn.innerText = "Test connection";
@@ -2596,13 +2596,13 @@ function saveGeminiConfig() {
         localStorage.setItem('cc_gemini_model', model);
         window.__GEMINI_API_KEY__ = key;
         window.__GEMINI_MODEL__ = model;
-        showToast('âœ… Gemini AI activated!');
+        showToast('✅ Gemini AI activated!');
         document.getElementById('ai-config-modal').remove();
 
         const activeTab = document.querySelector('.career-tab.active');
         if (activeTab) activeTab.click();
     } else {
-        showToast("âš ï¸ Please enter an API key");
+        showToast("⛏ ️ Please enter an API key");
     }
 }
 
@@ -2633,10 +2633,10 @@ function showAIError(message, fallbackFn) {
     }
 
     banner.innerHTML = `
-        âš ï¸ ${message}
+        ⛏ ️ ${message}
         <button onclick="this.parentElement.style.display='none'" 
         style="margin-left:auto;background:none;border:none;
-        color:#ff6b6b;cursor:pointer;font-size:16px;">âœ•</button>
+        color:#ff6b6b;cursor:pointer;font-size:16px;">✕</button>
     `;
     banner.style.display = 'flex';
 
@@ -2659,7 +2659,7 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
     No markdown. No explanation. No code blocks. 
     Start immediately with { or [ and end with } or ]`;
 
-    // â”€â”€ PROXY MODE â”€â”€
+    // ── PROXY MODE ──
     // If no key is set, call our local proxy endpoint
     if (!key || key === '' || key.includes('PASTE')) {
         try {
@@ -2732,13 +2732,13 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
             const status = response.status;
 
             if (status === 400) {
-                showAIError('Bad request â€” check your prompt format', loadFallbackContent);
+                showAIError('Bad request — check your prompt format', loadFallbackContent);
             } else if (status === 401 || status === 403) {
-                showAIError('Invalid Gemini API key â€” get a new key from aistudio.google.com', loadFallbackContent);
+                showAIError('Invalid Gemini API key — get a new key from aistudio.google.com', loadFallbackContent);
             } else if (status === 429) {
-                showAIError('Rate limit reached â€” Gemini free tier allows 15 requests/min.', loadFallbackContent);
+                showAIError('Rate limit reached — Gemini free tier allows 15 requests/min.', loadFallbackContent);
             } else if (status === 500) {
-                showAIError('Google server error â€” try again in a moment', loadFallbackContent);
+                showAIError('Google server error — try again in a moment', loadFallbackContent);
             } else {
                 showAIError(`Gemini API error ${status}: ${errData.error?.message || 'Unknown'}`, loadFallbackContent);
             }
@@ -2748,12 +2748,12 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
         const data = await response.json();
 
         if (data.candidates?.[0]?.finishReason === 'SAFETY') {
-            showAIError('Response blocked by safety filters â€” rephrase your prompt', loadFallbackContent);
+            showAIError('Response blocked by safety filters — rephrase your prompt', loadFallbackContent);
             return null;
         }
 
         if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-            showAIError('Empty response from Gemini â€” try again', loadFallbackContent);
+            showAIError('Empty response from Gemini — try again', loadFallbackContent);
             return null;
         }
 
@@ -2768,7 +2768,7 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
                     return JSON.parse(clean);
                 } catch {
                     console.error('JSON parse failed:', text);
-                    showAIError('AI response format error â€” using fallback content', loadFallbackContent);
+                    showAIError('AI response format error — using fallback content', loadFallbackContent);
                     return null;
                 }
             }
@@ -2779,9 +2779,9 @@ async function callGemini(systemPrompt, userMessage, maxTokens, wantJson) {
     } catch (err) {
         console.error('Gemini API error:', err);
         if (err.name === 'TypeError' || err.message.includes('fetch')) {
-            showAIError('Network error â€” check your internet connection', loadFallbackContent);
+            showAIError('Network error — check your internet connection', loadFallbackContent);
         } else {
-            showAIError('AI temporarily unavailable â€” showing sample content', loadFallbackContent);
+            showAIError('AI temporarily unavailable — showing sample content', loadFallbackContent);
         }
         return null;
     }
@@ -2817,21 +2817,21 @@ function renderFallbackAptitude() {
             question: "If a train travels 60 km in 1 hour, how far will it travel in 2.5 hours?",
             options: ["A) 120 km", "B) 150 km", "C) 140 km", "D) 160 km"],
             answerIndex: 1, // B
-            solution_explanation: "Distance = Speed Ã— Time = 60 Ã— 2.5 = 150 km",
+            solution_explanation: "Distance = Speed × Time = 60 × 2.5 = 150 km",
             topic: "Time Speed Distance"
         },
         {
             question: "What is 15% of 240?",
             options: ["A) 36", "B) 32", "C) 38", "D) 34"],
             answerIndex: 0, // A
-            solution_explanation: "15% of 240 = (15/100) Ã— 240 = 36",
+            solution_explanation: "15% of 240 = (15/100) × 240 = 36",
             topic: "Percentages"
         },
         {
             question: "If 6 workers complete a job in 8 days, how many days will 4 workers take?",
             options: ["A) 10 days", "B) 12 days", "C) 14 days", "D) 16 days"],
             answerIndex: 1, // B
-            solution_explanation: "Workers Ã— Days = constant. 6Ã—8 = 4Ã—D. D = 12 days",
+            solution_explanation: "Workers × Days = constant. 6×8 = 4×D. D = 12 days",
             topic: "Time and Work"
         }
     ];
@@ -2881,7 +2881,7 @@ async function renderAptitudeHub() {
 
         <div class="grid-cols-3" style="gap:24px;">
             <div class="topic-card">
-                <div style="font-size:32px; margin-bottom:18px;">ðŸ”¢</div>
+                <div style="font-size:32px; margin-bottom:18px;">🔢</div>
                 <h3 style="margin-bottom:8px;">Quantitative</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Numbers, algebra, geometry, DI and quick calculation drills.</p>
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -2890,7 +2890,7 @@ async function renderAptitudeHub() {
                 </div>
             </div>
             <div class="topic-card">
-                <div style="font-size:32px; margin-bottom:18px;">ðŸ§©</div>
+                <div style="font-size:32px; margin-bottom:18px;">🧩</div>
                 <h3 style="margin-bottom:8px;">Logical Reasoning</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Puzzles, patterns, syllogisms and critical thinking drills.</p>
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -2939,7 +2939,7 @@ function launchAptitudeSet(type) {
                 container.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">No questions found for "${type}". Try another topic.</div>`;
                 return;
             }
-            showToast(`âœ… ${questions.length} ${type} questions loaded!`);
+            showToast(`✅ ${questions.length} ${type} questions loaded!`);
             renderAptitudeQuiz(questions, type);
         } catch (e) {
             console.error(e);
@@ -2963,7 +2963,7 @@ function renderAptitudeQuiz(questions, type) {
                 </div>
                 <h2 style="font-size:20px; margin-bottom:32px;">${q.question}</h2>
                 <div style="display:flex; flex-direction:column; gap:12px;">
-                    ${q.options.map((opt, i) => `<button class="glass-card" style="padding:16px; text-align:left; cursor:pointer; color:var(--primary); width:100%; border:1px solid var(--border);" onclick="selectAptOpt(${i})">${opt}</button>`).join('')}
+                    ${q.options.map((opt, i) => `<button type="button" class="glass-card" style="padding:18px 20px; text-align:left; cursor:pointer; color:var(--text); width:100%; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); border-radius:18px; transition:background 0.2s, border-color 0.2s;" onclick="selectAptOpt(${i})">${opt}</button>`).join('')}
                 </div>
             </div>
         `;
@@ -3002,9 +3002,9 @@ function renderAptResults(score, total, results, type) {
     `;
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 // PLACEHOLDERS FOR REMAINING TABS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 
 async function renderFundamentalsHub() {
     const container = document.getElementById('career-tab-content');
@@ -3072,6 +3072,9 @@ async function initSQLEditor() {
         return;
     }
 
+    // Don't recreate the DB if it already exists (preserves data across re-renders)
+    if (db_sql) return;
+
     const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/${file}` });
     db_sql = new SQL.Database();
 
@@ -3085,25 +3088,44 @@ async function initSQLEditor() {
 }
 
 function executeSQL() {
-    const query = document.getElementById('sql-editor').value;
+    const query = document.getElementById('sql-editor').value.trim();
     const resultDiv = document.getElementById('sql-result');
+
+    if (!db_sql) {
+        resultDiv.innerHTML = `<span style="color:#ff6b6b;">⏳ Database is still loading. Please wait a moment and try again.</span>`;
+        return;
+    }
+
+    if (!query) {
+        resultDiv.innerHTML = `<span style="color:#ff6b6b;">⚠️ Please enter a SQL query first.</span>`;
+        return;
+    }
 
     try {
         const res = db_sql.exec(query);
         if (res.length === 0) {
-            resultDiv.innerHTML = "Query executed successfully. No rows returned.";
+            resultDiv.innerHTML = `<span style="color:#0ed97a;">✅ Query executed successfully. No rows returned.</span>`;
+
+            // Still check for success on DML/DDL queries
+            const challenge = SQL_CHALLENGES[state.sqlChallengeIndex || 0];
+            if (challenge && challenge.check(query)) {
+                state.sqlSuccess = true;
+                showToast("🎯 Challenge Mastered! Click 'Next' to proceed.");
+                _injectNextChallengeButton();
+            }
             return;
         }
 
         const columns = res[0].columns;
         const values = res[0].values;
 
-        let html = `<table style="width:100%; border-collapse:collapse; font-size:11px;"><thead><tr>`;
-        columns.forEach(col => html += `<th style="text-align:left; border-bottom:1px solid var(--border); padding:8px; color:var(--primary);">${col}</th>`);
+        let html = `<div style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Returned <b style="color:var(--primary)">${values.length}</b> row${values.length !== 1 ? 's' : ''}</div>`;
+        html += `<table style="width:100%; border-collapse:collapse; font-size:11px;"><thead><tr>`;
+        columns.forEach(col => html += `<th style="text-align:left; border-bottom:1px solid var(--border); padding:8px; color:var(--primary); font-weight:700;">${col}</th>`);
         html += `</tr></thead><tbody>`;
-        values.forEach(row => {
-            html += `<tr>`;
-            row.forEach(val => html += `<td style="padding:8px; border-bottom:1px solid rgba(255,255,255,0.03);">${val}</td>`);
+        values.forEach((row, i) => {
+            html += `<tr style="background:${i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)'};">`;
+            row.forEach(val => html += `<td style="padding:8px; border-bottom:1px solid rgba(255,255,255,0.04);">${val ?? 'NULL'}</td>`);
             html += `</tr>`;
         });
         html += `</tbody></table>`;
@@ -3113,27 +3135,42 @@ function executeSQL() {
 
         // Check for success (Progression Logic)
         const challenge = SQL_CHALLENGES[state.sqlChallengeIndex || 0];
-        const isCorrect = challenge.check(query) && values.length === challenge.expectedRows;
+        const isCorrect = challenge && challenge.check(query) && values.length === challenge.expectedRows;
 
         if (isCorrect) {
             state.sqlSuccess = true;
             showToast("🎯 Challenge Mastered! Click 'Next' to proceed.");
-            renderFundamentalsHub(); // Refresh UI to show Next button
+            _injectNextChallengeButton();
         }
     } catch (e) {
-        resultDiv.innerHTML = `<span style="color:#ff6b6b;">SQL Error: ${e.message}</span>`;
+        resultDiv.innerHTML = `<span style="color:#ff6b6b;">❌ SQL Error: ${e.message}</span>`;
     }
+}
+
+function _injectNextChallengeButton() {
+    // Inject "Next Challenge" button below the "Run Query" button without re-rendering the page
+    if (document.getElementById('sql-next-btn')) return; // already injected
+    const runBtn = document.querySelector('button[onclick="executeSQL()"]');
+    if (!runBtn) return;
+    const nextBtn = document.createElement('button');
+    nextBtn.id = 'sql-next-btn';
+    nextBtn.className = 'btn-gold';
+    nextBtn.style.cssText = 'width:100%; justify-content:center; background:#0ed97a; border-color:#0ed97a; color:#000; margin-top:12px; display:flex;';
+    nextBtn.innerText = 'Next Challenge →';
+    nextBtn.onclick = nextSQLChallenge;
+    runBtn.parentNode.insertBefore(nextBtn, runBtn.nextSibling);
 }
 
 function nextSQLChallenge() {
     state.sqlSuccess = false;
     state.sqlChallengeIndex++;
+    db_sql = null; // Reset DB so a fresh one is created for the next challenge
 
     if (state.sqlChallengeIndex < SQL_CHALLENGES.length) {
         renderFundamentalsHub();
-        showToast(`ðŸ“ Next Challenge: ${SQL_CHALLENGES[state.sqlChallengeIndex].title}`);
+        showToast(`📜 Next Challenge: ${SQL_CHALLENGES[state.sqlChallengeIndex].title}`);
     } else {
-        showToast("ðŸ† All SQL Challenges Completed!");
+        showToast("🏆 All SQL Challenges Completed!");
         switchFundSubTab('nosql');
     }
 }
@@ -3195,35 +3232,217 @@ function runMongoCmd() {
 }
 
 async function startCSReview(topic) {
-    if (!checkAIConfig()) return;
     const container = document.getElementById('fund-content');
-    container.innerHTML = `<div class="spinner" style="margin:40px auto;"></div><p style="text-align:center; color:var(--text-muted);">AI is generating an interactive ${topic} challenge...</p>`;
+    container.innerHTML = `<div class="spinner" style="margin:40px auto;"></div><p style="text-align:center; color:var(--text-muted);">AI is generating an interactive ${topic} challenge using RAG...</p>`;
 
     try {
-        const systemPrompt = `Generate 3 high-frequency MCQs for the CS topic: ${topic}. Format: Respond ONLY as JSON array of objects: [{question, options:[], answerIndex, solution_explanation}].`;
-        const aiResponse = await callGemini(systemPrompt, `Generate quiz for ${topic}`);
+        let localQuestions = [];
+        try {
+            const files = [
+                '/Data/core_cs.json',
+                '/Data/technical.json',
+                '/Data/technical (1).json',
+                '/Data/nosql_shell.json',
+                '/Data/sql_lab.json',
+                '/Data/behavioral.json',
+                '/Data/communication.json',
+                '/Data/coding_round.json',
+                '/Data/full_mock_test.json'
+            ];
 
-        if (!aiResponse) {
-            // Error already handled in callGemini
-            container.innerHTML = `
-                <div style="padding:40px; text-align:center;">
-                    <p style="color:var(--text-muted); margin-bottom:20px;">AI Service temporarily unavailable or rate limited.</p>
-                    <div style="display:flex; gap:12px; justify-content:center;">
-                        <button class="btn-gold" onclick="startCSReview('${topic}')">🔄 Retry</button>
-                        <button class="glass" style="padding:10px 24px; border-radius:12px; cursor:pointer;" onclick="switchFundSubTab('review')">Back</button>
-                    </div>
-                </div>
-            `;
+            const normalize = (value) => (typeof value === 'string' ? value.toLowerCase() : '');
+            const keyword = topic.toLowerCase();
+            const topicMap = {
+                dbms: /dbms|database|sql|query|transaction|index|key|normalization|join|table/,
+                os: /operating system|os|process|thread|scheduling|paging|memory|deadlock|fragmentation|kernel|interrupt/,
+                networking: /network|tcp|udp|arp|dns|routing|switch|router|http|ip|mac|ethernet/,
+                'system design': /system design|scalability|architecture|load balancer|caching|database|availability|latency/
+            };
+
+            const matchesTopic = (obj) => {
+                if (!obj) return false;
+                const text = [obj.category, obj.question, obj.front, obj.back, obj.model_answer, obj.type, obj.tags]
+                    .flat()
+                    .filter(Boolean)
+                    .join(' ')
+                    .toLowerCase();
+
+                if (text.includes(keyword)) return true;
+                if (topicMap.dbms.test(keyword) && topicMap.dbms.test(text)) return true;
+                if (topicMap.os.test(keyword) && topicMap.os.test(text)) return true;
+                if (topicMap.networking.test(keyword) && topicMap.networking.test(text)) return true;
+                if (topicMap['system design'].test(keyword) && topicMap['system design'].test(text)) return true;
+                return false;
+            };
+
+            for (let file of files) {
+                try {
+                    const resp = await fetch(file);
+                    if (resp.ok) {
+                        const data = await resp.json();
+                        const findQs = (obj) => {
+                            if (obj && obj.questions && matchesTopic(obj)) {
+                                localQuestions = localQuestions.concat(obj.questions);
+                            }
+                            if (obj && matchesTopic(obj) && obj.question) {
+                                localQuestions.push(obj);
+                            }
+                            if (Array.isArray(obj)) obj.forEach(findQs);
+                            else if (typeof obj === 'object' && obj !== null) Object.values(obj).forEach(findQs);
+                        };
+                        findQs(data);
+                    }
+                } catch (e) {
+                    console.warn(`Failed to fetch ${file}`, e);
+                }
+            }
+        } catch (e) {
+            console.warn("Local Data bank fetch failed", e);
+        }
+
+        const normalizeQAValue = (value) => {
+            if (typeof value === 'string') return value;
+            if (value == null) return '';
+            if (Array.isArray(value)) return value.map(normalizeQAValue).filter(Boolean).join(' | ');
+            if (typeof value === 'object') {
+                if (value.answer) return normalizeQAValue(value.answer);
+                if (value.back) return normalizeQAValue(value.back);
+                if (value.model_answer) return normalizeQAValue(value.model_answer);
+                if (value.sql) return normalizeQAValue(value.sql);
+                if (value.nosql) return normalizeQAValue(value.nosql);
+                return Object.entries(value).map(([k, v]) => `${k}: ${normalizeQAValue(v)}`).join('; ');
+            }
+            return String(value);
+        };
+
+        const buildOfflineMCQs = () => {
+            let sample = localQuestions.sort(() => 0.5 - Math.random()).slice(0, 3);
+            if (sample.length === 0) {
+                // Failsafe basics
+                sample = [
+                    { question: `What is the core principle of ${topic}?`, answer: "It manages the fundamental architecture effectively." },
+                    { question: `Explain a primary function in ${topic}.`, answer: "Efficient resource allocation and data organization." },
+                    { question: `How does ${topic} improve scalability?`, answer: "By modularizing operations and reducing bottlenecks." }
+                ];
+            }
+            return sample.map(q => {
+                const qText = q.question || q.front || `Explain a core concept in ${topic}.`;
+                const ansText = normalizeQAValue(q.answer) || normalizeQAValue(q.back) || normalizeQAValue(q.model_answer) || "Maintains architectural integrity.";
+
+                let dummies = localQuestions.filter(dq => dq !== q).slice(0, 3).map(dq => (dq.question || dq.front || "").substring(0, 40) + "...");
+                if (dummies.length < 3) dummies = ["True", "False", "Both", "None of the above"].slice(0, 3);
+
+                const options = [ansText.substring(0, 100) + (ansText.length > 100 ? "..." : ""), ...dummies]
+                    .filter(Boolean)
+                    .map(opt => opt.trim())
+                    .filter((opt, index, self) => opt && self.indexOf(opt) === index)
+                    .slice(0, 4);
+
+                while (options.length < 4) {
+                    const fallbackChoices = [
+                        `A foundational ${topic} concept`,
+                        `A performance-related factor`,
+                        `A scalability consideration`,
+                        `A system behavior detail`
+                    ];
+                    options.push(fallbackChoices[options.length]);
+                }
+
+                const answerIndex = options.findIndex(o => o === ansText.substring(0, 100) + (ansText.length > 100 ? "..." : ""));
+
+                return {
+                    question: qText,
+                    options,
+                    answerIndex: answerIndex !== -1 ? answerIndex : 0,
+                    solution_explanation: ansText
+                };
+            });
+        };
+
+        function isLikelyAnswerOption(opt) {
+            return typeof opt === 'string'
+                && opt.trim().length > 0
+                && opt.trim().length <= 120
+                && !/^(choose|select|what|which|when|where|who|why|how|true|false|none of the above)\b/i.test(opt.trim());
+        }
+
+        function validateMCQ(question) {
+            return question
+                && typeof question.question === 'string'
+                && question.question.trim().length > 10
+                && Array.isArray(question.options)
+                && question.options.length >= 2
+                && question.options.every(isLikelyAnswerOption)
+                && Number.isInteger(question.answerIndex)
+                && question.answerIndex >= 0
+                && question.answerIndex < question.options.length;
+        }
+
+        function sanitizeCSQuestions(questions) {
+            if (!Array.isArray(questions)) return [];
+            return questions
+                .filter(validateMCQ)
+                .slice(0, 5)
+                .map(q => ({
+                    ...q,
+                    question: q.question.trim(),
+                    options: q.options.map(opt => opt.trim()),
+                    solution_explanation: (q.solution_explanation || '').trim()
+                }));
+        }
+
+        if (!window.__GEMINI_API_KEY__) {
+            console.log("No AI key found, using local RAG fallback options.");
+            renderCSQuiz(buildOfflineMCQs(), topic);
             return;
         }
 
-        const questions = Array.isArray(aiResponse) ? aiResponse : JSON.parse(aiResponse.replace(/```json|```/g, '').trim());
-        renderCSQuiz(questions, topic);
+        // Apply RAG mapping to AI request
+        let ragContext = "";
+        if (localQuestions.length > 0) {
+            const contextSample = localQuestions.sort(() => 0.5 - Math.random()).slice(0, 5);
+            ragContext = "Context from Data files:\\n" + contextSample.map(q => {
+                const text = q.question || q.front || "";
+                const ans = normalizeQAValue(q.answer) || normalizeQAValue(q.back) || normalizeQAValue(q.model_answer) || "";
+                return `Concept: ${text}\\nDetails: ${ans}`;
+            }).join('\\n\\n');
+        }
+
+const systemPrompt = `You are generating high-quality multiple-choice questions for the CS topic: ${topic}. Use only the topic and the local context provided. Respond ONLY as a valid JSON array of objects exactly in this format: [{"question":"...","options":["...","...","...","..."],"answerIndex":0,"solution_explanation":"..."}]. Each option must be a concise answer choice, not a restatement of the question. Do not include any instructions, labels, or extra sentences inside the option text. Provide 4 distinct answer choices for each question, with one clearly correct answer.\n\n${ragContext}`;
+        const aiResponse = await callGemini(systemPrompt, `Generate quiz for ${topic}`);
+
+        let questions = [];
+        if (aiResponse) {
+            try {
+                questions = Array.isArray(aiResponse)
+                    ? aiResponse
+                    : JSON.parse(aiResponse.replace(/```json|```/g, '').trim());
+            } catch (parseError) {
+                console.warn('Failed to parse AI quiz response:', parseError);
+                questions = [];
+            }
+        }
+
+        const validQuestions = sanitizeCSQuestions(questions);
+        if (validQuestions.length > 0) {
+            renderCSQuiz(validQuestions, topic);
+        } else {
+            console.log("AI returned invalid quiz data, falling back to local RAG options generator");
+            showToast(`⚠️ Using local fallback for ${topic} because the AI output was not valid.`);
+            renderCSQuiz(buildOfflineMCQs(), topic);
+        }
+
     } catch (e) {
         console.error(e);
-        showAIError("AI failed to generate quiz. Please try again.", () => {
-            container.innerHTML = `<button class="btn-gold" style="margin-top:12px;" onclick="startCSReview('${topic}')">Retry</button>`;
-        });
+        container.innerHTML = `
+            <div style="padding:40px; text-align:center;">
+                <p style="color:var(--text-muted); margin-bottom:20px;">Service temporarily unavailable. Could not load local questions.</p>
+                <div style="display:flex; gap:12px; justify-content:center;">
+                    <button class="btn-gold" onclick="startCSReview('${topic}')">🔄 Retry</button>
+                    <button class="glass" style="padding:10px 24px; border-radius:12px; cursor:pointer;" onclick="switchFundSubTab('review')">Back</button>
+                </div>
+            </div>
+        `;
     }
 }
 
@@ -3232,18 +3451,20 @@ function renderCSQuiz(questions, topic) {
     let currentIdx = 0;
     let score = 0;
 
+    window.__currentCSQuestions = questions;
+
     const showQ = () => {
         const q = questions[currentIdx];
         container.innerHTML = `
-            <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="font-size:16px;">${topic} Quiz (${currentIdx + 1}/${questions.length})</h3>
-                <span style="font-size:12px; color:var(--primary);">Score: ${score}</span>
+            <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                <h3 style="font-size:16px; margin:0;">${topic} Quiz (${currentIdx + 1}/${questions.length})</h3>
+                <span style="font-size:12px; color:var(--primary);">XP: ${score * 10}</span>
             </div>
-            <div class="glass-card" style="padding:24px; animation: slideIn 0.3s ease-out;">
-                <p style="font-size:16px; font-weight:700; margin-bottom:24px;">${q.question}</p>
+            <div class="glass-card" style="padding:24px; animation: slideIn 0.3s ease-out; text-align:left;">
+                <p style="font-size:16px; font-weight:700; margin-bottom:24px; line-height:1.6;">${q.question}</p>
                 <div style="display:flex; flex-direction:column; gap:12px;">
                     ${q.options.map((opt, i) => `
-                        <button class="glass" style="padding:16px; text-align:left; border-radius:12px; cursor:pointer; transition:all 0.2s;" onclick="checkCSAns(${i}, ${q.answerIndex}, '${q.solution_explanation.replace(/'/g, "\\'")}')">
+                        <button type="button" class="glass" style="padding:18px 20px; text-align:left; border-radius:18px; cursor:pointer; transition:all 0.2s; background:rgba(255,255,255,0.08); color:var(--text); border:1px solid rgba(255,255,255,0.16);" onclick="checkCSAns(${i})">
                             ${opt}
                         </button>
                     `).join('')}
@@ -3252,25 +3473,26 @@ function renderCSQuiz(questions, topic) {
         `;
     };
 
-    window.checkCSAns = (idx, correct, explanation) => {
+    window.checkCSAns = (idx) => {
+        const q = window.__currentCSQuestions[currentIdx];
         const buttons = container.querySelectorAll('button.glass');
         buttons.forEach((btn, i) => {
             btn.disabled = true;
-            if (i === correct) btn.style.borderColor = "#0ed97a";
-            else if (i === idx) btn.style.borderColor = "#ff6b6b";
+            if (i === q.answerIndex) btn.style.borderColor = "#0ed97a";
+            if (i === idx && idx !== q.answerIndex) btn.style.borderColor = "#ff6b6b";
         });
 
-        if (idx === correct) {
+        if (idx === q.answerIndex) {
             score++;
             showToast("Correct! +10 XP");
             updateXP(10);
         }
 
         const foot = document.createElement('div');
-        foot.style = "margin-top:24px; animation: fadeUp 0.3s ease-out;";
+        foot.style = "margin-top:24px; animation: fadeUp 0.3s ease-out; text-align:left;";
         foot.innerHTML = `
-            <div style="font-size:12px; color:var(--text-muted); margin-bottom:20px; padding:16px; background:rgba(255,255,255,0.02); border-radius:12px;">
-                <b style="color:var(--primary);">Explanation:</b> ${explanation}
+            <div style="font-size:12px; color:var(--text-muted); margin-bottom:20px; padding:16px; background:rgba(255,255,255,0.03); border-radius:12px; white-space:pre-wrap;">
+                <strong style="color:var(--primary);">Explanation:</strong> ${q.solution_explanation}
             </div>
             <button class="btn-gold" style="width:100%; justify-content:center;" onclick="nextCSQ()">
                 ${currentIdx < questions.length - 1 ? 'Next Question' : 'View Results'}
@@ -3281,16 +3503,17 @@ function renderCSQuiz(questions, topic) {
 
     window.nextCSQ = () => {
         currentIdx++;
-        if (currentIdx < questions.length) showQ();
-        else {
+        if (currentIdx < questions.length) {
+            showQ();
+        } else {
             container.innerHTML = `
                 <div style="text-align:center; padding:40px;">
-                    <div style="font-size:48px; margin-bottom:24px;">ðŸ†</div>
+                    <div style="font-size:48px; margin-bottom:24px;">🏆</div>
                     <h2 style="margin-bottom:8px;">Quiz Completed!</h2>
-                    <p style="color:var(--text-muted); margin-bottom:32px;">You scored ${score} out of ${questions.length}</p>
-                    <div style="display:flex; gap:12px; justify-content:center;">
-                        <button class="btn-gold" onclick="startCSReview('${topic}')">Try Again</button>
-                        <button class="glass" style="padding:10px 24px; border-radius:12px; cursor:pointer;" onclick="switchFundSubTab('review')">Finish</button>
+                    <p style="color:var(--text-muted); margin-bottom:32px;">You scored ${score} out of ${questions.length}.</p>
+                    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+                        <button class="btn-gold" onclick="startCSReview('${topic}')">Practice Again</button>
+                        <button class="glass" style="padding:10px 24px; border-radius:12px; cursor:pointer;" onclick="switchFundSubTab('review')">Back</button>
                     </div>
                 </div>
             `;
@@ -3322,11 +3545,11 @@ async function renderCompanyTracks() {
         </div>
 
         <div class="grid-cols-3" style="gap:20px;">
-            ${companies.map(c => {
-        const comp = Math.min(100, Math.round((metrics.readiness * 0.7) + (state.user.xp / c.minXp * 30)));
-        const isLocked = state.user.xp < c.minXp * 0.5;
+        ${companies.map(c => {
+            const comp = Math.min(100, Math.round((metrics.readiness * 0.7) + (state.user.xp / c.minXp * 30)));
+            const isLocked = state.user.xp < c.minXp * 0.5;
 
-        return `
+            return `
                     <div class="glass-card topic-card" style="opacity: ${isLocked ? 0.6 : 1};">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                             <div style="font-weight:800; font-size:16px;">${c.name}</div>
@@ -3336,17 +3559,17 @@ async function renderCompanyTracks() {
                         <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:20px;">
                             ${c.tech.map(t => `<span style="font-size:9px; background:rgba(255,255,255,0.03); padding:2px 6px; border-radius:4px;">${t}</span>`).join('')}
                         </div>
-                        ${isLocked ? `<div style="font-size:10px; color:#ff6b6b;">ðŸ”’ Requires ${c.minXp} XP</div>` : `<button class="btn-gold" style="width:100%; justify-content:center; font-size:12px;" onclick="startInterview('${c.name}')">Crack the Code</button>`}
+                        ${isLocked ? `<div style="font-size:10px; color:#ff6b6b;">🔒 Requires ${c.minXp} XP</div>` : `<button class="btn-gold" style="width:100%; justify-content:center; font-size:12px;" onclick="startInterview('${c.name}')">Crack the Code</button>`}
                     </div>
                 `;
-    }).join('')}
-        </div>
-    `;
+        }).join('')}
+    </div>
+`;
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 // REMAINING TABS (PLACEHOLDERS)
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ════════════════════════════════════════════════════════
 
 async function renderInterviewHub() {
     const container = document.getElementById('career-tab-content');
@@ -3368,13 +3591,13 @@ async function renderInterviewHub() {
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="launchMockInterview('technical')">Start Technical</button>
             </div>
             <div class="topic-card" style="border-color:var(--secondary);">
-                <div style="font-size:32px; margin-bottom:16px;">ðŸ’¼</div>
+                <div style="font-size:32px; margin-bottom:16px;">💼</div>
                 <h3 style="margin-bottom:8px;">Behavioral & HR</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Practice STAR responses and receive polished answers from AI.</p>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="launchMockInterview('behavioral')">Start Behavioral</button>
             </div>
             <div class="topic-card" style="border-color:rgba(99,102,241,0.3);">
-                <div style="font-size:32px; margin-bottom:16px;">ðŸ“</div>
+                <div style="font-size:32px; margin-bottom:16px;">📜</div>
                 <h3 style="margin-bottom:8px;">Online Test Simulator</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">AI-curated aptitude + reasoning problems in timed format.</p>
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="launchOTSim()">Launch OT Sim</button>
@@ -3396,7 +3619,7 @@ async function renderInterviewHub() {
             <h3 style="font-size:16px; margin-bottom:16px;">Recent Practice</h3>
             <div id="interview-history-list" style="color:var(--text-muted); font-size:13px; text-align:center; padding:20px;">No recent interview sessions found.</div>
         </div>
-    `;
+`;
 }
 
 function showInterviewPrepModal() {
@@ -3454,7 +3677,7 @@ function openInterviewSession(title, questions, type = "technical") {
 
     const modal = document.getElementById('interview-modal');
     modal.style.display = 'flex';
-    document.getElementById('int-company-title').innerText = `${title}`;
+    document.getElementById('int-company-title').innerText = `${ title } `;
     document.getElementById('int-topic').innerText = title;
     renderInterviewQuestion();
 
@@ -3466,7 +3689,7 @@ function openInterviewSession(title, questions, type = "technical") {
         interviewState.timer += 1;
         const minutes = String(Math.floor(interviewState.timer / 60)).padStart(2, '0');
         const seconds = String(interviewState.timer % 60).padStart(2, '0');
-        const timerText = `ðŸ•’ ${minutes}:${seconds}`;
+        const timerText = `🕒 ${ minutes }:${ seconds } `;
         const timerElement = document.getElementById('int-timer');
         if (timerElement) timerElement.innerText = timerText;
     }, 1000);
@@ -3522,12 +3745,12 @@ async function evaluateGDPoint() {
     feedbackDiv.innerHTML = `<div class="spinner" style="margin:20px auto;"></div>`;
 
     try {
-        const systemPrompt = `You are a GD moderator. Evaluate the user's statement for clarity, logic, and professional phrasing. Provide 3 specific ways to improve the statement to make it more impactful. Respond in JSON with {evaluation, refined_version, tips: []}.`;
-        const data = await callGemini(systemPrompt, `Analyze this GD point: ${input}`);
+        const systemPrompt = `You are a GD moderator.Evaluate the user's statement for clarity, logic, and professional phrasing. Provide 3 specific ways to improve the statement to make it more impactful. Respond in JSON with {evaluation, refined_version, tips: []}.`;
+const data = await callGemini(systemPrompt, `Analyze this GD point: ${input}`);
 
-        if (!data) return; // Error handled in callGemini
+if (!data) return; // Error handled in callGemini
 
-        feedbackDiv.innerHTML = `
+feedbackDiv.innerHTML = `
             <div class="glass-card" style="padding:20px; border-left:4px solid var(--primary);">
                 <div style="font-size:13px; font-weight:800; margin-bottom:12px; color:var(--primary);">AI Analysis</div>
                 <p style="font-size:12px; margin-bottom:16px;">${data.evaluation || 'Your point is clear but could be more punchy.'}</p>
@@ -3538,11 +3761,11 @@ async function evaluateGDPoint() {
                 </div>
             </div>
         `;
-        updateXP(25);
+updateXP(25);
     } catch (e) {
-        showAIError("Failed to analyze GD point.");
-        feedbackDiv.innerHTML = `<p style="color:#ff6b6b;">Failed to analyze. Check connection.</p>`;
-    }
+    showAIError("Failed to analyze GD point.");
+    feedbackDiv.innerHTML = `<p style="color:#ff6b6b;">Failed to analyze. Check connection.</p>`;
+}
 }
 async function renderSoftSkillsHub() {
     const container = document.getElementById('career-tab-content');
@@ -3635,7 +3858,7 @@ async function gradeEmail() {
             <div class="glass-card" style="padding:24px; border-left:4px solid var(--secondary);">
                 <h3 style="margin-bottom:16px;">Email Score: ${data.score || '8'}/10</h3>
                 <div style="display:flex; flex-direction:column; gap:12px;">
-                    ${(data.tips || []).map(tip => `<div style="font-size:13px;">âœ… ${tip}</div>`).join('')}
+                    ${(data.tips || []).map(tip => `<div style="font-size:13px;">✅ ${tip}</div>`).join('')}
                 </div>
             </div>
         `;
@@ -3660,7 +3883,7 @@ async function renderDocumentsHub() {
                 <button class="btn-gold" style="width:100%; justify-content:center;" onclick="generateAIResume()">Generate Resume</button>
             </div>
             <div class="glass-card" style="padding:28px;">
-                <h3 style="margin-bottom:16px;">âœï¸ Cover Letter Generator</h3>
+                <h3 style=margin-bottom:16px;>✍️ Cover Letter Generator</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Tailor your cover letter for specific roles.</p>
                 <input id="cl-company" style="width:100%; background:var(--surface-light); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:10px; font-size:12px; margin-bottom:12px; outline:none; font-family:inherit;" placeholder="Company Name">
                 <input id="cl-role" style="width:100%; background:var(--surface-light); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:10px; font-size:12px; margin-bottom:20px; outline:none; font-family:inherit;" placeholder="Role">

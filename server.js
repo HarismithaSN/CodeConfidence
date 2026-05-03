@@ -3,8 +3,10 @@ const cors = require('cors');
 const fetch = require('node-fetch');
 const path = require('path');
 const fs = require('fs');
+const mysql = require('mysql2/promise');
+require('dotenv').config();
 
-console.log("\n🚀 CodeConfidence v12.7-ULTIMATE Starting...");
+console.log("\n🚀 CodeConfidence v12.7-ULTIMATE Starting with MySQL storage...");
 
 const app = express();
 app.use(cors());
@@ -14,20 +16,213 @@ app.use(express.static(path.join(__dirname)));
 // Root redirect
 app.get('/', (req, res) => res.redirect('/login.html'));
 
-// DB
-const DB_FILE = path.join(__dirname, 'users.json');
-const readDB = () => { if (!fs.existsSync(DB_FILE)) return {}; try { return JSON.parse(fs.readFileSync(DB_FILE, 'utf8')); } catch (e) { return {}; } };
-const writeDB = (data) => fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_USER = process.env.DB_USER || 'root';
+const DB_PASSWORD = process.env.DB_PASSWORD || '';
+const DB_NAME = process.env.DB_NAME || 'codeconfidence';
+let pool;
+
+async function initDatabase() {
+  const rootPool = await mysql.createPool({
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    waitForConnections: true,
+    connectionLimit: 2,
+    queueLimit: 0
+  });
+
+  await rootPool.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+  await rootPool.end();
+
+  pool = await mysql.createPool({
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
+
+  await pool.query(`CREATE TABLE IF NOT EXISTS institutions (
+    id VARCHAR(64) PRIMARY KEY,
+    name VARCHAR(255),
+    adminName VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255),
+    type VARCHAR(128),
+    totalStudents INT DEFAULT 0,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
+
+  await pool.query(`CREATE TABLE IF NOT EXISTS users (
+    email VARCHAR(255) PRIMARY KEY,
+    rollNo VARCHAR(64),
+    name VARCHAR(255),
+    branch VARCHAR(80),
+    year VARCHAR(40),
+    password VARCHAR(255),
+    xp INT DEFAULT 0,
+    level INT DEFAULT 1,
+    confidenceScore INT DEFAULT 0,
+    streak INT DEFAULT 0,
+    lastLogin DATE,
+    status VARCHAR(50) DEFAULT 'active',
+    instId VARCHAR(64),
+    college VARCHAR(255),
+    passwordSet TINYINT(1) DEFAULT 1,
+    language VARCHAR(64) DEFAULT 'English',
+    submissions JSON,
+    scores JSON,
+    skills JSON,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_roll (rollNo),
+    INDEX idx_inst (instId),
+    INDEX idx_college (college)
+  )`);
+
+  await seedDemoInstitution();
+  await migrateJsonUsers();
+}
+
+function normalizeEmail(email) {
+  return typeof email === 'string' ? email.toLowerCase().trim() : '';
+}
+
+function parseUserRow(row) {
+  if (!row) return null;
+  return {
+    email: row.email,
+    rollNo: row.rollNo,
+    name: row.name,
+    branch: row.branch,
+    year: row.year,
+    password: row.password,
+    xp: row.xp,
+    level: row.level,
+    confidenceScore: row.confidenceScore,
+    streak: row.streak,
+    lastActive: row.lastLogin ? row.lastLogin.toISOString().split('T')[0] : null,
+    status: row.status,
+    instId: row.instId,
+    college: row.college,
+    passwordSet: !!row.passwordSet,
+    submissions: row.submissions ? JSON.parse(row.submissions) : [],
+    scores: row.scores ? JSON.parse(row.scores) : [],
+    skills: row.skills ? JSON.parse(row.skills) : {},
+    createdAt: row.createdAt
+  };
+}
+
+async function findUserByEmail(email) {
+  const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [normalizeEmail(email)]);
+  return parseUserRow(rows[0]);
+}
+
+async function findUserByRollNo(rollNo, instId) {
+  const [rows] = await pool.query(
+    'SELECT * FROM users WHERE LOWER(rollNo) = ? AND (? = "" OR instId = ?)',
+    [rollNo.toLowerCase(), instId || '', instId || '']
+  );
+  return parseUserRow(rows[0]);
+}
+
+async function createUser(user) {
+  const insert = `INSERT INTO users (email, rollNo, name, branch, year, password, xp, level, confidenceScore, streak, lastLogin, status, instId, college, passwordSet, language, submissions, scores, skills, createdAt)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  await pool.query(insert, [
+    normalizeEmail(user.email),
+    user.rollNo || null,
+    user.name || null,
+    user.branch || null,
+    user.year || null,
+    user.password || null,
+    user.xp || 0,
+    user.level || 1,
+    user.confidenceScore || 0,
+    user.streak || 0,
+    user.lastLogin ? new Date(user.lastLogin) : null,
+    user.status || 'active',
+    user.instId || null,
+    user.college || null,
+    user.passwordSet ? 1 : 0,
+    user.language || 'English',
+    JSON.stringify(user.submissions || []),
+    JSON.stringify(user.scores || []),
+    JSON.stringify(user.skills || {}),
+    user.createdAt ? new Date(user.createdAt) : new Date()
+  ]);
+}
+
+async function updateUserByEmail(email, updates) {
+  const normalized = normalizeEmail(email);
+  const fields = [];
+  const values = [];
+
+  Object.entries(updates).forEach(([key, value]) => {
+    if (key === 'submissions' || key === 'scores' || key === 'skills') {
+      fields.push(`${key} = ?`);
+      values.push(JSON.stringify(value || []));
+    } else if (key === 'lastLogin') {
+      fields.push('lastLogin = ?');
+      values.push(value ? new Date(value) : null);
+    } else if (key === 'passwordSet') {
+      fields.push('passwordSet = ?');
+      values.push(value ? 1 : 0);
+    } else {
+      fields.push(`${key} = ?`);
+      values.push(value);
+    }
+  });
+
+  if (!fields.length) return;
+  values.push(normalized);
+  await pool.query(`UPDATE users SET ${fields.join(', ')} WHERE email = ?`, values);
+}
+
+async function seedDemoInstitution() {
+  const existing = await pool.query('SELECT id FROM institutions WHERE id = ?', ['DSCE-MCA-2024']);
+  if (existing[0].length === 0) {
+    await pool.query(`INSERT INTO institutions (id, name, adminName, email, password, type, totalStudents) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      ['DSCE-MCA-2024', 'Dayananda Sagar College', 'Dr. Ramesh Kumar', 'admin@dsce.edu.in', 'demo123', 'Engineering College', 156]);
+  }
+}
+
+async function migrateJsonUsers() {
+  try {
+    const content = fs.readFileSync(path.join(__dirname, 'users.json'), 'utf8');
+    const json = JSON.parse(content);
+    for (const email of Object.keys(json)) {
+      const raw = json[email];
+      const exists = await pool.query('SELECT email FROM users WHERE email = ?', [normalizeEmail(email)]);
+      if (exists[0].length > 0) continue;
+      await createUser({
+        ...raw,
+        email,
+        passwordSet: raw.passwordSet !== false,
+        submissions: raw.submissions || [],
+        scores: raw.scores || [],
+        skills: raw.skills || {}
+      });
+    }
+    console.log('✅ Migrated user data from users.json into MySQL.');
+  } catch (e) {
+    console.warn('⚠️ No users.json migration performed:', e.message);
+  }
+}
 
 // Auth & Profile
-app.post('/api/signup', (req, res) => {
+app.post('/api/signup', async (req, res) => {
   const { name, email, password, college, language } = req.body;
-  const db = readDB();
-  const lowerEmail = email.toLowerCase().trim();
-  if (db[lowerEmail]) return res.status(409).json({ error: 'Email registered.' });
-  db[lowerEmail] = {
-    name,
+  const lowerEmail = normalizeEmail(email);
+  const existing = await findUserByEmail(lowerEmail);
+  if (existing) return res.status(409).json({ error: 'Email registered.' });
+
+  await createUser({
     email: lowerEmail,
+    name,
     password,
     college: college || 'Unknown',
     language: language || 'English',
@@ -37,106 +232,68 @@ app.post('/api/signup', (req, res) => {
     scores: [],
     lastLogin: new Date().toDateString(),
     createdAt: new Date().toISOString()
-  };
-  writeDB(db);
-  res.json({ name, email: lowerEmail, xp: 0, streak: 1, submissions: [], scores: [], college: db[lowerEmail].college, language: db[lowerEmail].language });
+  });
+
+  res.json({ name, email: lowerEmail, xp: 0, streak: 1, submissions: [], scores: [], college: college || 'Unknown', language: language || 'English' });
 });
 
-app.post('/api/login', (req, res) => {
-  const { email, password, instId, rollNo } = req.body;
-  const db = readDB();
+app.post('/api/login', async (req, res) => {
+  const { email, instId, rollNo, password } = req.body;
   let user = null;
 
-  if (instId && rollNo) {
-    const cleanInst = instId.trim().toLowerCase();
-    const cleanRoll = rollNo.trim().toLowerCase();
-    user = Object.values(db).find(u => u.instId?.toLowerCase() === cleanInst && u.rollNo?.toLowerCase() === cleanRoll);
-  } else if (email) {
-    const lowerEmail = email.toLowerCase().trim();
-    user = db[lowerEmail];
+  if (email) {
+    user = await findUserByEmail(email);
+  }
+  if (!user && rollNo) {
+    user = await findUserByRollNo(rollNo, instId);
   }
 
-  if (!user || user.password !== password) return res.status(401).json({ error: 'Invalid creds.' });
+  if (!user || user.password !== password) {
+    return res.status(401).json({ error: 'Invalid creds.' });
+  }
 
-  // Streak Logic
   const today = new Date().toDateString();
-  const last = user.lastLogin;
-
-  if (last !== today) {
+  if (user.lastActive !== today) {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     const yString = yesterday.toDateString();
+    const streak = user.lastActive === yString ? (user.streak || 0) + 1 : 1;
 
-    if (last === yString) {
-      user.streak = (user.streak || 0) + 1;
-    } else {
-      user.streak = 1;
-    }
-    user.lastLogin = today;
-    writeDB(db);
+    await updateUserByEmail(user.email, {
+      streak,
+      lastLogin: today
+    });
+
+    user.streak = streak;
+    user.lastActive = today;
   }
 
-  res.json({ ...user, password: undefined });
+  const response = { ...user };
+  delete response.password;
+  res.json(response);
 });
 
-app.post('/api/institution/students', (req, res) => {
-  const { instId, students, passwordSetIds } = req.body;
-  if (!instId || !students || !Array.isArray(students)) {
-    return res.status(400).json({ error: 'Invalid data' });
-  }
-
-  const db = readDB();
-  let added = 0;
-
-  for (const s of students) {
-    // Generate an internal email identifier for students in users.json
-    const lowerEmail = s.email ? s.email.toLowerCase().trim() : `${s.rollNo.toLowerCase()}@${instId.toLowerCase()}.edu`;
-    const userExists = db[lowerEmail];
-
-    db[lowerEmail] = {
-      ...userExists, // retain existing fields (like submissions, scores)
-      ...s,
-      email: lowerEmail,
-      instId: instId,
-      college: s.college || instId,
-      password: s.passwordSet ? s.password : (userExists && userExists.passwordSet ? userExists.password : s.password),
-      passwordSet: s.passwordSet || (userExists && userExists.passwordSet ? true : false),
-      xp: userExists ? userExists.xp : (s.xp || 0),
-      level: userExists ? userExists.level : (s.level || 1),
-      streak: userExists ? userExists.streak : (s.streak || 1),
-      submissions: userExists ? userExists.submissions : [],
-      scores: userExists ? userExists.scores : [],
-      createdAt: userExists ? userExists.createdAt : new Date().toISOString()
-    };
-    if (!userExists) added++;
-  }
-
-  writeDB(db);
-  res.json({ message: `Synced ${students.length} students successfully. Added ${added} new.` });
-});
-
-app.get('/api/community/:college', (req, res) => {
-  const db = readDB();
+app.get('/api/community/:college', async (req, res) => {
   const college = req.params.college;
-  const users = Object.values(db);
-  const collegeUsers = users.filter(u => u.college === college)
-    .sort((a, b) => b.xp - a.xp)
-    .map(u => ({ name: u.name, xp: u.xp, level: u.level }));
+  const [rows] = await pool.query('SELECT name, xp, level FROM users WHERE college = ? ORDER BY xp DESC', [college]);
+  const collegeUsers = rows.map(u => ({ name: u.name, xp: u.xp, level: u.level }));
 
   res.json({
     activeNow: Math.floor(Math.random() * 50) + 100,
     collegeRank: collegeUsers,
-    totalReviews: users.reduce((acc, u) => acc + (u.reviewsGiven || 0), 0)
+    totalReviews: 0
   });
 });
 
-app.put('/api/profile/:email', (req, res) => {
-  const db = readDB();
-  const email = req.params.email.toLowerCase().trim();
-  if (!db[email]) return res.status(404).json({ error: 'Not found.' });
-  db[email] = { ...db[email], ...req.body };
-  writeDB(db);
-  res.json({ ...db[email], password: undefined });
+app.put('/api/profile/:email', async (req, res) => {
+  const email = normalizeEmail(req.params.email);
+  const existing = await findUserByEmail(email);
+  if (!existing) return res.status(404).json({ error: 'Not found.' });
+
+  await updateUserByEmail(email, req.body);
+  const updated = await findUserByEmail(email);
+  delete updated.password;
+  res.json(updated);
 });
 
 // REAL COMPILER (Judge0)
@@ -258,14 +415,23 @@ app.post('/api/ai', async (req, res) => {
 });
 
 const PORT = 3001;
-const listener = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`📡 Server active at: http://localhost:${PORT}`);
-});
+(async () => {
+  try {
+    await initDatabase();
+    const listener = app.listen(PORT, '0.0.0.0', () => {
+      console.log(`📡 Server active at: http://localhost:${PORT}`);
+    });
 
-listener.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`\n❌ Error: Port ${PORT} is BUSY! Please close the old window.`);
-  } else {
-    console.error(`\n❌ Fatal Error: ${err.message}`);
+    listener.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.error(`\n❌ Error: Port ${PORT} is BUSY! Please close the old window.`);
+      } else {
+        console.error(`\n❌ Fatal Error: ${err.message}`);
+      }
+    });
+  } catch (e) {
+    console.error('❌ Could not initialize MySQL database. Please verify MySQL is running and credentials are correct.');
+    console.error(e);
+    process.exit(1);
   }
-});
+})();

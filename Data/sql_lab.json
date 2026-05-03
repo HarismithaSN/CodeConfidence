@@ -1,0 +1,252 @@
+{
+  "section": "CS Fundamentals – SQL Lab",
+  "description": "Interactive SQL challenges, guided exercises, query writing, and AI-review-ready problems for the SQL Lab section of CodeConfidence. Covers DDL, DML, joins, subqueries, aggregation, window functions, and optimization.",
+  "categories": [
+    {
+      "category": "DDL – Schema Design",
+      "questions": [
+        {
+          "id": "sql_ddl_001",
+          "type": "challenge",
+          "title": "Create a Students Table",
+          "prompt": "Create a table called Students with columns: student_id (primary key, auto-increment), name (varchar, not null), email (unique), age (int), department (varchar), gpa (decimal 3,2), enrolled_on (date).",
+          "expected_output": "Table created successfully with constraints.",
+          "solution": "CREATE TABLE Students (\n    student_id INT PRIMARY KEY AUTO_INCREMENT,\n    name VARCHAR(100) NOT NULL,\n    email VARCHAR(150) UNIQUE,\n    age INT CHECK (age >= 16 AND age <= 60),\n    department VARCHAR(50),\n    gpa DECIMAL(3,2) CHECK (gpa >= 0.0 AND gpa <= 10.0),\n    enrolled_on DATE DEFAULT CURRENT_DATE\n);",
+          "concepts_tested": ["CREATE TABLE", "PRIMARY KEY", "AUTO_INCREMENT", "NOT NULL", "UNIQUE", "CHECK", "DEFAULT"],
+          "ai_review_hints": [
+            "Did you add a CHECK constraint on age?",
+            "Did you add a CHECK constraint on gpa range?",
+            "Did you use DECIMAL(3,2) correctly for GPA?"
+          ],
+          "difficulty": "easy",
+          "tags": ["ddl", "create_table", "constraints"]
+        },
+        {
+          "id": "sql_ddl_002",
+          "type": "challenge",
+          "title": "Add Foreign Key with ON DELETE CASCADE",
+          "prompt": "Create a Courses table and an Enrollments table. Enrollments must reference both Students and Courses. When a student is deleted, their enrollments should be deleted automatically.",
+          "solution": "CREATE TABLE Courses (\n    course_id INT PRIMARY KEY AUTO_INCREMENT,\n    course_name VARCHAR(100) NOT NULL,\n    credits INT DEFAULT 3,\n    instructor VARCHAR(100)\n);\n\nCREATE TABLE Enrollments (\n    enrollment_id INT PRIMARY KEY AUTO_INCREMENT,\n    student_id INT NOT NULL,\n    course_id INT NOT NULL,\n    grade CHAR(2),\n    enrolled_date DATE DEFAULT CURRENT_DATE,\n    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE,\n    FOREIGN KEY (course_id) REFERENCES Courses(course_id) ON DELETE RESTRICT\n);",
+          "concepts_tested": ["FOREIGN KEY", "REFERENCES", "ON DELETE CASCADE", "ON DELETE RESTRICT"],
+          "ai_review_hints": [
+            "Did you use ON DELETE CASCADE on student_id?",
+            "Do both foreign keys reference the correct parent tables?",
+            "What happens to enrollments if a course is deleted (RESTRICT vs CASCADE)?"
+          ],
+          "difficulty": "medium",
+          "tags": ["ddl", "foreign_key", "referential_integrity"]
+        },
+        {
+          "id": "sql_ddl_003",
+          "type": "concept",
+          "title": "ALTER TABLE Operations",
+          "prompt": "Write SQL to: (1) Add a phone_number column to Students, (2) Rename column gpa to cgpa, (3) Drop the age column, (4) Add an index on department.",
+          "solution": "-- Add column\nALTER TABLE Students ADD COLUMN phone_number VARCHAR(15);\n\n-- Rename column (MySQL 8+)\nALTER TABLE Students RENAME COLUMN gpa TO cgpa;\n\n-- Drop column\nALTER TABLE Students DROP COLUMN age;\n\n-- Add index\nCREATE INDEX idx_department ON Students(department);\n\n-- Or using ALTER TABLE\nALTER TABLE Students ADD INDEX idx_department (department);",
+          "concepts_tested": ["ALTER TABLE", "ADD COLUMN", "RENAME COLUMN", "DROP COLUMN", "CREATE INDEX"],
+          "difficulty": "easy",
+          "tags": ["ddl", "alter", "index"]
+        }
+      ]
+    },
+    {
+      "category": "DML – Data Manipulation",
+      "questions": [
+        {
+          "id": "sql_dml_001",
+          "type": "challenge",
+          "title": "INSERT with Multiple Rows",
+          "prompt": "Insert 4 students into the Students table in a single query: Alice (CS, GPA 9.1), Bob (IT, GPA 8.3), Carol (ECE, GPA 7.8), Dave (CS, GPA 9.5).",
+          "solution": "INSERT INTO Students (name, email, age, department, gpa, enrolled_on)\nVALUES\n    ('Alice', 'alice@college.edu', 20, 'CS', 9.10, '2022-08-01'),\n    ('Bob', 'bob@college.edu', 21, 'IT', 8.30, '2022-08-01'),\n    ('Carol', 'carol@college.edu', 20, 'ECE', 7.80, '2022-08-01'),\n    ('Dave', 'dave@college.edu', 22, 'CS', 9.50, '2022-08-01');",
+          "concepts_tested": ["INSERT INTO", "multi-row insert"],
+          "difficulty": "easy",
+          "tags": ["dml", "insert"]
+        },
+        {
+          "id": "sql_dml_002",
+          "type": "challenge",
+          "title": "UPDATE with Condition",
+          "prompt": "Update the GPA of all CS department students by adding 0.2, but cap it at 10.0. Then set all students with GPA below 5.0 to 'probation' status (add a status column first).",
+          "solution": "-- Add status column\nALTER TABLE Students ADD COLUMN status VARCHAR(20) DEFAULT 'active';\n\n-- Update CS students GPA (cap at 10.0)\nUPDATE Students\nSET gpa = LEAST(gpa + 0.2, 10.0)\nWHERE department = 'CS';\n\n-- Set probation for low GPA\nUPDATE Students\nSET status = 'probation'\nWHERE gpa < 5.0;",
+          "concepts_tested": ["UPDATE", "WHERE", "LEAST()", "ALTER TABLE"],
+          "ai_review_hints": [
+            "Did you use LEAST() to cap GPA at 10?",
+            "Did you apply WHERE correctly to only CS students?"
+          ],
+          "difficulty": "medium",
+          "tags": ["dml", "update", "functions"]
+        },
+        {
+          "id": "sql_dml_003",
+          "type": "challenge",
+          "title": "DELETE with Subquery",
+          "prompt": "Delete all students who are enrolled in 0 courses (not present in the Enrollments table).",
+          "solution": "-- Using NOT IN\nDELETE FROM Students\nWHERE student_id NOT IN (\n    SELECT DISTINCT student_id FROM Enrollments\n);\n\n-- Using NOT EXISTS (more efficient for large datasets)\nDELETE FROM Students s\nWHERE NOT EXISTS (\n    SELECT 1 FROM Enrollments e\n    WHERE e.student_id = s.student_id\n);",
+          "concepts_tested": ["DELETE", "NOT IN", "NOT EXISTS", "subquery"],
+          "ai_review_hints": [
+            "NOT EXISTS is generally more efficient than NOT IN for large tables.",
+            "Did you use DISTINCT in the subquery?"
+          ],
+          "difficulty": "medium",
+          "tags": ["dml", "delete", "subquery"]
+        }
+      ]
+    },
+    {
+      "category": "SELECT & Filtering",
+      "questions": [
+        {
+          "id": "sql_sel_001",
+          "type": "challenge",
+          "title": "Filtering with WHERE, BETWEEN, LIKE, IN",
+          "prompt": "Write queries to: (1) Find students with GPA between 8.0 and 9.5, (2) Find students whose name starts with 'A', (3) Find students in CS or IT department.",
+          "solution": "-- BETWEEN\nSELECT name, gpa FROM Students\nWHERE gpa BETWEEN 8.0 AND 9.5\nORDER BY gpa DESC;\n\n-- LIKE\nSELECT name, email FROM Students\nWHERE name LIKE 'A%';\n\n-- IN\nSELECT name, department, gpa FROM Students\nWHERE department IN ('CS', 'IT')\nORDER BY department, gpa DESC;",
+          "concepts_tested": ["WHERE", "BETWEEN", "LIKE", "IN", "ORDER BY"],
+          "difficulty": "easy",
+          "tags": ["select", "filtering", "like", "between", "in"]
+        },
+        {
+          "id": "sql_sel_002",
+          "type": "challenge",
+          "title": "Aggregate Functions",
+          "prompt": "Write a single query to show: department, total students, average GPA, max GPA, min GPA — for departments with more than 2 students, ordered by average GPA descending.",
+          "solution": "SELECT\n    department,\n    COUNT(*) AS total_students,\n    ROUND(AVG(gpa), 2) AS avg_gpa,\n    MAX(gpa) AS max_gpa,\n    MIN(gpa) AS min_gpa\nFROM Students\nGROUP BY department\nHAVING COUNT(*) > 2\nORDER BY avg_gpa DESC;",
+          "concepts_tested": ["GROUP BY", "HAVING", "COUNT", "AVG", "MAX", "MIN", "ROUND"],
+          "ai_review_hints": [
+            "Use HAVING (not WHERE) to filter after aggregation.",
+            "Did you include ROUND for cleaner output?"
+          ],
+          "difficulty": "medium",
+          "tags": ["aggregate", "group_by", "having"]
+        },
+        {
+          "id": "sql_sel_003",
+          "type": "challenge",
+          "title": "CASE WHEN – Conditional Columns",
+          "prompt": "Write a query that shows each student's name, GPA, and a grade_band column: 'Distinction' (GPA >= 9), 'First Class' (>= 7.5), 'Second Class' (>= 6), 'Pass' (>= 5), 'Fail' (< 5).",
+          "solution": "SELECT\n    name,\n    gpa,\n    CASE\n        WHEN gpa >= 9.0 THEN 'Distinction'\n        WHEN gpa >= 7.5 THEN 'First Class'\n        WHEN gpa >= 6.0 THEN 'Second Class'\n        WHEN gpa >= 5.0 THEN 'Pass'\n        ELSE 'Fail'\n    END AS grade_band\nFROM Students\nORDER BY gpa DESC;",
+          "concepts_tested": ["CASE WHEN", "THEN", "ELSE", "END"],
+          "difficulty": "easy",
+          "tags": ["case_when", "conditional"]
+        }
+      ]
+    },
+    {
+      "category": "JOINs",
+      "questions": [
+        {
+          "id": "sql_join_001",
+          "type": "challenge",
+          "title": "Multi-Table JOIN",
+          "prompt": "Write a query to show: student name, course name, grade, instructor — for all enrolled students. Include students with no enrollments (show NULL for course details).",
+          "solution": "SELECT\n    s.name AS student_name,\n    c.course_name,\n    e.grade,\n    c.instructor\nFROM Students s\nLEFT JOIN Enrollments e ON s.student_id = e.student_id\nLEFT JOIN Courses c ON e.course_id = c.course_id\nORDER BY s.name, c.course_name;",
+          "concepts_tested": ["LEFT JOIN", "multi-table join", "aliases"],
+          "ai_review_hints": [
+            "Use LEFT JOIN to include students with no enrollments.",
+            "Did you join Enrollments first, then Courses?"
+          ],
+          "difficulty": "medium",
+          "tags": ["join", "left_join", "multi_table"]
+        },
+        {
+          "id": "sql_join_002",
+          "type": "challenge",
+          "title": "Self JOIN – Find Students in Same Department",
+          "prompt": "Write a query to find pairs of students who are in the same department (don't include a student paired with themselves, and avoid duplicate pairs).",
+          "solution": "SELECT\n    a.name AS student_1,\n    b.name AS student_2,\n    a.department\nFROM Students a\nJOIN Students b ON a.department = b.department\nWHERE a.student_id < b.student_id  -- avoid duplicates and self-pairing\nORDER BY a.department, a.name;",
+          "concepts_tested": ["SELF JOIN", "avoiding duplicates", "WHERE with ID comparison"],
+          "difficulty": "hard",
+          "tags": ["self_join", "deduplication"]
+        }
+      ]
+    },
+    {
+      "category": "Subqueries & CTEs",
+      "questions": [
+        {
+          "id": "sql_sub_001",
+          "type": "challenge",
+          "title": "Subquery in WHERE",
+          "prompt": "Find all students whose GPA is above the average GPA of their own department.",
+          "solution": "SELECT s1.name, s1.department, s1.gpa\nFROM Students s1\nWHERE s1.gpa > (\n    SELECT AVG(s2.gpa)\n    FROM Students s2\n    WHERE s2.department = s1.department\n)\nORDER BY s1.department, s1.gpa DESC;",
+          "concepts_tested": ["correlated subquery", "AVG", "WHERE with subquery"],
+          "difficulty": "hard",
+          "tags": ["subquery", "correlated", "aggregate"]
+        },
+        {
+          "id": "sql_sub_002",
+          "type": "challenge",
+          "title": "CTE (Common Table Expression)",
+          "prompt": "Use a CTE to first calculate the average GPA per department, then show departments where the average GPA exceeds 8.0 along with how many students are in each.",
+          "solution": "WITH DeptStats AS (\n    SELECT\n        department,\n        COUNT(*) AS total_students,\n        ROUND(AVG(gpa), 2) AS avg_gpa\n    FROM Students\n    GROUP BY department\n)\nSELECT\n    department,\n    total_students,\n    avg_gpa\nFROM DeptStats\nWHERE avg_gpa > 8.0\nORDER BY avg_gpa DESC;",
+          "concepts_tested": ["WITH (CTE)", "nested aggregation", "readability"],
+          "ai_review_hints": [
+            "CTEs make complex queries more readable — think of them as named temporary result sets.",
+            "You can reference a CTE multiple times in the same query."
+          ],
+          "difficulty": "medium",
+          "tags": ["cte", "with", "aggregate"]
+        },
+        {
+          "id": "sql_sub_003",
+          "type": "challenge",
+          "title": "Rank Students with Window Functions",
+          "prompt": "Write a query to rank students within each department by GPA (highest = rank 1). Show: name, department, GPA, department_rank. Also add a dense_rank and show the top-ranked student per department.",
+          "solution": "-- Full ranking\nSELECT\n    name,\n    department,\n    gpa,\n    RANK() OVER (PARTITION BY department ORDER BY gpa DESC) AS dept_rank,\n    DENSE_RANK() OVER (PARTITION BY department ORDER BY gpa DESC) AS dense_rank,\n    ROW_NUMBER() OVER (PARTITION BY department ORDER BY gpa DESC) AS row_num\nFROM Students;\n\n-- Top student per department\nWITH RankedStudents AS (\n    SELECT\n        name,\n        department,\n        gpa,\n        RANK() OVER (PARTITION BY department ORDER BY gpa DESC) AS dept_rank\n    FROM Students\n)\nSELECT name, department, gpa\nFROM RankedStudents\nWHERE dept_rank = 1;",
+          "concepts_tested": ["WINDOW FUNCTIONS", "RANK()", "DENSE_RANK()", "ROW_NUMBER()", "PARTITION BY", "CTE"],
+          "ai_review_hints": [
+            "RANK() skips numbers after ties (1,1,3). DENSE_RANK() doesn't skip (1,1,2). ROW_NUMBER() always gives unique numbers.",
+            "PARTITION BY is like GROUP BY but for window functions — it doesn't collapse rows."
+          ],
+          "difficulty": "hard",
+          "tags": ["window_functions", "rank", "partition_by", "cte"]
+        }
+      ]
+    },
+    {
+      "category": "SQL Optimization & Flashcards",
+      "questions": [
+        {
+          "id": "sql_opt_001",
+          "type": "flashcard",
+          "front": "What is the difference between WHERE and HAVING?",
+          "back": "WHERE filters individual rows BEFORE aggregation. HAVING filters groups AFTER GROUP BY aggregation. You cannot use aggregate functions in WHERE.",
+          "example": "-- Wrong:\nSELECT dept, AVG(gpa) FROM Students WHERE AVG(gpa) > 8 GROUP BY dept;\n\n-- Correct:\nSELECT dept, AVG(gpa) FROM Students GROUP BY dept HAVING AVG(gpa) > 8;",
+          "tags": ["where", "having", "aggregation"]
+        },
+        {
+          "id": "sql_opt_002",
+          "type": "flashcard",
+          "front": "What is the execution order of a SQL SELECT query?",
+          "back": "SQL executes in this order: FROM → JOIN → WHERE → GROUP BY → HAVING → SELECT → DISTINCT → ORDER BY → LIMIT",
+          "mnemonic": "Friendly Jungle Walks Generate Happy Smiles, Doing Outstanding Leaps",
+          "tags": ["execution_order", "query_processing"]
+        },
+        {
+          "id": "sql_opt_003",
+          "type": "flashcard",
+          "front": "When should you use an index? When should you avoid it?",
+          "back": "USE INDEX: Columns in WHERE, JOIN ON, ORDER BY, GROUP BY with high cardinality (many unique values). AVOID INDEX: Small tables, columns with few distinct values (e.g., boolean), columns that are frequently updated.",
+          "tags": ["index", "optimization", "performance"]
+        },
+        {
+          "id": "sql_opt_004",
+          "type": "challenge",
+          "title": "Query Optimization – Rewrite with EXISTS",
+          "prompt": "The following query is slow: SELECT * FROM Students WHERE student_id IN (SELECT student_id FROM Enrollments WHERE grade = 'A'). Rewrite it using EXISTS for better performance.",
+          "solution": "-- Faster with EXISTS (short-circuits on first match)\nSELECT s.*\nFROM Students s\nWHERE EXISTS (\n    SELECT 1\n    FROM Enrollments e\n    WHERE e.student_id = s.student_id\n    AND e.grade = 'A'\n);",
+          "explanation": "EXISTS is often faster than IN when the subquery result is large. EXISTS stops as soon as it finds a match (short-circuit). IN loads all results before comparing.",
+          "difficulty": "hard",
+          "tags": ["optimization", "exists", "in", "performance"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "total_questions": 17,
+    "section": "SQL Lab",
+    "topics_covered": ["DDL", "DML", "SELECT", "JOINs", "Subqueries", "CTEs", "Window Functions", "Optimization"],
+    "rag_tags": ["sql", "sql_lab", "ddl", "dml", "joins", "subquery", "cte", "window_functions", "aggregation", "optimization", "flashcard", "cs_fundamentals"],
+    "version": "1.0",
+    "created_for": "RAG model training – CodeConfidence CS Fundamentals SQL Lab"
+  }
+}

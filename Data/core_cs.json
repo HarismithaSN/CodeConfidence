@@ -1,0 +1,216 @@
+{
+  "section": "CS Fundamentals – Core CS",
+  "description": "AI-generated interview questions, flashcards, and guided challenges for DBMS, OS, Networking, and System Design — the four pillars of the Core CS section in CodeConfidence.",
+  "categories": [
+    {
+      "category": "DBMS – Deep Dive",
+      "questions": [
+        {
+          "id": "core_dbms_001",
+          "type": "flashcard",
+          "front": "What is a Transaction? What are its states?",
+          "back": "A transaction is a sequence of database operations treated as a single logical unit. Transaction states:\n1. Active: Operations being executed\n2. Partially Committed: Last operation executed, awaiting confirmation\n3. Committed: All operations complete successfully, changes permanent\n4. Failed: An error occurred, normal execution can't proceed\n5. Aborted: Rolled back to previous state\n6. Terminated: Transaction ended (committed or aborted)",
+          "pseudocode": "BEGIN TRANSACTION\n    → State: Active\n    READ(A), WRITE(B)\n    → State: Partially Committed\n    IF success:\n        COMMIT → State: Committed (permanent)\n    ELSE:\n        ROLLBACK → State: Aborted (changes undone)\nEND TRANSACTION → State: Terminated",
+          "tags": ["transaction", "states", "commit", "rollback", "dbms"]
+        },
+        {
+          "id": "core_dbms_002",
+          "type": "flashcard",
+          "front": "What are the different types of database keys?",
+          "back": "• Super Key: Any set of attributes that uniquely identifies a row\n• Candidate Key: Minimal super key (no redundant attributes)\n• Primary Key: Chosen candidate key — unique + not null\n• Alternate Key: Candidate keys not chosen as primary key\n• Foreign Key: Attribute referencing the primary key of another table\n• Composite Key: A key made of multiple attributes\n• Surrogate Key: Artificial key (auto-increment ID) with no business meaning",
+          "example": "Table: Employee(EmpID, Email, SSN, Name)\n• Super Keys: {EmpID}, {Email}, {SSN}, {EmpID, Email}, ...\n• Candidate Keys: {EmpID}, {Email}, {SSN} (all minimal)\n• Primary Key: EmpID (chosen)\n• Alternate Keys: Email, SSN",
+          "tags": ["keys", "primary_key", "foreign_key", "candidate_key", "dbms"]
+        },
+        {
+          "id": "core_dbms_003",
+          "type": "ai_review_question",
+          "question": "Explain the difference between clustered and non-clustered indexes.",
+          "model_answer": "A clustered index determines the physical order of data in the table — the data rows are stored in the order of the clustered index key. There can be only ONE clustered index per table (usually the primary key). A non-clustered index is a separate structure that stores the index key and a pointer to the actual data row. Multiple non-clustered indexes can exist. Clustered indexes are faster for range queries; non-clustered are better for selective lookups on non-primary columns.",
+          "pseudocode": "// Clustered Index (data sorted physically)\nTable Storage: [1-Alice][2-Bob][3-Carol][4-Dave] ← sorted by ID\nQuery: SELECT * WHERE id = 3 → directly at position 3\n\n// Non-Clustered Index (separate structure)\nIndex: { 'Alice'→row1, 'Bob'→row2, 'Carol'→row3 }\nQuery: SELECT * WHERE name = 'Carol'\n   → look up 'Carol' in index → get row pointer → fetch row\n\n// Rule of thumb:\n// Clustered: 1 per table, for primary key / range queries\n// Non-clustered: many per table, for frequent lookup columns",
+          "ai_hints": ["Did you mention only ONE clustered index per table?", "Did you explain that clustered index = physical order of data?", "Did you mention pointer in non-clustered index?"],
+          "difficulty": "medium",
+          "tags": ["index", "clustered", "non_clustered", "dbms"]
+        },
+        {
+          "id": "core_dbms_004",
+          "type": "ai_review_question",
+          "question": "What is a deadlock in DBMS? How is it different from a livelock?",
+          "model_answer": "A DBMS deadlock occurs when two or more transactions are permanently waiting for each other to release locks — none can proceed. A livelock is when transactions keep changing state in response to each other but never make progress (they're active but stuck in a loop). Deadlock prevention techniques: lock ordering, timeout-based rollback, wound-wait, wait-die protocols.",
+          "pseudocode": "// DEADLOCK in DBMS\nT1: LOCK(A) → waiting for B\nT2: LOCK(B) → waiting for A\n→ Neither can proceed = DEADLOCK\n\n// Detection: Wait-for graph — if cycle exists → deadlock\n// Resolution: Kill one transaction (victim), rollback\n\n// LIVELOCK\nT1: Releases lock for T2 → T2 releases for T1 → T1 releases...\n// Both keep yielding, neither makes progress\n// Fix: Random backoff or priority-based scheduling\n\n// Prevention Protocols:\n// Wait-Die: older waits, younger dies (non-preemptive)\n// Wound-Wait: older wounds (preempts) younger, younger waits",
+          "tags": ["deadlock", "livelock", "lock", "concurrency", "dbms"]
+        },
+        {
+          "id": "core_dbms_005",
+          "type": "flashcard",
+          "front": "What is the difference between TRUNCATE, DELETE, and DROP?",
+          "back": "• DELETE: DML command. Removes specific rows (WHERE clause). Logged (can rollback). Triggers fire. Slower.\n• TRUNCATE: DDL command. Removes ALL rows. Not logged per-row (faster). Cannot rollback in most DBs. Resets AUTO_INCREMENT. No triggers.\n• DROP: DDL command. Removes the entire table (structure + data). Cannot rollback. Frees storage.",
+          "example": "DELETE FROM Students WHERE gpa < 5;  -- removes specific rows\nTRUNCATE TABLE Students;              -- removes all rows, keeps structure\nDROP TABLE Students;                  -- removes table entirely",
+          "tags": ["delete", "truncate", "drop", "dml", "ddl", "dbms"]
+        }
+      ]
+    },
+    {
+      "category": "Operating Systems – Deep Dive",
+      "questions": [
+        {
+          "id": "core_os_001",
+          "type": "flashcard",
+          "front": "What is thrashing in an OS?",
+          "back": "Thrashing occurs when a system spends more time swapping pages in and out of memory (paging) than executing actual processes. It happens when there are too many processes competing for limited physical memory, causing constant page faults. Resolution: Reduce degree of multiprogramming, use working set model, increase RAM.",
+          "pseudocode": "// Thrashing Scenario\nRAM = 1 GB, Total demand by all processes = 4 GB\n\nLoop:\n    Process P1 needs page → PAGE FAULT → swap in from disk\n    Process P2 needs page → PAGE FAULT → evict P1's page\n    Process P1 needs page again → PAGE FAULT → evict P2's page\n    ...(repeats endlessly)\n→ CPU utilization drops to near 0% — all time spent on I/O\n\n// Fix:\n// Working Set Model: give each process only its 'working set' of pages\n// PFF (Page Fault Frequency): if rate too high → add frames to process",
+          "tags": ["thrashing", "paging", "virtual_memory", "os"]
+        },
+        {
+          "id": "core_os_002",
+          "type": "ai_review_question",
+          "question": "Explain the difference between internal and external fragmentation.",
+          "model_answer": "Internal fragmentation occurs when allocated memory is larger than what is actually needed — the extra space inside the allocated block is wasted. It happens with fixed-size memory allocation (e.g., paging). External fragmentation occurs when there is enough total free memory but it's scattered in non-contiguous blocks — no single large enough block exists. It happens with variable-size allocation (e.g., segmentation). Paging eliminates external fragmentation but causes internal. Segmentation eliminates internal but causes external.",
+          "pseudocode": "// INTERNAL FRAGMENTATION (Paging)\nPage size = 4KB\nProcess needs 6KB → allocated 2 pages = 8KB\nWasted inside = 8KB - 6KB = 2KB ← internal fragmentation\n\n// EXTERNAL FRAGMENTATION (Contiguous allocation)\nMemory: [FREE:10KB][USED][FREE:10KB][USED][FREE:10KB]\nTotal free = 30KB, but largest contiguous = 10KB\nProcess needs 25KB → CANNOT allocate! ← external fragmentation\n// Fix: Compaction (move processes to merge free space)",
+          "ai_hints": ["Did you explain both types clearly?", "Did you mention which allocation method causes which type?", "Did you mention paging and segmentation?"],
+          "difficulty": "medium",
+          "tags": ["fragmentation", "internal", "external", "paging", "segmentation", "os"]
+        },
+        {
+          "id": "core_os_003",
+          "type": "flashcard",
+          "front": "What is the difference between preemptive and non-preemptive scheduling?",
+          "back": "Preemptive: CPU can be taken away from a process before it finishes (e.g., Round Robin, SRTF, Priority with preemption). Non-preemptive: Once a process gets CPU, it runs until it completes or blocks voluntarily (e.g., FCFS, SJF without preemption). Preemptive is better for responsiveness (used in modern OSes). Non-preemptive is simpler but can cause starvation and convoy effect.",
+          "pseudocode": "// NON-PREEMPTIVE (FCFS)\nP1(burst=24) starts → runs to completion → P2 starts\n// P2 waits 24ms regardless of its own burst time → convoy effect\n\n// PREEMPTIVE (Round Robin, quantum=4)\nP1(24ms) → runs 4ms → P2(3ms) → runs 3ms (done) → P3(3ms) → P1(4ms)...\n// CPU shared fairly — better response time\n\n// PREEMPTIVE Priority\nP_low running → P_high arrives → CPU TAKEN from P_low → P_high runs\n// Risk: Starvation of low priority processes\n// Fix: Aging (gradually increase priority of waiting processes)",
+          "tags": ["preemptive", "non_preemptive", "scheduling", "round_robin", "fcfs", "os"]
+        },
+        {
+          "id": "core_os_004",
+          "type": "ai_review_question",
+          "question": "What are the different states of a process? Draw the process state diagram.",
+          "model_answer": "A process goes through 5 states: New (process being created), Ready (in RAM, waiting for CPU), Running (being executed on CPU), Waiting/Blocked (waiting for I/O or event), Terminated (finished execution). Transitions: New→Ready (admitted), Ready→Running (CPU scheduled), Running→Ready (preempted/time quantum expired), Running→Waiting (I/O request), Waiting→Ready (I/O complete), Running→Terminated (exit).",
+          "pseudocode": "// Process State Diagram\n\nNEW → admitted → READY\nREADY → scheduler dispatch → RUNNING\nRUNNING → interrupt / time quantum expired → READY\nRUNNING → I/O or event wait → WAITING\nWAITING → I/O or event complete → READY\nRUNNING → exit → TERMINATED\n\n// PCB (Process Control Block) stores:\n// Process ID, State, Program Counter, CPU registers,\n// Memory limits, Open file list, Scheduling info",
+          "difficulty": "easy",
+          "tags": ["process_states", "pcb", "scheduling", "os"]
+        },
+        {
+          "id": "core_os_005",
+          "type": "flashcard",
+          "front": "What are the different types of OS kernel architectures?",
+          "back": "• Monolithic Kernel: All OS services (memory, process, device drivers) run in kernel space. Fast but complex and less fault-tolerant. (Linux, Unix)\n• Microkernel: Only core services (IPC, basic scheduling, memory) in kernel. Rest run in user space. More stable but slower due to IPC overhead. (QNX, Mach)\n• Hybrid Kernel: Combination of monolithic and microkernel. (Windows NT, macOS XNU)\n• Exokernel: Minimal kernel — exposes hardware directly to user programs. Max flexibility, max complexity.",
+          "tags": ["kernel", "monolithic", "microkernel", "hybrid", "os_architecture", "os"]
+        }
+      ]
+    },
+    {
+      "category": "Networking – Deep Dive",
+      "questions": [
+        {
+          "id": "core_net_001",
+          "type": "flashcard",
+          "front": "What is ARP (Address Resolution Protocol) and how does it work?",
+          "back": "ARP resolves a known IP address to an unknown MAC address on the same local network. Devices need the MAC address to send Ethernet frames but only know the IP address. ARP sends a broadcast asking 'Who has IP 192.168.1.5?'. The device with that IP replies with its MAC address. The result is cached in the ARP table.",
+          "pseudocode": "// ARP Process\nDevice A wants to send to 192.168.1.5\n\nStep 1: Check ARP cache\n  ARP Table: { 192.168.1.1 → AA:BB:CC:DD:EE:01 }\n  192.168.1.5 → NOT FOUND\n\nStep 2: Broadcast ARP Request\n  From: A (192.168.1.1, MAC: AA:BB:CC:DD:EE:01)\n  To: BROADCAST (FF:FF:FF:FF:FF:FF)\n  Ask: 'Who has 192.168.1.5? Tell 192.168.1.1'\n\nStep 3: Device B (192.168.1.5) replies\n  ARP Reply (unicast): '192.168.1.5 is at AA:BB:CC:DD:EE:05'\n\nStep 4: Device A caches the result\n  ARP Table updated: { 192.168.1.5 → AA:BB:CC:DD:EE:05 }\n\nStep 5: Send actual data using the MAC address",
+          "tags": ["arp", "mac_address", "ip_address", "data_link", "networking"]
+        },
+        {
+          "id": "core_net_002",
+          "type": "ai_review_question",
+          "question": "What is DNS? Explain the full DNS resolution process.",
+          "model_answer": "DNS (Domain Name System) translates human-readable domain names (www.google.com) to IP addresses. DNS resolution: Browser checks local cache → OS cache → /etc/hosts → Recursive Resolver → Root Nameserver (returns .com TLD nameserver) → TLD Nameserver (returns google.com authoritative nameserver) → Authoritative Nameserver (returns actual IP) → IP returned to browser and cached.",
+          "pseudocode": "// DNS Resolution for www.google.com\n\n1. Browser cache: 'google.com → ?' — MISS\n2. OS resolver cache — MISS\n3. /etc/hosts file — MISS\n4. Query Recursive Resolver (ISP's or 8.8.8.8)\n\n5. Recursive Resolver asks Root Nameserver:\n   'Who handles .com?'\n   Root → 'Ask a.gtld-servers.net (TLD for .com)'\n\n6. Recursive Resolver asks .com TLD Nameserver:\n   'Who handles google.com?'\n   TLD → 'Ask ns1.google.com (Authoritative NS)'\n\n7. Recursive Resolver asks google.com Authoritative NS:\n   'What is the IP for www.google.com?'\n   Authoritative → '142.250.190.46' (A record)\n\n8. Recursive Resolver returns IP to browser\n   Browser caches: www.google.com → 142.250.190.46 (TTL: 300s)\n\n9. Browser connects to 142.250.190.46",
+          "ai_hints": ["Did you explain all 4 actors: Browser, Recursive Resolver, Root NS, Authoritative NS?", "Did you mention DNS caching and TTL?", "Did you mention the A record?"],
+          "difficulty": "medium",
+          "tags": ["dns", "dns_resolution", "nameserver", "networking"]
+        },
+        {
+          "id": "core_net_003",
+          "type": "flashcard",
+          "front": "What is NAT (Network Address Translation)?",
+          "back": "NAT allows multiple devices on a private network to share a single public IP address. The router maintains a NAT table mapping private IP:port combinations to public IP:port. This conserves IPv4 addresses and adds a layer of security (internal devices are hidden). Types: Static NAT (1:1 mapping), Dynamic NAT (pool of public IPs), PAT/Masquerade (many:1 using different ports — most common in home routers).",
+          "pseudocode": "// NAT in action (PAT — Port Address Translation)\n\nPrivate Network:          Internet:\n192.168.1.10:5000  ──→  Router  ──→  203.0.113.1:10001 → Web Server\n192.168.1.11:5000  ──→  Router  ──→  203.0.113.1:10002 → Web Server\n192.168.1.12:7000  ──→  Router  ──→  203.0.113.1:10003 → Web Server\n\n// NAT Table in Router:\n// Private IP:Port        →  Public IP:Port\n// 192.168.1.10:5000     →  203.0.113.1:10001\n// 192.168.1.11:5000     →  203.0.113.1:10002\n// 192.168.1.12:7000     →  203.0.113.1:10003\n\n// Reply from web server comes to 203.0.113.1:10001\n// Router translates back → forwards to 192.168.1.10:5000",
+          "tags": ["nat", "pat", "private_ip", "public_ip", "router", "networking"]
+        },
+        {
+          "id": "core_net_004",
+          "type": "ai_review_question",
+          "question": "What is the difference between a hub, switch, and router?",
+          "model_answer": "Hub (Layer 1): Broadcasts all incoming data to all ports regardless of destination. Causes collisions, inefficient. Switch (Layer 2): Sends data only to the specific port where the destination MAC address is connected. Maintains a MAC address table. Efficient, reduces collisions. Router (Layer 3): Connects different networks and routes packets based on IP addresses using a routing table. Performs NAT, DHCP, and firewall functions in home routers.",
+          "pseudocode": "// HUB (Layer 1 – Physical)\nDevice A sends to Device C\nHub broadcasts to ALL ports: A, B, C, D\n// B and D receive unwanted data → collision domain\n\n// SWITCH (Layer 2 – Data Link)\nMAC Table: { C → Port 3, D → Port 4 }\nDevice A sends to C (MAC: AA:CC)\nSwitch → looks up MAC table → sends ONLY to Port 3\n// Efficient, no unnecessary broadcasts (for unicast)\n\n// ROUTER (Layer 3 – Network)\nPacket from 192.168.1.10 → 8.8.8.8\nRouter checks routing table:\n  8.0.0.0/8 → via ISP gateway (203.0.113.1)\nRouter forwards packet to ISP gateway",
+          "ai_hints": ["Did you mention the OSI layer for each device?", "Did you explain the MAC table in switches?", "Did you mention IP-based routing in routers?"],
+          "difficulty": "easy",
+          "tags": ["hub", "switch", "router", "layer2", "layer3", "networking"]
+        },
+        {
+          "id": "core_net_005",
+          "type": "flashcard",
+          "front": "What are the common HTTP status codes?",
+          "back": "• 1xx Informational: 100 Continue\n• 2xx Success: 200 OK, 201 Created, 204 No Content\n• 3xx Redirection: 301 Moved Permanently, 302 Found (temporary), 304 Not Modified (cached)\n• 4xx Client Errors: 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 429 Too Many Requests\n• 5xx Server Errors: 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable, 504 Gateway Timeout",
+          "mnemonic": "1=Info, 2=Good, 3=Go elsewhere, 4=Your fault, 5=Our fault",
+          "tags": ["http", "status_codes", "rest_api", "networking"]
+        },
+        {
+          "id": "core_net_006",
+          "type": "ai_review_question",
+          "question": "What is a firewall? Explain the types of firewalls.",
+          "model_answer": "A firewall is a network security device that monitors and controls incoming and outgoing traffic based on security rules. Types: Packet Filter Firewall (inspects packets at network/transport layer — checks IP/port/protocol), Stateful Inspection Firewall (tracks connection state — allows only responses to established connections), Application Layer Firewall / WAF (inspects HTTP content — protects against SQL injection, XSS), Next-Gen Firewall (NGFW) (combines all of the above with deep packet inspection and threat intelligence).",
+          "pseudocode": "// Packet Filter Rules Example\nALLOW TCP from ANY to 192.168.1.100 port 80   // HTTP in\nALLOW TCP from ANY to 192.168.1.100 port 443  // HTTPS in\nDENY TCP from ANY to 192.168.1.100 port 22    // SSH blocked\nDENY ALL                                        // default deny\n\n// Stateful Inspection\nOutbound: 192.168.1.10:5001 → 8.8.8.8:53 (DNS query) → ALLOW + track state\nInbound:  8.8.8.8:53 → 192.168.1.10:5001 (DNS reply) → ALLOW (matches state)\nInbound:  Unsolicited packet from unknown → DENY (no matching state)\n\n// WAF (Web App Firewall)\nRequest: GET /users?id=1 OR 1=1  ← SQL Injection\nWAF detects pattern → BLOCK + log + alert",
+          "difficulty": "medium",
+          "tags": ["firewall", "packet_filter", "stateful", "waf", "security", "networking"]
+        }
+      ]
+    },
+    {
+      "category": "System Design – Patterns & Concepts",
+      "questions": [
+        {
+          "id": "core_sd_001",
+          "type": "flashcard",
+          "front": "What is horizontal vs vertical scaling?",
+          "back": "Vertical Scaling (Scale Up): Add more resources (CPU, RAM) to a single server. Simpler but has a limit and single point of failure. Horizontal Scaling (Scale Out): Add more servers and distribute load. More complex but limitless and fault-tolerant. Most modern systems use horizontal scaling with a load balancer.",
+          "pseudocode": "// Vertical Scaling\nServer: 8 CPU, 16 GB RAM\n   ↓ upgrade\nServer: 32 CPU, 128 GB RAM\n// Pros: No code change\n// Cons: Expensive, hardware limit, single point of failure\n\n// Horizontal Scaling\nServer_1: 8 CPU, 16 GB RAM\n   + add servers\nServer_1, Server_2, Server_3 ← Load Balancer distributes traffic\n// Pros: Cost-effective, fault-tolerant, infinite scale\n// Cons: Need stateless services or shared session store (Redis)",
+          "tags": ["horizontal_scaling", "vertical_scaling", "load_balancer", "system_design"]
+        },
+        {
+          "id": "core_sd_002",
+          "type": "flashcard",
+          "front": "What is a CDN (Content Delivery Network)?",
+          "back": "A CDN is a geographically distributed network of servers (edge servers) that cache and deliver static content (images, CSS, JS, videos) to users from the nearest location, reducing latency. When a user requests content, the CDN serves from the closest edge server. If not cached (cache miss), it fetches from the origin server (cache miss → origin pull). Examples: Cloudflare, AWS CloudFront, Akamai.",
+          "pseudocode": "// Without CDN\nUser in Mumbai → request → Server in US → response (high latency ~200ms)\n\n// With CDN\nUser in Mumbai → request → CDN Edge (Mumbai) → response (~10ms)\n\n// CDN Cache Miss Flow\nUser → CDN Edge (Mumbai) → cache miss → Origin Server (US)\nOrigin → CDN Edge stores copy + sends to user\nNext user → CDN Edge (Mumbai) → cache HIT → fast response\n\n// What CDNs cache: images, videos, CSS, JS, HTML, fonts\n// What NOT to cache: user-specific data, real-time API responses",
+          "tags": ["cdn", "caching", "latency", "edge_server", "system_design"]
+        },
+        {
+          "id": "core_sd_003",
+          "type": "ai_review_question",
+          "question": "What is a message queue? When would you use Kafka vs RabbitMQ?",
+          "model_answer": "A message queue decouples producers (who send messages) from consumers (who process them), enabling async communication and handling load spikes. Kafka is a distributed event streaming platform — messages are stored durably, consumers can replay events, designed for very high throughput (millions of events/sec). Best for: event streaming, analytics, audit logs, microservices event bus. RabbitMQ is a traditional message broker — messages are consumed and deleted, supports complex routing with exchanges and bindings. Best for: task queues, RPC, work distribution, order processing.",
+          "pseudocode": "// KAFKA — Event Streaming\nProducer (Order Service) → Kafka Topic 'orders' → stored durably\n    ↓ Consumer Group 1: Inventory Service reads events\n    ↓ Consumer Group 2: Analytics Service reads SAME events\n    ↓ Consumer Group 3: Notification Service reads SAME events\n// Multiple consumers read independently; events retained for days\n// Great for: event sourcing, stream processing\n\n// RABBITMQ — Task Queue\nProducer → Exchange → Queue → Consumer_1 (processes task, deleted)\n                     Queue → Consumer_2 (gets next task)\n// Each message consumed by ONE consumer\n// Great for: job queues, email sending, payment processing\n\n// Decision Guide:\n// Need replay / multiple consumers of same event? → Kafka\n// Need guaranteed single delivery, complex routing? → RabbitMQ",
+          "ai_hints": ["Did you explain that Kafka retains messages (durable)?", "Did you explain that RabbitMQ deletes after consumption?", "Did you give real use cases?"],
+          "difficulty": "hard",
+          "tags": ["message_queue", "kafka", "rabbitmq", "async", "microservices", "system_design"]
+        },
+        {
+          "id": "core_sd_004",
+          "type": "flashcard",
+          "front": "What are the SOLID principles?",
+          "back": "S – Single Responsibility: A class should have only one reason to change.\nO – Open/Closed: Open for extension, closed for modification.\nL – Liskov Substitution: Subtypes must be substitutable for their base types.\nI – Interface Segregation: No client should be forced to depend on methods it doesn't use.\nD – Dependency Inversion: High-level modules should not depend on low-level ones. Both should depend on abstractions.",
+          "pseudocode": "// S – Single Responsibility\nBAD:  class UserManager { login(), sendEmail(), generateReport() }\nGOOD: class UserAuth { login() }\n      class EmailService { sendEmail() }\n      class ReportGenerator { generate() }\n\n// O – Open/Closed\nBAD:  if shape=='circle': area=PI*r*r\n      elif shape=='rect': area=l*w  // must modify to add new shape\nGOOD: class Circle { area() } class Rect { area() }  // extend, don't modify\n\n// L – Liskov Substitution\nBAD:  class Square extends Rectangle\n      Square.setWidth(5) → also sets height → breaks Rectangle contract\nGOOD: Both implement Shape interface separately\n\n// D – Dependency Inversion\nBAD:  class Service { db = new MySQLDB() }  // tightly coupled\nGOOD: class Service { def __init__(db: DatabaseInterface): self.db = db }",
+          "tags": ["solid", "design_principles", "oop", "software_engineering"]
+        },
+        {
+          "id": "core_sd_005",
+          "type": "ai_review_question",
+          "question": "Design a notification system that can send notifications via Email, SMS, and Push. It should be extensible to new channels.",
+          "model_answer": "Use the Strategy Pattern combined with the Observer Pattern. Define a Notification interface with a send() method. Implement EmailNotification, SMSNotification, PushNotification as concrete strategies. A NotificationService accepts a list of channels and a message, then invokes each channel's send() method. Adding a new channel (e.g., WhatsApp) requires only a new class implementing the interface — no modification to existing code (Open/Closed principle).",
+          "pseudocode": "// Strategy Pattern + Open/Closed\nINTERFACE NotificationChannel:\n    FUNCTION send(recipient, message)\n\nCLASS EmailNotification IMPLEMENTS NotificationChannel:\n    FUNCTION send(recipient, message):\n        EMAIL_API.send(to=recipient.email, body=message)\n\nCLASS SMSNotification IMPLEMENTS NotificationChannel:\n    FUNCTION send(recipient, message):\n        SMS_API.send(to=recipient.phone, text=message)\n\nCLASS PushNotification IMPLEMENTS NotificationChannel:\n    FUNCTION send(recipient, message):\n        FCM.push(device_token=recipient.deviceToken, body=message)\n\nCLASS NotificationService:\n    channels: LIST of NotificationChannel\n\n    FUNCTION notify(recipient, message, channelTypes):\n        FOR each type in channelTypes:\n            channel = channelFactory(type)  // factory returns right impl\n            channel.send(recipient, message)\n\n// Adding WhatsApp later:\nCLASS WhatsAppNotification IMPLEMENTS NotificationChannel:\n    FUNCTION send(recipient, message):\n        WHATSAPP_API.send(recipient.phone, message)\n// Zero changes to existing code!",
+          "ai_hints": ["Did you use an interface/abstract class?", "Is adding a new channel easy without modifying existing code?", "Did you mention the design patterns used?"],
+          "difficulty": "hard",
+          "tags": ["system_design", "design_patterns", "strategy_pattern", "open_closed", "notifications"]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "total_questions": 20,
+    "section": "Core CS",
+    "topics_covered": ["DBMS", "Operating Systems", "Networking", "System Design"],
+    "question_types": ["flashcard", "ai_review_question", "concept"],
+    "rag_tags": ["core_cs", "dbms", "os", "networking", "system_design", "flashcard", "ai_review", "solid", "design_patterns", "dns", "firewall", "arp", "nat", "kafka", "cdn", "scaling", "cs_fundamentals"],
+    "version": "1.0",
+    "created_for": "RAG model training – CodeConfidence CS Fundamentals Core CS section"
+  }
+}
