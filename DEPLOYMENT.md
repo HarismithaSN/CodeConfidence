@@ -45,7 +45,10 @@ Make sure these environment variables are set in Render:
 > - `DB_PASSWORD`
 > - `DB_NAME`
 
-**Important:** Never leave `DB_HOST` as `localhost` on Render. If your app is deployed on Render, `DB_HOST` must be the remote database host from your cloud provider, not `127.0.0.1`.
+**Important:**
+- Render does not use your local `.env` file.
+- `DB_HOST=localhost` is invalid on Render unless you have a local MySQL service inside that Render instance.
+- Use the remote host string provided by your cloud database service.
 
 
 ### Step 4: Deploy

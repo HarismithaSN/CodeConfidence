@@ -16,15 +16,24 @@ app.use(express.static(path.join(__dirname)));
 // Root redirect
 app.get('/', (req, res) => res.redirect('/login.html'));
 
-const DB_HOST = process.env.DB_HOST || 'localhost';
+const isProduction = process.env.NODE_ENV === 'production' || Boolean(process.env.PORT);
+const DB_HOST = isProduction ? process.env.DB_HOST : process.env.DB_HOST || 'localhost';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
 const DB_NAME = process.env.DB_NAME || 'codeconfidence';
 const DATABASE_URL = process.env.DATABASE_URL;
 
-if (!DATABASE_URL && !process.env.DB_HOST) {
-  console.warn('⚠️ No database environment variables found. Falling back to localhost:3306.');
-  console.warn('Please set DATABASE_URL or DB_HOST/DB_USER/DB_PASSWORD/DB_NAME in Render.');
+const hasDbEnv = Boolean(DATABASE_URL || DB_HOST || DB_USER || DB_NAME);
+if (isProduction && !hasDbEnv) {
+  console.error('❌ Missing production database configuration.');
+  console.error('Set DATABASE_URL, or DB_HOST / DB_USER / DB_PASSWORD / DB_NAME in Render.');
+  console.error('Render does not use your local .env file.');
+  process.exit(1);
+}
+
+if (!DATABASE_URL && !process.env.DB_HOST && !isProduction) {
+  console.warn('⚠️ No database environment variables found. Falling back to localhost:3306 for local development.');
+  console.warn('Use .env or set DB_HOST / DB_USER / DB_PASSWORD / DB_NAME locally.');
 }
 
 let pool;
