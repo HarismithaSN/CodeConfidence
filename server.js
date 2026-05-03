@@ -22,6 +22,11 @@ const DB_PASSWORD = process.env.DB_PASSWORD || '';
 const DB_NAME = process.env.DB_NAME || 'codeconfidence';
 const DATABASE_URL = process.env.DATABASE_URL;
 
+if (!DATABASE_URL && !process.env.DB_HOST) {
+  console.warn('⚠️ No database environment variables found. Falling back to localhost:3306.');
+  console.warn('Please set DATABASE_URL or DB_HOST/DB_USER/DB_PASSWORD/DB_NAME in Render.');
+}
+
 let pool;
 
 // Parse DATABASE_URL if provided (common for cloud deployments)

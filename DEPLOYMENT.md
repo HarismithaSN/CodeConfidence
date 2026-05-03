@@ -34,10 +34,19 @@ NODE_ENV=production
 
 Make sure these environment variables are set in Render:
 
-- `DATABASE_URL` (from Railway MySQL)
+- `DATABASE_URL` (preferred)
 - `GEMINI_API_KEY` (for AI features)
 - `NODE_ENV=production`
 - `PORT` (automatically set by Render)
+
+> If you are not using `DATABASE_URL`, set all 4 values manually:
+> - `DB_HOST`
+> - `DB_USER`
+> - `DB_PASSWORD`
+> - `DB_NAME`
+
+**Important:** Never leave `DB_HOST` as `localhost` on Render. If your app is deployed on Render, `DB_HOST` must be the remote database host from your cloud provider, not `127.0.0.1`.
+
 
 ### Step 4: Deploy
 
