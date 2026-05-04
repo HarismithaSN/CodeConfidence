@@ -194,6 +194,13 @@ function normalizeEmail(email) {
   return typeof email === 'string' ? email.toLowerCase().trim() : '';
 }
 
+function formatLastLogin(value) {
+  if (!value) return null;
+  if (value instanceof Date) return value.toISOString().split('T')[0];
+  const date = new Date(value);
+  return isNaN(date.getTime()) ? null : date.toISOString().split('T')[0];
+}
+
 function parseUserRow(row) {
   if (!row) return null;
   return {
@@ -207,7 +214,7 @@ function parseUserRow(row) {
     level: row.level,
     confidenceScore: row.confidenceScore,
     streak: row.streak,
-    lastActive: row.lastLogin ? row.lastLogin.toISOString().split('T')[0] : null,
+    lastActive: formatLastLogin(row.lastLogin),
     status: row.status,
     instId: row.instId,
     college: row.college,
