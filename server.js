@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname)));
 // Root redirect
 app.get('/', (req, res) => res.redirect('/login.html'));
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production' || (process.env.PORT && process.env.NODE_ENV !== 'development');
 const DB_HOST = isProduction ? process.env.DB_HOST : process.env.DB_HOST || 'localhost';
 const DB_USER = isProduction ? process.env.DB_USER : process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
@@ -28,7 +28,7 @@ let pool;
 let useSQLite = false;
 let db;
 
-if (isProduction && !DATABASE_URL) {
+if (!DATABASE_URL && isProduction) {
   console.log('🔄 Production mode detected with no DATABASE_URL. Using SQLite as fallback...');
   useSQLite = true;
 }
