@@ -1,20 +1,24 @@
 # CodeConfidence Deployment Guide
 
-## 🚀 Deploying to Render
+## 🚀 Deploying to Render (Zero-Config Database!)
 
-### Step 1: Set up MySQL Database
+### Step 1: Database Setup (Optional - SQLite Fallback Included)
 
-**Option A: Railway MySQL (Recommended - Free tier available)**
+**Option A: Use External MySQL (Recommended for Production)**
+1. Go to [planetscale.com](https://planetscale.com) and sign up (free tier available)
+2. Create a new database
+3. Get the connection string from "Connect" → "General" → "Connect with"
+4. Copy the MySQL URL (looks like: `mysql://user:pass@host:port/dbname`)
 
-1. Go to [Railway.app](https://railway.app) and sign up/login
-2. Click "New Project" → "Database" → "MySQL"
-3. Wait for database to be created
-4. Go to "Variables" tab in your database
-5. Copy the `DATABASE_URL` (it looks like: `mysql://user:pass@host:port/dbname`)
+**Option B: Use Railway MySQL (Free)**
+1. Go to [railway.app](https://railway.app) → New Project → Database → MySQL
+2. Wait for creation
+3. Copy `DATABASE_URL` from Variables tab
 
-**Option B: Render MySQL**
-1. In Render dashboard, create a new "Managed Database" → MySQL
-2. Copy the connection details
+**Option C: Zero-Config Deployment (Easiest)**
+- The app automatically uses SQLite when no DATABASE_URL is provided
+- No database setup required - just deploy!
+- Perfect for demos, testing, or small-scale deployments
 
 ### Step 2: Deploy to Render
 
@@ -25,48 +29,28 @@
 5. Add environment variables:
 
 ```
-DATABASE_URL=mysql://your-railway-connection-string-here
-GEMINI_API_KEY=your-gemini-api-key-here
-NODE_ENV=production
+DATABASE_URL=your-custom-db-url-here  # Optional - omit for SQLite fallback
+GEMINI_API_KEY=your-gemini-api-key    # For AI features
+NODE_ENV=production                   # Required for production mode
 ```
 
-### Step 3: Configure Environment
+### Step 3: Deploy
 
-Make sure these environment variables are set in Render:
-
-- `DATABASE_URL` (preferred)
-- `GEMINI_API_KEY` (for AI features)
-- `NODE_ENV=production`
-- `PORT` (automatically set by Render)
-
-> If you are not using `DATABASE_URL`, set all 4 values manually:
-> - `DB_HOST`
-> - `DB_USER`
-> - `DB_PASSWORD`
-> - `DB_NAME`
-
-**Important:**
-- Render does not use your local `.env` file.
-- `DB_HOST=localhost` is invalid on Render unless you have a local MySQL service inside that Render instance.
-- Use the remote host string provided by your cloud database service.
-
-
-### Step 4: Deploy
-
-Click "Create Web Service" and wait for deployment.
+Click "Create Web Service" and wait for deployment. The app will automatically use SQLite if no DATABASE_URL is provided.
 
 ## 🔧 Local Development
 
-1. Install XAMPP/WAMP for MySQL
+1. Install XAMPP/WAMP for MySQL (optional)
 2. Copy `.env.example` to `.env`
-3. Update `.env` with your local MySQL credentials
+3. Update `.env` with your local MySQL credentials (or leave empty for SQLite)
 4. Test database connection: `npm run test-db`
 5. Run the app: `npm start`
 
 ## 🐛 Troubleshooting
 
-- **ECONNREFUSED**: Check DATABASE_URL format - it should be `mysql://user:pass@host:port/dbname`
-- **Connection timeout**: Verify database is running and accessible from external connections
+- **ECONNREFUSED**: Check DATABASE_URL format or ensure MySQL is running locally
+- **SQLite Permission Errors**: Ensure write permissions in the app directory
+- **Database Connection Issues**: The app automatically falls back to SQLite in production when no DATABASE_URL is configured
+- **Connection timeout**: Verify database is running and accessible
 - **Build fails**: Check Node.js version (16+ recommended)
 - **Port issues**: Render automatically sets the PORT environment variable
-- **Database creation fails**: Ensure your MySQL user has CREATE DATABASE permissions

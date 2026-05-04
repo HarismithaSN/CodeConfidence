@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 const path = require('path');
 const fs = require('fs');
 const mysql = require('mysql2/promise');
+const sqlite3 = require('sqlite3').verbose();
 require('dotenv').config();
 
 console.log("\n🚀 CodeConfidence v12.7-ULTIMATE Starting with MySQL storage...");
@@ -16,27 +17,26 @@ app.use(express.static(path.join(__dirname)));
 // Root redirect
 app.get('/', (req, res) => res.redirect('/login.html'));
 
-const isProduction = process.env.NODE_ENV === 'production' || Boolean(process.env.PORT);
+const isProduction = process.env.NODE_ENV === 'production';
 const DB_HOST = isProduction ? process.env.DB_HOST : process.env.DB_HOST || 'localhost';
-const DB_USER = process.env.DB_USER || 'root';
+const DB_USER = isProduction ? process.env.DB_USER : process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
-const DB_NAME = process.env.DB_NAME || 'codeconfidence';
+const DB_NAME = isProduction ? process.env.DB_NAME : process.env.DB_NAME || 'codeconfidence';
 const DATABASE_URL = process.env.DATABASE_URL;
 
-const hasDbEnv = Boolean(DATABASE_URL || DB_HOST || DB_USER || DB_NAME);
-if (isProduction && !hasDbEnv) {
-  console.error('❌ Missing production database configuration.');
-  console.error('Set DATABASE_URL, or DB_HOST / DB_USER / DB_PASSWORD / DB_NAME in Render.');
-  console.error('Render does not use your local .env file.');
-  process.exit(1);
+let pool;
+let useSQLite = false;
+let db;
+
+if (isProduction && !DATABASE_URL) {
+  console.log('🔄 Production mode detected with no DATABASE_URL. Using SQLite as fallback...');
+  useSQLite = true;
 }
 
-if (!DATABASE_URL && !process.env.DB_HOST && !isProduction) {
+if (!isProduction && !DATABASE_URL && !process.env.DB_HOST) {
   console.warn('⚠️ No database environment variables found. Falling back to localhost:3306 for local development.');
   console.warn('Use .env or set DB_HOST / DB_USER / DB_PASSWORD / DB_NAME locally.');
 }
-
-let pool;
 
 // Parse DATABASE_URL if provided (common for cloud deployments)
 function parseDatabaseUrl(url) {
@@ -57,6 +57,64 @@ function parseDatabaseUrl(url) {
 }
 
 async function initDatabase() {
+  if (useSQLite) {
+    // Use SQLite for production fallback
+    const dbPath = path.join(__dirname, 'codeconfidence.db');
+    db = new sqlite3.Database(dbPath);
+
+    console.log(`🔌 Using SQLite database at ${dbPath}`);
+
+    // Create tables for SQLite
+    await new Promise((resolve, reject) => {
+      db.run(`CREATE TABLE IF NOT EXISTS institutions (
+        id TEXT PRIMARY KEY,
+        name TEXT,
+        adminName TEXT,
+        email TEXT,
+        password TEXT,
+        type TEXT,
+        totalStudents INTEGER DEFAULT 0,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`, (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+
+    await new Promise((resolve, reject) => {
+      db.run(`CREATE TABLE IF NOT EXISTS users (
+        email TEXT PRIMARY KEY,
+        rollNo TEXT,
+        name TEXT,
+        branch TEXT,
+        year TEXT,
+        password TEXT,
+        xp INTEGER DEFAULT 0,
+        level INTEGER DEFAULT 1,
+        confidenceScore INTEGER DEFAULT 0,
+        streak INTEGER DEFAULT 0,
+        lastLogin DATE,
+        status TEXT DEFAULT 'active',
+        instId TEXT,
+        college TEXT,
+        passwordSet INTEGER DEFAULT 1,
+        language TEXT DEFAULT 'English',
+        submissions TEXT,
+        scores TEXT,
+        skills TEXT,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`, (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+
+    await seedDemoInstitution();
+    await migrateJsonUsers();
+    return;
+  }
+
+  // MySQL logic
   const dbConfig = DATABASE_URL ? parseDatabaseUrl(DATABASE_URL) : {
     host: DB_HOST,
     user: DB_USER,
@@ -68,7 +126,7 @@ async function initDatabase() {
     throw new Error('Invalid database configuration. Please check your environment variables.');
   }
 
-  console.log(`🔌 Connecting to database at ${dbConfig.host}:${dbConfig.port || 3306}/${dbConfig.database}`);
+  console.log(`🔌 Connecting to MySQL database at ${dbConfig.host}:${dbConfig.port || 3306}/${dbConfig.database}`);
 
   // First connect without database to create it if needed
   const rootConfig = { ...dbConfig };
@@ -162,44 +220,94 @@ function parseUserRow(row) {
 }
 
 async function findUserByEmail(email) {
-  const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [normalizeEmail(email)]);
-  return parseUserRow(rows[0]);
+  if (useSQLite) {
+    return new Promise((resolve, reject) => {
+      db.get('SELECT * FROM users WHERE email = ?', [normalizeEmail(email)], (err, row) => {
+        if (err) reject(err);
+        else resolve(parseUserRow(row));
+      });
+    });
+  } else {
+    const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [normalizeEmail(email)]);
+    return parseUserRow(rows[0]);
+  }
 }
 
 async function findUserByRollNo(rollNo, instId) {
-  const [rows] = await pool.query(
-    'SELECT * FROM users WHERE LOWER(rollNo) = ? AND (? = "" OR instId = ?)',
-    [rollNo.toLowerCase(), instId || '', instId || '']
-  );
-  return parseUserRow(rows[0]);
+  if (useSQLite) {
+    return new Promise((resolve, reject) => {
+      db.get(
+        'SELECT * FROM users WHERE LOWER(rollNo) = ? AND (? = "" OR instId = ?)',
+        [rollNo.toLowerCase(), instId || '', instId || ''], (err, row) => {
+        if (err) reject(err);
+        else resolve(parseUserRow(row));
+      });
+    });
+  } else {
+    const [rows] = await pool.query(
+      'SELECT * FROM users WHERE LOWER(rollNo) = ? AND (? = "" OR instId = ?)',
+      [rollNo.toLowerCase(), instId || '', instId || '']
+    );
+    return parseUserRow(rows[0]);
+  }
 }
 
 async function createUser(user) {
   const insert = `INSERT INTO users (email, rollNo, name, branch, year, password, xp, level, confidenceScore, streak, lastLogin, status, instId, college, passwordSet, language, submissions, scores, skills, createdAt)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  await pool.query(insert, [
-    normalizeEmail(user.email),
-    user.rollNo || null,
-    user.name || null,
-    user.branch || null,
-    user.year || null,
-    user.password || null,
-    user.xp || 0,
-    user.level || 1,
-    user.confidenceScore || 0,
-    user.streak || 0,
-    user.lastLogin ? new Date(user.lastLogin) : null,
-    user.status || 'active',
-    user.instId || null,
-    user.college || null,
-    user.passwordSet ? 1 : 0,
-    user.language || 'English',
-    JSON.stringify(user.submissions || []),
-    JSON.stringify(user.scores || []),
-    JSON.stringify(user.skills || {}),
-    user.createdAt ? new Date(user.createdAt) : new Date()
-  ]);
+  if (useSQLite) {
+    return new Promise((resolve, reject) => {
+      db.run(insert, [
+        normalizeEmail(user.email),
+        user.rollNo || null,
+        user.name || null,
+        user.branch || null,
+        user.year || null,
+        user.password || null,
+        user.xp || 0,
+        user.level || 1,
+        user.confidenceScore || 0,
+        user.streak || 0,
+        user.lastLogin ? new Date(user.lastLogin) : null,
+        user.status || 'active',
+        user.instId || null,
+        user.college || null,
+        user.passwordSet ? 1 : 0,
+        user.language || 'English',
+        JSON.stringify(user.submissions || []),
+        JSON.stringify(user.scores || []),
+        JSON.stringify(user.skills || {}),
+        user.createdAt ? new Date(user.createdAt) : new Date()
+      ], function(err) {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+  } else {
+    await pool.query(insert, [
+      normalizeEmail(user.email),
+      user.rollNo || null,
+      user.name || null,
+      user.branch || null,
+      user.year || null,
+      user.password || null,
+      user.xp || 0,
+      user.level || 1,
+      user.confidenceScore || 0,
+      user.streak || 0,
+      user.lastLogin ? new Date(user.lastLogin) : null,
+      user.status || 'active',
+      user.instId || null,
+      user.college || null,
+      user.passwordSet ? 1 : 0,
+      user.language || 'English',
+      JSON.stringify(user.submissions || []),
+      JSON.stringify(user.scores || []),
+      JSON.stringify(user.skills || {}),
+      user.createdAt ? new Date(user.createdAt) : new Date()
+    ]);
+  }
 }
 
 async function updateUserByEmail(email, updates) {
@@ -225,14 +333,44 @@ async function updateUserByEmail(email, updates) {
 
   if (!fields.length) return;
   values.push(normalized);
-  await pool.query(`UPDATE users SET ${fields.join(', ')} WHERE email = ?`, values);
+
+  if (useSQLite) {
+    return new Promise((resolve, reject) => {
+      db.run(`UPDATE users SET ${fields.join(', ')} WHERE email = ?`, values, function(err) {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+  } else {
+    await pool.query(`UPDATE users SET ${fields.join(', ')} WHERE email = ?`, values);
+  }
 }
 
 async function seedDemoInstitution() {
-  const existing = await pool.query('SELECT id FROM institutions WHERE id = ?', ['DSCE-MCA-2024']);
-  if (existing[0].length === 0) {
-    await pool.query(`INSERT INTO institutions (id, name, adminName, email, password, type, totalStudents) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      ['DSCE-MCA-2024', 'Dayananda Sagar College', 'Dr. Ramesh Kumar', 'admin@dsce.edu.in', 'demo123', 'Engineering College', 156]);
+  if (useSQLite) {
+    return new Promise((resolve, reject) => {
+      db.get('SELECT id FROM institutions WHERE id = ?', ['DSCE-MCA-2024'], (err, row) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        if (!row) {
+          db.run(`INSERT INTO institutions (id, name, adminName, email, password, type, totalStudents) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            ['DSCE-MCA-2024', 'Dayananda Sagar College', 'Dr. Ramesh Kumar', 'admin@dsce.edu.in', 'demo123', 'Engineering College', 156], function(err) {
+            if (err) reject(err);
+            else resolve();
+          });
+        } else {
+          resolve();
+        }
+      });
+    });
+  } else {
+    const existing = await pool.query('SELECT id FROM institutions WHERE id = ?', ['DSCE-MCA-2024']);
+    if (existing[0].length === 0) {
+      await pool.query(`INSERT INTO institutions (id, name, adminName, email, password, type, totalStudents) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        ['DSCE-MCA-2024', 'Dayananda Sagar College', 'Dr. Ramesh Kumar', 'admin@dsce.edu.in', 'demo123', 'Engineering College', 156]);
+    }
   }
 }
 
@@ -242,8 +380,20 @@ async function migrateJsonUsers() {
     const json = JSON.parse(content);
     for (const email of Object.keys(json)) {
       const raw = json[email];
-      const exists = await pool.query('SELECT email FROM users WHERE email = ?', [normalizeEmail(email)]);
-      if (exists[0].length > 0) continue;
+
+      if (useSQLite) {
+        const exists = await new Promise((resolve, reject) => {
+          db.get('SELECT email FROM users WHERE email = ?', [normalizeEmail(email)], (err, row) => {
+            if (err) reject(err);
+            else resolve(!!row);
+          });
+        });
+        if (exists) continue;
+      } else {
+        const exists = await pool.query('SELECT email FROM users WHERE email = ?', [normalizeEmail(email)]);
+        if (exists[0].length > 0) continue;
+      }
+
       await createUser({
         ...raw,
         email,
@@ -253,7 +403,7 @@ async function migrateJsonUsers() {
         skills: raw.skills || {}
       });
     }
-    console.log('✅ Migrated user data from users.json into MySQL.');
+    console.log('✅ Migrated user data from users.json into database.');
   } catch (e) {
     console.warn('⚠️ No users.json migration performed:', e.message);
   }
@@ -321,14 +471,30 @@ app.post('/api/login', async (req, res) => {
 
 app.get('/api/community/:college', async (req, res) => {
   const college = req.params.college;
-  const [rows] = await pool.query('SELECT name, xp, level FROM users WHERE college = ? ORDER BY xp DESC', [college]);
-  const collegeUsers = rows.map(u => ({ name: u.name, xp: u.xp, level: u.level }));
 
-  res.json({
-    activeNow: Math.floor(Math.random() * 50) + 100,
-    collegeRank: collegeUsers,
-    totalReviews: 0
-  });
+  if (useSQLite) {
+    const collegeUsers = await new Promise((resolve, reject) => {
+      db.all('SELECT name, xp, level FROM users WHERE college = ? ORDER BY xp DESC', [college], (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows.map(u => ({ name: u.name, xp: u.xp, level: u.level })));
+      });
+    });
+
+    res.json({
+      activeNow: Math.floor(Math.random() * 50) + 100,
+      collegeRank: collegeUsers,
+      totalReviews: 0
+    });
+  } else {
+    const [rows] = await pool.query('SELECT name, xp, level FROM users WHERE college = ? ORDER BY xp DESC', [college]);
+    const collegeUsers = rows.map(u => ({ name: u.name, xp: u.xp, level: u.level }));
+
+    res.json({
+      activeNow: Math.floor(Math.random() * 50) + 100,
+      collegeRank: collegeUsers,
+      totalReviews: 0
+    });
+  }
 });
 
 app.put('/api/profile/:email', async (req, res) => {
@@ -476,7 +642,9 @@ const PORT = process.env.PORT || 3001;
       }
     });
   } catch (e) {
-    console.error('❌ Could not initialize MySQL database. Please verify MySQL is running and credentials are correct.');
+    console.error('❌ Could not initialize database. Please check your database configuration.');
+    console.error('For MySQL: verify MySQL is running and credentials are correct.');
+    console.error('For SQLite: ensure write permissions in the app directory.');
     console.error(e);
     process.exit(1);
   }
