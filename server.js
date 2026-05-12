@@ -8,11 +8,17 @@ const sqlite3 = require('sqlite3').verbose();
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+// Fix for Render IPv6 routing issues with Gmail SMTP
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+
 console.log("\n🚀 SkillForge Starting with MySQL storage...");
 
 // ─── Email Helper ─────────────────────────────────────────────────────────────
 const mailTransporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // Use SSL/TLS
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS
