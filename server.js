@@ -19,6 +19,7 @@ const mailTransporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
   secure: true, // Use SSL/TLS
+  family: 4, // Force IPv4 explicitly because Render's free tier drops outbound IPv6
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS
