@@ -607,6 +607,8 @@ app.post('/api/institution/request', async (req, res) => {
   if (!name || !email) return res.status(400).json({ error: 'Name and email are required.' });
 
   const requestTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+  // 1. Send alert to Admin (falls back to MAIL_TO)
   await sendMail(
     '🏫 New Institution Registration Request — SkillForge',
     emailTemplate('New Institution Registration Request', [
@@ -617,6 +619,17 @@ app.post('/api/institution/request', async (req, res) => {
       ['Approx. Students', students || 'N/A'],
       ['Requested At', requestTime]
     ], '#22c55e')
+  );
+
+  // 2. Send acknowledgment to the Institution that registered
+  await sendMail(
+    '✅ Registration Request Received — SkillForge',
+    emailTemplate(`Hello ${contact || 'Admin'},`, [
+      ['Status', 'Received'],
+      ['Institution', name],
+      ['Message', 'Thank you for registering your institution with SkillForge! Our team will review your details and contact you within 24 hours.']
+    ], '#4a8ff7'),
+    email // The email from the form
   );
 
   res.json({ success: true, message: 'Registration request received. We will contact you within 24 hours.' });
