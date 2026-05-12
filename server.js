@@ -19,19 +19,26 @@ const mailTransporter = nodemailer.createTransport({
   }
 });
 
-async function sendMail(subject, html) {
-  if (!process.env.MAIL_USER || !process.env.MAIL_PASS || !process.env.MAIL_TO) {
-    console.warn('[Email] MAIL_USER / MAIL_PASS / MAIL_TO not set. Skipping email.');
+async function sendMail(subject, html, toEmail) {
+  if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
+    console.warn('[Email] MAIL_USER / MAIL_PASS not set. Skipping email.');
     return;
   }
+
+  const recipient = toEmail || process.env.MAIL_TO;
+  if (!recipient) {
+    console.warn('[Email] No recipient address provided and MAIL_TO not set.');
+    return;
+  }
+
   try {
     await mailTransporter.sendMail({
       from: `"SkillForge Alerts" <${process.env.MAIL_USER}>`,
-      to: process.env.MAIL_TO,
+      to: recipient,
       subject,
       html
     });
-    console.log(`[Email] Sent: ${subject}`);
+    console.log(`[Email] Sent: ${subject} to ${recipient}`);
   } catch (e) {
     console.error('[Email] Failed to send:', e.message);
   }
@@ -291,9 +298,9 @@ async function findUserByRollNo(rollNo, instId) {
       db.get(
         'SELECT * FROM users WHERE LOWER(rollNo) = ? AND (? = "" OR instId = ?)',
         [rollNo.toLowerCase(), instId || '', instId || ''], (err, row) => {
-        if (err) reject(err);
-        else resolve(parseUserRow(row));
-      });
+          if (err) reject(err);
+          else resolve(parseUserRow(row));
+        });
     });
   } else {
     const [rows] = await pool.query(
@@ -331,7 +338,7 @@ async function createUser(user) {
         JSON.stringify(user.scores || []),
         JSON.stringify(user.skills || {}),
         user.createdAt ? new Date(user.createdAt) : new Date()
-      ], function(err) {
+      ], function (err) {
         if (err) reject(err);
         else resolve();
       });
@@ -388,7 +395,7 @@ async function updateUserByEmail(email, updates) {
 
   if (useSQLite) {
     return new Promise((resolve, reject) => {
-      db.run(`UPDATE users SET ${fields.join(', ')} WHERE email = ?`, values, function(err) {
+      db.run(`UPDATE users SET ${fields.join(', ')} WHERE email = ?`, values, function (err) {
         if (err) reject(err);
         else resolve();
       });
@@ -408,10 +415,10 @@ async function seedDemoInstitution() {
         }
         if (!row) {
           db.run(`INSERT INTO institutions (id, name, adminName, email, password, type, totalStudents) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            ['DSCE-MCA-2024', 'Dayananda Sagar College', 'Dr. Ramesh Kumar', 'admin@dsce.edu.in', 'demo123', 'Engineering College', 156], function(err) {
-            if (err) reject(err);
-            else resolve();
-          });
+            ['DSCE-MCA-2024', 'Dayananda Sagar College', 'Dr. Ramesh Kumar', 'admin@dsce.edu.in', 'demo123', 'Engineering College', 156], function (err) {
+              if (err) reject(err);
+              else resolve();
+            });
         } else {
           resolve();
         }
@@ -516,19 +523,19 @@ app.post('/api/login', async (req, res) => {
     user.lastActive = today;
   }
 
-  // 📧 New Login Email Notification
+  // 📧 New Login Email Notification directly to the user
   const loginTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
   const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'Unknown';
   sendMail(
-    '🔐 New Login Detected — SkillForge',
-    emailTemplate('New Login Detected', [
+    '👋 Thanks for logging in — SkillForge',
+    emailTemplate(`Welcome back, ${user.name || 'Student'}!`, [
       ['Student Name', user.name || 'N/A'],
       ['Roll No', user.rollNo || 'N/A'],
       ['Email', user.email],
-      ['Institution ID', user.instId || 'N/A'],
       ['Login Time', loginTime],
-      ['IP Address', ip]
-    ], '#4a8ff7')
+      ['Message', 'Thank you for logging into SkillForge. Keep learning and improving your skills!']
+    ], '#10b981'),
+    user.email // Pass the user's email here so they receive it
   );
 
   const response = { ...user };
