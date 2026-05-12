@@ -5,9 +5,54 @@ const path = require('path');
 const fs = require('fs');
 const mysql = require('mysql2/promise');
 const sqlite3 = require('sqlite3').verbose();
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-console.log("\n🚀 CodeConfidence v12.7-ULTIMATE Starting with MySQL storage...");
+console.log("\n🚀 SkillForge Starting with MySQL storage...");
+
+// ─── Email Helper ─────────────────────────────────────────────────────────────
+const mailTransporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS
+  }
+});
+
+async function sendMail(subject, html) {
+  if (!process.env.MAIL_USER || !process.env.MAIL_PASS || !process.env.MAIL_TO) {
+    console.warn('[Email] MAIL_USER / MAIL_PASS / MAIL_TO not set. Skipping email.');
+    return;
+  }
+  try {
+    await mailTransporter.sendMail({
+      from: `"SkillForge Alerts" <${process.env.MAIL_USER}>`,
+      to: process.env.MAIL_TO,
+      subject,
+      html
+    });
+    console.log(`[Email] Sent: ${subject}`);
+  } catch (e) {
+    console.error('[Email] Failed to send:', e.message);
+  }
+}
+
+function emailTemplate(title, rows, color = '#4a8ff7') {
+  const rowsHtml = rows.map(([k, v]) =>
+    `<tr><td style="padding:8px 12px;color:#888;font-size:13px;">${k}</td><td style="padding:8px 12px;color:#eee;font-size:13px;">${v}</td></tr>`
+  ).join('');
+  return `
+  <div style="font-family:Inter,sans-serif;background:#0d0d0d;padding:32px;border-radius:16px;max-width:520px;margin:auto;">
+    <div style="border-left:4px solid ${color};padding-left:16px;margin-bottom:24px;">
+      <h2 style="color:#fff;margin:0;font-size:20px;">${title}</h2>
+      <p style="color:#888;margin:4px 0 0;font-size:12px;">SkillForge Platform Alert</p>
+    </div>
+    <table style="width:100%;border-collapse:collapse;background:#1a1a1a;border-radius:10px;overflow:hidden;">
+      ${rowsHtml}
+    </table>
+    <p style="color:#555;font-size:11px;margin-top:20px;text-align:center;">This is an automated alert from SkillForge. Do not reply.</p>
+  </div>`;
+}
 
 const app = express();
 app.use(cors());
@@ -471,6 +516,21 @@ app.post('/api/login', async (req, res) => {
     user.lastActive = today;
   }
 
+  // 📧 New Login Email Notification
+  const loginTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'Unknown';
+  sendMail(
+    '🔐 New Login Detected — SkillForge',
+    emailTemplate('New Login Detected', [
+      ['Student Name', user.name || 'N/A'],
+      ['Roll No', user.rollNo || 'N/A'],
+      ['Email', user.email],
+      ['Institution ID', user.instId || 'N/A'],
+      ['Login Time', loginTime],
+      ['IP Address', ip]
+    ], '#4a8ff7')
+  );
+
   const response = { ...user };
   delete response.password;
   res.json(response);
@@ -509,10 +569,50 @@ app.put('/api/profile/:email', async (req, res) => {
   const existing = await findUserByEmail(email);
   if (!existing) return res.status(404).json({ error: 'Not found.' });
 
+  const isPasswordChange = req.body.password !== undefined;
+
   await updateUserByEmail(email, req.body);
   const updated = await findUserByEmail(email);
   delete updated.password;
+
+  // 📧 Password Changed Email Notification
+  if (isPasswordChange) {
+    const changeTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'Unknown';
+    sendMail(
+      '🔑 Password Changed — SkillForge',
+      emailTemplate('Password Changed', [
+        ['Student Name', existing.name || 'N/A'],
+        ['Roll No', existing.rollNo || 'N/A'],
+        ['Email', email],
+        ['Changed At', changeTime],
+        ['IP Address', ip]
+      ], '#f59e0b')
+    );
+  }
+
   res.json(updated);
+});
+
+// 📧 Institution Registration Request
+app.post('/api/institution/request', async (req, res) => {
+  const { name, contact, email, phone, students } = req.body;
+  if (!name || !email) return res.status(400).json({ error: 'Name and email are required.' });
+
+  const requestTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  await sendMail(
+    '🏫 New Institution Registration Request — SkillForge',
+    emailTemplate('New Institution Registration Request', [
+      ['Institution Name', name],
+      ['Contact Person', contact || 'N/A'],
+      ['Email', email],
+      ['Phone', phone || 'N/A'],
+      ['Approx. Students', students || 'N/A'],
+      ['Requested At', requestTime]
+    ], '#22c55e')
+  );
+
+  res.json({ success: true, message: 'Registration request received. We will contact you within 24 hours.' });
 });
 
 // REAL COMPILER (Judge0)

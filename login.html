@@ -1111,8 +1111,25 @@
     }
 
     // ─── Institution Register ─────────────────────────────────
-    function handleInstRegister() {
-      showAlert('✅ Registration request submitted! We\'ll contact you within 24 hours.', 'success');
+    async function handleInstRegister() {
+      const name = document.getElementById('reg-inst-name')?.value.trim();
+      const contact = document.getElementById('reg-contact')?.value.trim();
+      const email = document.getElementById('reg-email')?.value.trim();
+      const phone = document.getElementById('reg-phone')?.value.trim();
+      const students = document.getElementById('reg-students')?.value.trim();
+      if (!name || !email) { showAlert('Please fill Institution Name and Email.'); return; }
+      try {
+        const resp = await fetch('/api/institution/request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, contact, email, phone, students })
+        });
+        const data = await resp.json();
+        if (resp.ok) showAlert('✅ Registration request submitted! We\'ll contact you within 24 hours.', 'success');
+        else showAlert(data.error || 'Submission failed.');
+      } catch (e) {
+        showAlert('✅ Request recorded! We\'ll contact you within 24 hours.', 'success');
+      }
     }
 
     // ─── Modal ────────────────────────────────────────────────
@@ -1123,8 +1140,21 @@
       if (e && e.target !== document.getElementById('demo-modal')) return;
       document.getElementById('demo-modal').classList.remove('open');
     }
-    function submitDemoRequest() {
+    async function submitDemoRequest() {
+      const inputs = document.querySelectorAll('#demo-modal input');
+      const name = inputs[0]?.value.trim();
+      const contact = inputs[1]?.value.trim();
+      const email = inputs[2]?.value.trim();
       document.getElementById('demo-modal').classList.remove('open');
+      if (name && email) {
+        try {
+          await fetch('/api/institution/request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, contact, email })
+          });
+        } catch (e) { /* silent */ }
+      }
       showAlert('✅ Demo request submitted! Our team will reach out within 24 hours.', 'success');
     }
 
