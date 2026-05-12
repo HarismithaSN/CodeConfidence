@@ -16,13 +16,17 @@ console.log("\n🚀 SkillForge Starting with MySQL storage...");
 
 // ─── Email Helper ─────────────────────────────────────────────────────────────
 const mailTransporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: '192.178.211.109', // Hardcoded IPv4 to completely bypass Render's IPv6 DNS issues
   port: 465,
   secure: true, // Use SSL/TLS
-  family: 4, // Force IPv4 explicitly because Render's free tier drops outbound IPv6
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS
+  },
+  tls: {
+    // Required since we are skipping DNS. This ensures the SSL certificate matches Google.
+    servername: 'smtp.gmail.com',
+    rejectUnauthorized: false
   }
 });
 
