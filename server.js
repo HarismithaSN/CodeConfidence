@@ -609,7 +609,7 @@ app.post('/api/institution/request', async (req, res) => {
   const requestTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
   // 1. Send alert to Admin (falls back to MAIL_TO)
-  await sendMail(
+  sendMail(
     '🏫 New Institution Registration Request — SkillForge',
     emailTemplate('New Institution Registration Request', [
       ['Institution Name', name],
@@ -622,7 +622,7 @@ app.post('/api/institution/request', async (req, res) => {
   );
 
   // 2. Send acknowledgment to the Institution that registered
-  await sendMail(
+  sendMail(
     '✅ Registration Request Received — SkillForge',
     emailTemplate(`Hello ${contact || 'Admin'},`, [
       ['Status', 'Received'],
