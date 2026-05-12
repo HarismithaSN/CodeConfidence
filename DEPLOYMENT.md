@@ -1,4 +1,4 @@
-# CodeConfidence Deployment Guide
+# SkillForge Deployment Guide
 
 ## 🚀 Deploying to Render (Zero-Config Database!)
 

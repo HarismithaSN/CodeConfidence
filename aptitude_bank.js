@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════
-// CODECONFIDENCE — OFFLINE APTITUDE QUESTION BANK (RAG System)
+// SKILLFORGE — OFFLINE APTITUDE QUESTION BANK (RAG System)
 // Sources: TCS NQT 2023-24, IndiaBix, GeeksForGeeks, Capgemini OT,
 //          Infosys Power Programmer, Wipro NLTH
 // ═══════════════════════════════════════════════════════════════════

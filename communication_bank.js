@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════
-// CODECONFIDENCE — OFFLINE COMMUNICATION & SOFT SKILLS BANK (RAG System)
+// SKILLFORGE — OFFLINE COMMUNICATION & SOFT SKILLS BANK (RAG System)
 // Consolidates Verbal Ability, Group Discussions, HR Frameworks,
 // Email Writing, and Presentation Skills.
 // ═══════════════════════════════════════════════════════════════════
