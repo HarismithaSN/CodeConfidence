@@ -16,15 +16,16 @@ console.log("\n🚀 SkillForge Starting with MySQL storage...");
 
 // ─── Email Helper ─────────────────────────────────────────────────────────────
 const mailTransporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: '192.178.211.109', // Hardcoded IPv4 to avoid IPv6 ENETUNREACH
   port: 587,
-  secure: false, // False for port 587, it will upgrade to secure TLS automatically via STARTTLS
+  secure: false, // TLS via STARTTLS
   requireTLS: true,
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS
   },
   tls: {
+    servername: 'smtp.gmail.com', // Prevent certificate matching errors
     rejectUnauthorized: false
   }
 });
