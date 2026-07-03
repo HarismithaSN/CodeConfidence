@@ -775,8 +775,7 @@ app.post('/api/feedback', async (req, res) => {
   const activeKey = (apiKey && apiKey.startsWith("AIza")) ? apiKey : DEFAULT_KEY;
 
   try {
-    const db = readDB();
-    const user = db[email?.toLowerCase().trim()] || {};
+    const user = (email ? await findUserByEmail(email) : null) || {};
     const systemPrompt = `You are a coding mentor. Analyze the code and provide feedback in JSON format. Language: ${user.language || 'English'}. Score 0-100. Return JSON: {score, grade, summary, issues:[], improved_code, tutor_question, skill_tags:[], xp_earned, level_up_tip}`;
 
     const aiResponse = await callGemini(systemPrompt, `Code: ${code}\nLang: ${language}`, activeKey);
