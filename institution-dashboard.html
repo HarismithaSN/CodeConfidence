@@ -687,6 +687,7 @@
                 Assignments</button>
             <button class="sb-link" onclick="showPage('credentials')" id="nav-credentials"><i>🔑</i>
                 Credentials</button>
+            <button class="sb-link" onclick="showPage('requests')" id="nav-requests"><i>📋</i> Requests</button>
             <button class="sb-link" onclick="showPage('settings')" id="nav-settings"><i>⚙️</i> Settings</button>
         </nav>
         <div class="sb-footer">
@@ -977,6 +978,31 @@
                 </div>
             </div>
 
+            <!-- PAGE: REQUESTS -->
+            <div class="page" id="page-requests">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <div style="font-size:13px;color:var(--text-muted);">Incoming Institution Registration Requests
+                    </div>
+                    <button class="btn btn-ghost" onclick="renderRequests()">🔄 Refresh</button>
+                </div>
+                <div class="glass-card" style="padding:0;overflow:hidden;">
+                    <table class="tbl" id="requests-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Institution Name</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Students</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requests-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
         </div><!-- /content -->
     </div><!-- /main -->
 
@@ -1095,7 +1121,8 @@
         const PAGE_TITLES = {
             overview: 'Dashboard Overview', students: 'Student Management',
             analytics: 'Performance Analytics', leaderboard: 'Leaderboard',
-            assignments: 'Assignments', credentials: 'Credentials Management', settings: 'Settings'
+            assignments: 'Assignments', credentials: 'Credentials Management',
+            requests: 'Registration Requests', settings: 'Settings'
         };
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1114,6 +1141,34 @@
                 case 'leaderboard': renderLeaderboard(); break;
                 case 'assignments': renderAssignments(); break;
                 case 'credentials': renderCredentials(); break;
+                case 'requests': renderRequests(); break;
+            }
+        }
+
+        // ─── REQUESTS ─────────────────────────────────────────
+        async function renderRequests() {
+            try {
+                const resp = await fetch('/api/institution/requests');
+                const data = await resp.json();
+                const tbody = document.getElementById('requests-tbody');
+                if (!data.length) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);">No registration requests found.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = data.map(r => `
+                    <tr>
+                        <td style="font-size:11px;color:var(--text-muted);">${new Date(r.createdAt).toLocaleDateString()}</td>
+                        <td style="font-weight:700;">${r.name}</td>
+                        <td>${r.contact || '-'}</td>
+                        <td>${r.email}</td>
+                        <td>${r.phone || '-'}</td>
+                        <td>${r.students || '-'}</td>
+                        <td><span class="badge badge-inactive">${r.status}</span></td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                console.error('Failed to fetch requests', e);
+                showToast('❌ Error fetching requests');
             }
         }
 

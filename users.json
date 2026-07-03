@@ -53,9 +53,52 @@
     "level": 3,
     "confidenceScore": 72,
     "streak": 2,
-    "lastActive": "2026-05-02",
+    "lastActive": "2026-06-14",
     "status": "active",
-    "submissions": [],
+    "submissions": [
+      {
+        "date": "2026-06-14",
+        "topic": "Recursion",
+        "score": 95,
+        "lang": "Python"
+      },
+      {
+        "date": "2026-06-13",
+        "topic": "Recursion",
+        "score": 88,
+        "lang": "Python"
+      },
+      {
+        "date": "2026-06-12",
+        "topic": "Arrays",
+        "score": 92,
+        "lang": "JavaScript"
+      },
+      {
+        "date": "2026-06-10",
+        "topic": "Loops",
+        "score": 85,
+        "lang": "Java"
+      },
+      {
+        "date": "2026-06-08",
+        "topic": "Algorithms",
+        "score": 78,
+        "lang": "Python"
+      },
+      {
+        "date": "2026-06-07",
+        "topic": "Functions",
+        "score": 90,
+        "lang": "C++"
+      },
+      {
+        "date": "2026-06-05",
+        "topic": "OOP",
+        "score": 82,
+        "lang": "Java"
+      }
+    ],
     "skills": {
       "loops": 85,
       "functions": 72,

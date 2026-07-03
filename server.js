@@ -109,6 +109,22 @@ async function initDatabase() {
       });
     });
 
+    await new Promise((resolve, reject) => {
+      db.run(`CREATE TABLE IF NOT EXISTS institution_requests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        contact TEXT,
+        email TEXT,
+        phone TEXT,
+        students TEXT,
+        status TEXT DEFAULT 'pending',
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+      )`, (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+
     await seedDemoInstitution();
     await migrateJsonUsers();
     return;
@@ -186,6 +202,17 @@ async function initDatabase() {
     INDEX idx_college (college)
   )`);
 
+  await pool.query(`CREATE TABLE IF NOT EXISTS institution_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    contact VARCHAR(255),
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    students VARCHAR(50),
+    status VARCHAR(50) DEFAULT 'pending',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
+
   await seedDemoInstitution();
   await migrateJsonUsers();
 }
@@ -246,9 +273,9 @@ async function findUserByRollNo(rollNo, instId) {
       db.get(
         'SELECT * FROM users WHERE LOWER(rollNo) = ? AND (? = "" OR instId = ?)',
         [rollNo.toLowerCase(), instId || '', instId || ''], (err, row) => {
-        if (err) reject(err);
-        else resolve(parseUserRow(row));
-      });
+          if (err) reject(err);
+          else resolve(parseUserRow(row));
+        });
     });
   } else {
     const [rows] = await pool.query(
@@ -307,7 +334,7 @@ async function createUser(user) {
         JSON.stringify(user.scores || []),
         JSON.stringify(user.skills || {}),
         user.createdAt ? new Date(user.createdAt) : new Date()
-      ], function(err) {
+      ], function (err) {
         if (err) reject(err);
         else resolve();
       });
@@ -364,7 +391,7 @@ async function updateUserByEmail(email, updates) {
 
   if (useSQLite) {
     return new Promise((resolve, reject) => {
-      db.run(`UPDATE users SET ${fields.join(', ')} WHERE email = ?`, values, function(err) {
+      db.run(`UPDATE users SET ${fields.join(', ')} WHERE email = ?`, values, function (err) {
         if (err) reject(err);
         else resolve();
       });
@@ -384,10 +411,10 @@ async function seedDemoInstitution() {
         }
         if (!row) {
           db.run(`INSERT INTO institutions (id, name, adminName, email, password, type, totalStudents) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            ['DSCE-MCA-2024', 'Dayananda Sagar College', 'Dr. Ramesh Kumar', 'admin@dsce.edu.in', 'demo123', 'Engineering College', 156], function(err) {
-            if (err) reject(err);
-            else resolve();
-          });
+            ['DSCE-MCA-2024', 'Dayananda Sagar College', 'Dr. Ramesh Kumar', 'admin@dsce.edu.in', 'demo123', 'Engineering College', 156], function (err) {
+              if (err) reject(err);
+              else resolve();
+            });
         } else {
           resolve();
         }
@@ -534,6 +561,105 @@ app.put('/api/profile/:email', async (req, res) => {
   const updated = await findUserByEmail(email);
   delete updated.password;
   res.json(updated);
+});
+
+app.post('/api/institution/students', async (req, res) => {
+  const { instId, students } = req.body;
+  if (!instId || !Array.isArray(students)) {
+    return res.status(400).json({ error: 'Invalid payload' });
+  }
+
+  console.log(`📥 Syncing ${students.length} students for institution: ${instId}`);
+
+  try {
+    let count = 0;
+    for (const s of students) {
+      const email = normalizeEmail(s.email);
+      if (!email) continue;
+
+      const existing = await findUserByEmail(email);
+      if (existing) {
+        // Update existing user (optional, but good for consistency)
+        await updateUserByEmail(email, {
+          rollNo: s.rollNo,
+          name: s.name,
+          branch: s.branch,
+          year: s.year,
+          password: s.password || existing.password,
+          instId: instId,
+          college: instId // Using instId as college name for simplicity if not provided
+        });
+      } else {
+        // Create new user
+        await createUser({
+          ...s,
+          email,
+          instId,
+          college: instId,
+          passwordSet: s.passwordSet || 0
+        });
+        count++;
+      }
+    }
+    console.log(`✅ Successfully synced students. New: ${count}, Updated: ${students.length - count}`);
+    res.json({ success: true, newCount: count, updatedCount: students.length - count });
+  } catch (e) {
+    console.error('❌ Student sync failed:', e);
+    res.status(500).json({ error: 'Sync failed' });
+  }
+});
+
+// Institution Registration Requests
+app.post('/api/institution/request', async (req, res) => {
+  const { name, contact, email, phone, students } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Name and Email are required.' });
+  }
+
+  console.log(`📥 New registration request from: ${name} (${email})`);
+
+  try {
+    const query = `INSERT INTO institution_requests (name, contact, email, phone, students) VALUES (?, ?, ?, ?, ?)`;
+    const params = [name, contact || null, email, phone || null, students || null];
+
+    if (useSQLite) {
+      await new Promise((resolve, reject) => {
+        db.run(query, params, function (err) {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+    } else {
+      await pool.query(query, params);
+    }
+
+    res.json({ success: true, message: 'Request submitted successfully.' });
+  } catch (e) {
+    console.error('❌ Registration request failed:', e);
+    res.status(500).json({ error: 'Failed to save request.' });
+  }
+});
+
+app.get('/api/institution/requests', async (req, res) => {
+  try {
+    let requests;
+    if (useSQLite) {
+      requests = await new Promise((resolve, reject) => {
+        db.all('SELECT * FROM institution_requests ORDER BY createdAt DESC', [], (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows);
+        });
+      });
+    } else {
+      const [rows] = await pool.query('SELECT * FROM institution_requests ORDER BY createdAt DESC');
+      requests = rows;
+    }
+    res.json(requests);
+  } catch (e) {
+    console.error('❌ Failed to fetch requests:', e);
+    res.status(500).json({ error: 'Failed to fetch requests.' });
+  }
 });
 
 app.get('/api/admin/users', async (req, res) => {

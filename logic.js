@@ -74,6 +74,11 @@ function init() {
         const savedProfile = localStorage.getItem('cc_profile_' + email);
         if (savedProfile) {
             state.user = { ...state.user, ...JSON.parse(savedProfile) };
+            // Ensure default skills exist
+            const defaultSkills = {
+                loops: 0, functions: 0, arrays: 0, oop: 0, recursion: 0, algorithms: 0
+            };
+            state.user.skills = { ...defaultSkills, ...(state.user.skills || {}) };
         }
     }
 
@@ -81,6 +86,7 @@ function init() {
     showPage('dashboard');
     updateXP(0);
     initPlacementData(); // New initialization
+    refreshUserProfile();
     state.sqlSuccess = false;
     state.sqlChallengeIndex = 0;
     updateCareerThemeVariables(); // Initialize career colors for current theme
@@ -95,6 +101,83 @@ function init() {
     const rtToggle = document.getElementById('realtime-toggle');
     if (rtToggle) rtToggle.checked = state.user.realTimeEnabled;
     initRealTimeAnalysis();
+
+    updateGlobalUserUI();
+}
+
+async function refreshUserProfile() {
+    const email = localStorage.getItem('cc_session');
+    if (!email) return;
+
+    try {
+        const resp = await fetch(`/api/profile/${email}`);
+        if (resp.ok) {
+            const freshUser = await resp.json();
+            // Merge with existing state to avoid overwriting session-only fields
+            state.user = { ...state.user, ...freshUser };
+            localStorage.setItem('cc_profile_' + email, JSON.stringify(state.user));
+
+            // Re-render dashboard if visible
+            if (state.currentPage === 'dashboard') {
+                renderDashboard();
+            }
+            updateGlobalUserUI();
+        }
+    } catch (e) {
+        console.warn('Profile sync failed:', e);
+    }
+}
+
+function updateGlobalUserUI() {
+    const user = state.user || {};
+    const name = user.name || 'Student';
+    const firstChar = name.charAt(0).toUpperCase();
+
+    // Update Header
+    const titleEl = document.getElementById('page-display-title');
+    if (titleEl) titleEl.textContent = `Welcome Back, ${name}`;
+
+    const headerAvatar = document.getElementById('header-avatar');
+    if (headerAvatar) headerAvatar.textContent = firstChar;
+
+    // Update Profile Char
+    const profileAvatar = document.getElementById('profile-avatar-char');
+    if (profileAvatar) profileAvatar.textContent = firstChar;
+
+    // Update Streak Tip
+    const streakTip = document.querySelector('#page-dashboard .hero-card p');
+    if (streakTip) {
+        if (user.xp === 0) {
+            streakTip.innerHTML = "Welcome to SkillForge! Start your first challenge today to begin your coding journey and build your streak.";
+        } else {
+            const lastSub = (user.submissions && user.submissions.length > 0) ? user.submissions[user.submissions.length - 1] : null;
+            const nextLevel = (user.level || 1) + 1;
+            if (lastSub) {
+                const topic = lastSub.topic || lastSub.lang || "coding";
+                streakTip.innerHTML = `Your recent work in **${topic}** was impressive! Solve today's challenge to earn more XP and reach Level ${nextLevel}.`;
+            } else {
+                streakTip.innerHTML = `Great progress! Solve today's challenge to earn more XP and reach Level ${nextLevel}.`;
+            }
+        }
+    }
+
+    // Update summary card rank label
+    const topPerformerEl = document.getElementById('dash-college-name')?.parentElement;
+    if (topPerformerEl) {
+        if (user.xp > 0) {
+            topPerformerEl.style.display = 'block';
+            const rank = (user.xp >= TARGET_XP) ? '#11' : '#12';
+            topPerformerEl.innerHTML = `Rank <b>${rank}</b> in <span id="dash-college-name">${user.college || 'your college'}</span>`;
+        } else {
+            topPerformerEl.style.display = 'none';
+        }
+    }
+    if (document.getElementById('dash-streak')) document.getElementById('dash-streak').innerText = user.streak || 0;
+    if (document.getElementById('xp-text')) document.getElementById('xp-text').textContent = `${user.xp || 0} / 1000 XP mastered`;
+    if (document.getElementById('xp-progress-fill')) {
+        const pct = Math.min(100, Math.round(((user.xp || 0) / 1000) * 100));
+        document.getElementById('xp-progress-fill').style.width = pct + '%';
+    }
 }
 
 function initTheme() {
@@ -215,16 +298,25 @@ function renderPage(pageId) {
 
 function renderDashboard() {
     const user = state.user;
-    document.getElementById('dash-xp').innerText = user.xp;
-    document.getElementById('dash-streak').innerText = user.streak;
-    document.getElementById('dash-level').innerText = `Level ${user.level}`;
+    document.getElementById('dash-xp').innerText = user.xp || 0;
+    document.getElementById('dash-streak').innerText = user.streak || 0;
+    document.getElementById('dash-level').innerText = user.level || 1;
+    if (document.getElementById('dash-college-name')) {
+        document.getElementById('dash-college-name').textContent = user.college || 'your college';
+        // Hide "Top performer" label if XP is 0
+        const topPerformerEl = document.getElementById('dash-college-name').parentElement;
+        if (topPerformerEl) {
+            topPerformerEl.style.display = (user.xp > 0) ? 'block' : 'none';
+        }
+    }
 
     // Render Heatmap
     renderHeatmap();
 
     // Render Skill Bars
     const skillContainer = document.getElementById('dash-skills');
-    skillContainer.innerHTML = Object.entries(user.skills).map(([skill, val]) => `
+    const skills = user.skills || {};
+    skillContainer.innerHTML = Object.entries(skills).map(([skill, val]) => `
         <div class="skill-item" style="margin-bottom: 12px;">
             <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
                 <span style="text-transform:capitalize;">${skill}</span>
@@ -1105,8 +1197,9 @@ function renderProfile() {
     if (document.getElementById('profile-year')) document.getElementById('profile-year').value = user.year || '2026';
     if (document.getElementById('profile-skills-input')) document.getElementById('profile-skills-input').value = user.skillsList || 'Python, Java, DSA';
     if (document.getElementById('profile-gemini-key')) document.getElementById('profile-gemini-key').value = localStorage.getItem('cc_gemini_key') || '';
-    if (document.getElementById('preview-name')) document.getElementById('preview-name').innerText = user.name || 'Harismitha';
-    if (document.getElementById('preview-tagline')) document.getElementById('preview-tagline').innerText = `${user.branch || 'MCA'} • ${user.college || 'Dayananda Sagar College'}`;
+    if (document.getElementById('preview-name')) document.getElementById('preview-name').innerText = user.name || 'Student Name';
+    if (document.getElementById('preview-tagline')) document.getElementById('preview-tagline').innerText = `${user.branch || 'Degree'} • ${user.college || 'College Name'}`;
+    if (document.getElementById('cert-student-name')) document.getElementById('cert-student-name').textContent = user.name || 'Student Name';
 
     // Render skill tags
     const tagsEl = document.getElementById('preview-skills-tags');
@@ -1155,6 +1248,7 @@ function saveProfile() {
         window.__GEMINI_API_KEY__ = key;
     }
     renderProfile();
+    updateGlobalUserUI();
     updateCommunityBanner();
     showToast("✅ Profile updated successfully!");
 }
@@ -1163,13 +1257,60 @@ function renderHeatmap() {
     const heatmap = document.getElementById('heatmap');
     if (!heatmap) return;
 
+    const user = state.user || {};
+    const submissions = user.submissions || [];
+
+    // Group submissions by date
+    const activityMap = {};
+
+    // ── INJECT DUMMY DATA FOR DEMO ──
+    // This ensures the heatmap looks active even for new users
+    const now = new Date();
+    // Add 25 random activity points over the last 60 days
+    // Using a simple deterministic seed-like approach based on today's date for relative stability
+    const seed = now.getDate() + now.getMonth();
+    for (let i = 0; i < 30; i++) {
+        const d = new Date();
+        // Spread activity across the last 65 days
+        const daysAgo = (i * 2 + (seed % 7)) % 65;
+        d.setDate(now.getDate() - daysAgo);
+        const ds = d.toDateString();
+        activityMap[ds] = (activityMap[ds] || 0) + (i % 3) + 1;
+    }
+
+    submissions.forEach(s => {
+        let dateStr = "";
+        if (s.date) {
+            dateStr = new Date(s.date).toDateString();
+        } else if (s.time) {
+            // Handle formats like "Today at 01:27 PM" or "Yesterday at..."
+            const now = new Date();
+            if (s.time.toLowerCase().includes('today')) {
+                dateStr = now.toDateString();
+            } else if (s.time.toLowerCase().includes('yesterday')) {
+                now.setDate(now.getDate() - 1);
+                dateStr = now.toDateString();
+            } else {
+                dateStr = new Date(s.time).toDateString();
+            }
+        }
+        if (dateStr && dateStr !== "Invalid Date") {
+            activityMap[dateStr] = (activityMap[dateStr] || 0) + 1;
+        }
+    });
+
     // Generate 70 days of activity (10 weeks)
     const nodes = [];
-    for (let i = 0; i < 70; i++) {
-        const level = Math.floor(Math.random() * 4); // 0 to 3
+    const today = new Date();
+    for (let i = 69; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(today.getDate() - i);
+        const dateStr = d.toDateString();
+        const count = activityMap[dateStr] || 0;
+        const level = count === 0 ? 0 : Math.min(3, Math.ceil(count / 2));
         const opacity = [0.05, 0.2, 0.5, 1][level];
         const color = level === 0 ? 'rgba(212,175,55,0.05)' : `rgba(212,175,55,${opacity})`;
-        nodes.push(`<div style="width:100%; aspect-ratio:1; background:${color}; border-radius:2px;" title="Activity level: ${level}"></div>`);
+        nodes.push(`<div style="width:100%; aspect-ratio:1; background:${color}; border-radius:2px;" title="${dateStr}: ${count} submissions"></div>`);
     }
     heatmap.innerHTML = nodes.join('');
 }
@@ -1332,12 +1473,12 @@ function updateEditorLanguage() {
 // ══════════════════════════════════════════════
 
 const DSC_USER = {
-    name: 'Harismitha', usn: '1DS24MC034', college: 'Dayananda Sagar College',
-    branch: 'MCA', streak: 12, submissions: 34,
-    skills: { Loops: 85, Functions: 72, Arrays: 60, OOP: 48, Recursion: 32, Algorithms: 18 }
+    name: 'Student', usn: '-', college: 'College',
+    branch: 'MCA', streak: 0, submissions: 0,
+    skills: { Loops: 0, Functions: 0, Arrays: 0, OOP: 0, Recursion: 0, Algorithms: 0 }
 };
 
-let currentXP = parseInt(localStorage.getItem('cc_xp_total') || '620');
+let currentXP = parseInt(localStorage.getItem('cc_xp_total') || '0');
 const TARGET_XP = 680;
 const TARGET_NAME = 'Preethi A';
 const TARGET_SKILLS = { Loops: 68, Functions: 62, Arrays: 75, OOP: 55, Recursion: 50, Algorithms: 30 };
@@ -1355,7 +1496,7 @@ const DSC_LB = {
         { rank: 9, name: 'Arun V', usn: '1DS24MC038', branch: 'MCA', xp: 760, score: 68, level: 'Apprentice', trend: '↓' },
         { rank: 10, name: 'Lakshmi C', usn: '1DS24MC041', branch: 'MCA', xp: 710, score: 67, level: 'Apprentice', trend: '↑' },
         { rank: 11, name: 'Preethi A', usn: '1DS24MC042', branch: 'MCA', xp: 680, score: 65, level: 'Apprentice', trend: '→' },
-        { rank: 12, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 620, score: 72, level: 'Apprentice', trend: '↑', isYou: true },
+        { rank: 12, name: state.user.name || 'Student', usn: state.user.rollNo || '-', branch: state.user.branch || 'MCA', xp: state.user.xp || 0, score: 72, level: 'Apprentice', trend: '↑', isYou: true },
         { rank: 13, name: 'Suresh T', usn: '1DS24MC045', branch: 'MCA', xp: 580, score: 63, level: 'Explorer', trend: '↓' },
         { rank: 14, name: 'Asha D', usn: '1DS24MC047', branch: 'MCA', xp: 540, score: 60, level: 'Explorer', trend: '→' },
         { rank: 15, name: 'Rahul G', usn: '1DS24MC048', branch: 'MCA', xp: 490, score: 58, level: 'Explorer', trend: '↑' }
@@ -1363,14 +1504,14 @@ const DSC_LB = {
     week: [
         { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 320, score: 91, level: 'Journeyman', trend: '↑', label: '+320 XP' },
         { rank: 2, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 280, score: 80, level: 'Apprentice', trend: '↑', label: '+280 XP' },
-        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 210, score: 72, level: 'Apprentice', trend: '↑', label: '+210 XP', isYou: true },
+        { rank: 3, name: state.user.name || 'Student', usn: state.user.rollNo || '-', branch: state.user.branch || 'MCA', xp: 210, score: 72, level: 'Apprentice', trend: '↑', label: '+210 XP', isYou: true },
         { rank: 4, name: 'Kiran B', usn: '1DS24MC022', branch: 'MCA', xp: 190, score: 77, level: 'Apprentice', trend: '↑', label: '+190 XP' },
         { rank: 5, name: 'Divya N', usn: '1DS24MC028', branch: 'MCA', xp: 160, score: 74, level: 'Apprentice', trend: '→', label: '+160 XP' }
     ],
     month: [
         { rank: 1, name: 'Arjun S', usn: '1DS24MC001', branch: 'MCA', xp: 780, score: 91, level: 'Journeyman', trend: '↑', label: '+780 XP' },
         { rank: 2, name: 'Priya R', usn: '1DS24MC007', branch: 'MCA', xp: 640, score: 87, level: 'Journeyman', trend: '↑', label: '+640 XP' },
-        { rank: 3, name: 'Harismitha', usn: '1DS24MC034', branch: 'MCA', xp: 410, score: 72, level: 'Apprentice', trend: '↑', label: '+410 XP', isYou: true },
+        { rank: 3, name: state.user.name || 'Student', usn: state.user.rollNo || '-', branch: state.user.branch || 'MCA', xp: 410, score: 72, level: 'Apprentice', trend: '↑', label: '+410 XP', isYou: true },
         { rank: 4, name: 'Sneha K', usn: '1DS24MC018', branch: 'MCA', xp: 360, score: 80, level: 'Apprentice', trend: '↑', label: '+360 XP' },
         { rank: 5, name: 'Rohan M', usn: '1DS24MC012', branch: 'MCA', xp: 290, score: 83, level: 'Apprentice', trend: '→', label: '+290 XP' }
     ],
@@ -1418,17 +1559,23 @@ function renderCommunity() {
 }
 
 function syncCommunityProfile() {
-    DSC_USER.name = state.user.name || DSC_USER.name;
-    DSC_USER.college = state.user.college || DSC_USER.college;
-    DSC_USER.branch = state.user.branch || DSC_USER.branch;
-    DSC_USER.skills = state.user.skills || DSC_USER.skills;
+    DSC_USER.name = state.user.name || 'Student';
+    DSC_USER.usn = state.user.rollNo || '-';
+    DSC_USER.college = state.user.college || 'College';
+    DSC_USER.branch = state.user.branch || 'MCA';
+    DSC_USER.skills = state.user.skills || {};
 }
 
 function updateCommunityBanner() {
     const collegeName = document.getElementById('community-college-name');
     const collegeSubtitle = document.getElementById('community-college-subtitle');
-    if (collegeName) collegeName.textContent = state.user.college || 'Dayananda Sagar College';
+    const usnEl = document.getElementById('community-student-usn');
+    const lbTitle = document.getElementById('community-leaderboard-title');
+
+    if (collegeName) collegeName.textContent = state.user.college || 'Your College';
     if (collegeSubtitle) collegeSubtitle.textContent = `${state.user.branch || 'MCA'} Department • Batch ${state.user.year || '2026'}`;
+    if (usnEl) usnEl.textContent = `USN: ${state.user.rollNo || '-'}`;
+    if (lbTitle) lbTitle.textContent = `🏆 College Leaderboard — ${state.user.college || 'Your College'}`;
 }
 
 // ── XP HELPERS ────────────────────────────────────────
@@ -1459,7 +1606,7 @@ function updateXPDisplays() {
         riProgress.style.width = pct + '%';
     }
     if (bannerRank) {
-        bannerRank.textContent = currentXP >= TARGET_XP ? '#11' : '#12';
+        bannerRank.textContent = currentXP === 0 ? '-' : (currentXP >= TARGET_XP ? '#11' : '#12');
     }
     // update global XP bar in header
     if (typeof updateXP === 'function') {
@@ -3408,7 +3555,7 @@ async function startCSReview(topic) {
             }).join('\\n\\n');
         }
 
-const systemPrompt = `You are generating high-quality multiple-choice questions for the CS topic: ${topic}. Use only the topic and the local context provided. Respond ONLY as a valid JSON array of objects exactly in this format: [{"question":"...","options":["...","...","...","..."],"answerIndex":0,"solution_explanation":"..."}]. Each option must be a concise answer choice, not a restatement of the question. Do not include any instructions, labels, or extra sentences inside the option text. Provide 4 distinct answer choices for each question, with one clearly correct answer.\n\n${ragContext}`;
+        const systemPrompt = `You are generating high-quality multiple-choice questions for the CS topic: ${topic}. Use only the topic and the local context provided. Respond ONLY as a valid JSON array of objects exactly in this format: [{"question":"...","options":["...","...","...","..."],"answerIndex":0,"solution_explanation":"..."}]. Each option must be a concise answer choice, not a restatement of the question. Do not include any instructions, labels, or extra sentences inside the option text. Provide 4 distinct answer choices for each question, with one clearly correct answer.\n\n${ragContext}`;
         const aiResponse = await callGemini(systemPrompt, `Generate quiz for ${topic}`);
 
         let questions = [];
@@ -3546,10 +3693,10 @@ async function renderCompanyTracks() {
 
         <div class="grid-cols-3" style="gap:20px;">
         ${companies.map(c => {
-            const comp = Math.min(100, Math.round((metrics.readiness * 0.7) + (state.user.xp / c.minXp * 30)));
-            const isLocked = state.user.xp < c.minXp * 0.5;
+        const comp = Math.min(100, Math.round((metrics.readiness * 0.7) + (state.user.xp / c.minXp * 30)));
+        const isLocked = state.user.xp < c.minXp * 0.5;
 
-            return `
+        return `
                     <div class="glass-card topic-card" style="opacity: ${isLocked ? 0.6 : 1};">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                             <div style="font-weight:800; font-size:16px;">${c.name}</div>
@@ -3562,7 +3709,7 @@ async function renderCompanyTracks() {
                         ${isLocked ? `<div style="font-size:10px; color:#ff6b6b;">🔒 Requires ${c.minXp} XP</div>` : `<button class="btn-gold" style="width:100%; justify-content:center; font-size:12px;" onclick="startInterview('${c.name}')">Crack the Code</button>`}
                     </div>
                 `;
-        }).join('')}
+    }).join('')}
     </div>
 `;
 }
@@ -3677,7 +3824,7 @@ function openInterviewSession(title, questions, type = "technical") {
 
     const modal = document.getElementById('interview-modal');
     modal.style.display = 'flex';
-    document.getElementById('int-company-title').innerText = `${ title } `;
+    document.getElementById('int-company-title').innerText = `${title} `;
     document.getElementById('int-topic').innerText = title;
     renderInterviewQuestion();
 
@@ -3689,7 +3836,7 @@ function openInterviewSession(title, questions, type = "technical") {
         interviewState.timer += 1;
         const minutes = String(Math.floor(interviewState.timer / 60)).padStart(2, '0');
         const seconds = String(interviewState.timer % 60).padStart(2, '0');
-        const timerText = `🕒 ${ minutes }:${ seconds } `;
+        const timerText = `🕒 ${minutes}:${seconds} `;
         const timerElement = document.getElementById('int-timer');
         if (timerElement) timerElement.innerText = timerText;
     }, 1000);
@@ -3746,11 +3893,11 @@ async function evaluateGDPoint() {
 
     try {
         const systemPrompt = `You are a GD moderator.Evaluate the user's statement for clarity, logic, and professional phrasing. Provide 3 specific ways to improve the statement to make it more impactful. Respond in JSON with {evaluation, refined_version, tips: []}.`;
-const data = await callGemini(systemPrompt, `Analyze this GD point: ${input}`);
+        const data = await callGemini(systemPrompt, `Analyze this GD point: ${input}`);
 
-if (!data) return; // Error handled in callGemini
+        if (!data) return; // Error handled in callGemini
 
-feedbackDiv.innerHTML = `
+        feedbackDiv.innerHTML = `
             <div class="glass-card" style="padding:20px; border-left:4px solid var(--primary);">
                 <div style="font-size:13px; font-weight:800; margin-bottom:12px; color:var(--primary);">AI Analysis</div>
                 <p style="font-size:12px; margin-bottom:16px;">${data.evaluation || 'Your point is clear but could be more punchy.'}</p>
@@ -3761,11 +3908,11 @@ feedbackDiv.innerHTML = `
                 </div>
             </div>
         `;
-updateXP(25);
+        updateXP(25);
     } catch (e) {
-    showAIError("Failed to analyze GD point.");
-    feedbackDiv.innerHTML = `<p style="color:#ff6b6b;">Failed to analyze. Check connection.</p>`;
-}
+        showAIError("Failed to analyze GD point.");
+        feedbackDiv.innerHTML = `<p style="color:#ff6b6b;">Failed to analyze. Check connection.</p>`;
+    }
 }
 async function renderSoftSkillsHub() {
     const container = document.getElementById('career-tab-content');

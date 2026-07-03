@@ -1101,6 +1101,7 @@
         name: student.name, rollNo: student.rollNo, institutionId: student.instId,
         college: student.college || 'Unknown', email: student.email, xp: student.xp,
         level: student.level, streak: student.streak, skills: student.skills,
+        branch: student.branch || '', year: student.year || '',
         submissions: student.submissions || [], scores: student.scores || []
       };
       // For backwards compatibility and dashboard, use cc_session:
@@ -1119,6 +1120,7 @@
       const students = document.getElementById('reg-students')?.value.trim();
       if (!name || !email) { showAlert('Please fill Institution Name and Email.'); return; }
       try {
+        showAlert('Submitting request...', 'success');
         const resp = await fetch('/api/institution/request', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1128,7 +1130,7 @@
         if (resp.ok) showAlert('✅ Registration request submitted! We\'ll contact you within 24 hours.', 'success');
         else showAlert(data.error || 'Submission failed.');
       } catch (e) {
-        showAlert('✅ Request recorded! We\'ll contact you within 24 hours.', 'success');
+        showAlert('❌ Connection error. Please try again later.');
       }
     }
 
@@ -1145,17 +1147,32 @@
       const name = inputs[0]?.value.trim();
       const contact = inputs[1]?.value.trim();
       const email = inputs[2]?.value.trim();
-      document.getElementById('demo-modal').classList.remove('open');
-      if (name && email) {
-        try {
-          await fetch('/api/institution/request', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, contact, email })
-          });
-        } catch (e) { /* silent */ }
+
+      if (!name || !email) {
+        showAlert('⚠️ Please fill Institution Name and Email.');
+        document.getElementById('demo-modal').classList.remove('open');
+        return;
       }
-      showAlert('✅ Demo request submitted! Our team will reach out within 24 hours.', 'success');
+
+      try {
+        showAlert('Submitting request...', 'success');
+        const resp = await fetch('/api/institution/request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, contact, email })
+        });
+
+        document.getElementById('demo-modal').classList.remove('open');
+        if (resp.ok) {
+          showAlert('✅ Demo request submitted! Our team will reach out within 24 hours.', 'success');
+        } else {
+          const data = await resp.json();
+          showAlert(data.error || 'Submission failed.');
+        }
+      } catch (e) {
+        document.getElementById('demo-modal').classList.remove('open');
+        showAlert('❌ Connection error. Please try again later.');
+      }
     }
 
     // ─── Enter key support ────────────────────────────────────
